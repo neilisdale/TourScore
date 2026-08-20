@@ -1740,19 +1740,38 @@
      with the leader summary so the chevron button has something to sit on. */
   .scoreboard-collapsed-strip {
     display: none;
-    align-items: center;
-    justify-content: center;
+    flex-direction: row;
     background: rgba(0,0,0,0.15);
     border-radius: 6px;
-    padding: 6px 10px;
+    overflow: hidden;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: 0.3px;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.9);
     text-transform: uppercase;
     text-shadow: 0 1px 2px rgba(0,0,0,0.4);
-    min-height: 24px;
-    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15);
+    min-height: 30px;
+  }
+  .scoreboard-collapsed-strip .cs-cell {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 10px;
+    min-width: 0;
+    line-height: 1.1;
+    background: transparent;   /* overridden inline per leader colour */
+  }
+  .scoreboard-collapsed-strip .cs-cell + .cs-cell { border-left: 1px solid rgba(0,0,0,0.35); }
+  .scoreboard-collapsed-strip .cs-label {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    background: rgba(0,0,0,0.28);
+    padding: 1px 6px;
+    border-radius: 3px;
+    margin-right: 8px;
   }
   .scoreboard-wrap.collapsed .scoreboard-collapsed-strip { display: flex; }
   /* Symmetric layout by team count — used at every viewport. */
@@ -5864,44 +5883,51 @@ function renderHeaderScoreboard() {
     side.appendChild(metrics);
     wrap.appendChild(side);
   });
-  // Populate the compact "collapsed" summary strip and colour it by
-  // whichever team(s) are currently leading. Multiple co-leaders → the
-  // strip is split into equal-width bands, one per team.
+  // Populate the compact "collapsed" summary strip. When both metrics are
+  // active, split the strip HORIZONTALLY into two rows — top row shows the
+  // Stableford leader(s), bottom row shows the Match-points leader(s). Each
+  // row is coloured by that metric's leader team, splitting equal-width
+  // bands if multiple teams are tied for the lead.
   const strip = document.getElementById("scoreboard-collapsed-strip");
   if (strip) {
-    const parts = [];
-    const leaderSet = {};
-    if (showSb && maxSb > 0) {
-      const leader = s.teams.filter(t => (s.stablefordTotals[t] || 0) === maxSb);
-      parts.push("Stableford: " + leader.join("/") + " " + round1(maxSb));
-      leader.forEach(t => { leaderSet[t] = true; });
-    }
-    if (showMp && maxMp > 0) {
-      const leader = s.teams.filter(t => (s.matchTotals[t] || 0) === maxMp);
-      parts.push("Match pts: " + leader.join("/") + " " + round1(maxMp));
-      leader.forEach(t => { leaderSet[t] = true; });
-    }
-    strip.textContent = parts.length ? parts.join("  •  ") : "Team totals (tap to expand)";
-    // Team → CSS colour map (matches the badges/chip palette).
     const TEAM_COLOURS = { A: "#1d4ed8", B: "#b91c1c", C: "#047857", D: "#b45309", E: "#6d28d9", F: "#be185d" };
-    // Preserve A-F canonical order so the split is deterministic.
-    const leaderTeams = TEAMS.filter(t => leaderSet[t]);
-    if (leaderTeams.length === 1) {
-      strip.style.background = TEAM_COLOURS[leaderTeams[0]] || "";
-      strip.style.color = "#fff";
-    } else if (leaderTeams.length > 1) {
-      const step = 100 / leaderTeams.length;
-      const stops = leaderTeams.map((t, i) => {
+    const colourFor = (teamsLeading) => {
+      if (!teamsLeading || !teamsLeading.length) return "";
+      const inCanon = TEAMS.filter(t => teamsLeading.indexOf(t) >= 0);
+      if (inCanon.length === 1) return TEAM_COLOURS[inCanon[0]] || "";
+      const step = 100 / inCanon.length;
+      const stops = inCanon.map((t, i) => {
         const c = TEAM_COLOURS[t] || "#333";
         return c + " " + (i * step) + "%, " + c + " " + ((i + 1) * step) + "%";
       }).join(", ");
-      strip.style.background = "linear-gradient(to right, " + stops + ")";
-      strip.style.color = "#fff";
-    } else {
-      // No leaders yet — fall back to the default darkened bar.
-      strip.style.background = "";
-      strip.style.color = "";
+      return "linear-gradient(to right, " + stops + ")";
+    };
+    strip.innerHTML = "";
+    const cells = [];
+    if (showSb) {
+      const leaders = maxSb > 0 ? s.teams.filter(t => (s.stablefordTotals[t] || 0) === maxSb) : [];
+      const text = maxSb > 0
+        ? '<span class="cs-label">Stableford</span>' + leaders.join(" / ") + " " + round1(maxSb)
+        : '<span class="cs-label">Stableford</span>&mdash;';
+      cells.push({ html: text, bg: colourFor(leaders) });
     }
+    if (showMp) {
+      const leaders = maxMp > 0 ? s.teams.filter(t => (s.matchTotals[t] || 0) === maxMp) : [];
+      const text = maxMp > 0
+        ? '<span class="cs-label">Match pts</span>' + leaders.join(" / ") + " " + round1(maxMp)
+        : '<span class="cs-label">Match pts</span>&mdash;';
+      cells.push({ html: text, bg: colourFor(leaders) });
+    }
+    if (!cells.length) {
+      cells.push({ html: "Team totals (tap to expand)", bg: "" });
+    }
+    cells.forEach(cellData => {
+      const div = document.createElement("div");
+      div.className = "cs-cell";
+      div.innerHTML = cellData.html;
+      if (cellData.bg) div.style.background = cellData.bg;
+      strip.appendChild(div);
+    });
   }
   // If no players / no teams yet, keep the header non-empty with a placeholder
   if (!n) {
