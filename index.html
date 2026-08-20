@@ -1757,10 +1757,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4px 10px;
+    padding: 4px 8px;
     min-width: 0;
     line-height: 1.1;
+    text-align: center;
     background: transparent;   /* overridden inline per leader colour */
+  }
+  .scoreboard-collapsed-strip .cs-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .scoreboard-collapsed-strip .cs-cell + .cs-cell { border-left: 1px solid rgba(0,0,0,0.35); }
   .scoreboard-collapsed-strip .cs-label {
@@ -1771,7 +1781,8 @@
     background: rgba(0,0,0,0.28);
     padding: 1px 6px;
     border-radius: 3px;
-    margin-right: 8px;
+    /* Gap between label and value is handled by the flex container's `gap`
+       — no per-side margin so the pair sits perfectly centred as one unit. */
   }
   .scoreboard-wrap.collapsed .scoreboard-collapsed-strip { display: flex; }
   /* Symmetric layout by team count — used at every viewport. */
@@ -5924,7 +5935,9 @@ function renderHeaderScoreboard() {
     cells.forEach(cellData => {
       const div = document.createElement("div");
       div.className = "cs-cell";
-      div.innerHTML = cellData.html;
+      // Wrap the inner content in a single inline span so flexbox centres the
+      // whole "label + value" as one unit within its half of the strip.
+      div.innerHTML = '<span class="cs-inner">' + cellData.html + '</span>';
       if (cellData.bg) div.style.background = cellData.bg;
       strip.appendChild(div);
     });
