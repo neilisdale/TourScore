@@ -5542,16 +5542,18 @@ function loadCollapseState() {
       if (s) s.classList.add('collapsed');
     });
   } else {
-    // Defaults: keep Gross Strokes (Round 1 only), Match Schedule, Leaderboards open.
-    // Defaults (only apply to Course Setup sub-rounds — never to Play tab rounds,
-    // which the round-chip selector controls exclusively).
-    if (steps[0]) steps[0].classList.add('collapsed');
-    if (steps[2]) steps[2].classList.add('collapsed');
+    // Default collapsed courses inside Setup → Course Setup only.
     document.querySelectorAll('.step:not(#tab-play-strokes) .course-section[data-round-slot="round2"], .step:not(#tab-play-strokes) .course-section[data-round-slot="round3"], .step:not(#tab-play-strokes) .course-section[data-round-slot="round4"]').forEach(s => {
       s.classList.add('collapsed');
     });
-    // Belt-and-braces: strip any collapsed class from Play tab rounds
     document.querySelectorAll('#tab-play-strokes .course-section.collapsed').forEach(s => s.classList.remove('collapsed'));
+  }
+  // Belt-and-braces: in tab mode, no top-level `.step` section should be
+  // collapsed — the tab bar controls visibility, not the section chevron.
+  // Legacy saved state (from before tabs) could otherwise leave a section
+  // (like Match Schedule) collapsed and hiding its body content.
+  if (document.body.classList.contains("app-in-tabs")) {
+    steps.forEach(s => s.classList.remove("collapsed"));
   }
 }
 
