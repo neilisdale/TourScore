@@ -1121,6 +1121,42 @@
     .player-index { width: 18px; font-size: 11px; }
     .count-controls { padding: 10px 12px; gap: 8px; }
     .count-controls .hint { margin-top: 4px; }
+
+    /* Team scoreboard header: stack chips so labels & metrics don't clip */
+    .team-scoreboard { flex-direction: column; gap: 4px; padding: 4px; }
+    .team-scoreboard .ts-side {
+      flex: 1 1 auto; width: 100%;
+      padding: 8px 12px; min-height: 46px;
+      border-radius: 6px;
+    }
+    .team-scoreboard .ts-vs { display: none; }
+    .team-scoreboard .ts-label { font-size: 13px; letter-spacing: 0.4px; }
+    .team-scoreboard .ts-metrics { gap: 14px; }
+    .team-scoreboard .ts-metric-val { font-size: 20px; }
+    .team-scoreboard .ts-metric-unit { font-size: 8.5px; letter-spacing: 0.4px; }
+    /* Reset the `.multi` overrides — the stacked layout has room for full-size numbers */
+    .team-scoreboard.multi .ts-metric-val { font-size: 20px; }
+    .team-scoreboard.multi .ts-metric { padding: 2px 6px; }
+    .team-scoreboard.multi .ts-metrics { gap: 14px; }
+
+    /* Matches tab — match cards should stack (status below the teams) so
+       nothing gets squeezed off the right edge on narrow screens. */
+    .match-card { grid-template-columns: 1fr; padding: 10px 12px; }
+    .match-status {
+      grid-column: 1 / -1; grid-row: auto;
+      text-align: left; min-width: 0;
+      padding-top: 4px; border-top: 1px dashed var(--gray-200);
+    }
+    .match-select { min-width: 0; flex: 1 1 auto; }
+    .match-team-line { flex-wrap: wrap; row-gap: 4px; }
+    .match-team-line .amp { padding: 0 2px; }
+
+    /* Standings tables: reduce padding, keep numbers on one line */
+    table.team-lb-table th, table.team-lb-table td { padding: 8px 8px; font-size: 13px; }
+    table.team-lb-table td.tl-team { font-size: 13px; }
+    table.team-lb-table td.tl-team .team-badge { padding: 2px 6px; font-size: 11px; margin-right: 4px; }
+    table.team-totals-table th, table.team-totals-table td { padding: 8px 8px; font-size: 13px; }
+    table.team-totals-table td.tt-players { font-size: 12px; }
   }
   @media (max-width: 360px) {
     .player-card { gap: 6px; padding: 7px; }
@@ -4947,9 +4983,27 @@ function renderMatchSchedule() {
 
   c.innerHTML = "";
 
+  // Defensive: make sure the schedule has an entry for every active round —
+  // stale saved state (or a schedule truncated by an earlier round-count
+  // change) can otherwise leave the Matches tab empty.
+  const rc = Math.max(MIN_ROUNDS, Math.min(MAX_ROUNDS, state.roundCount || DEFAULT_ROUNDS));
+  if (!Array.isArray(state.matchSchedule)) state.matchSchedule = [];
+  for (let r = 0; r < rc; r++) {
+    if (!state.matchSchedule.some(d => d && d.roundIdx === r)) {
+      state.matchSchedule.push({ day: r + 1, roundIdx: r, matches: generateMatchesForRound(r) });
+    }
+  }
+  state.matchSchedule = state.matchSchedule
+    .filter(d => d && typeof d.roundIdx === "number" && d.roundIdx < rc)
+    .sort((a, b) => a.roundIdx - b.roundIdx);
+  // Fill any day whose matches array is empty so at least one card renders.
+  state.matchSchedule.forEach(d => {
+    if (!Array.isArray(d.matches) || !d.matches.length) d.matches = generateMatchesForRound(d.roundIdx);
+  });
+
   // Dispatch per-round: better-ball rounds get the editable A-vs-B match
   // cards; team-total rounds get the team-totals table.
-  const schedule = state.matchSchedule || DEFAULT_MATCH_SCHEDULE;
+  const schedule = state.matchSchedule;
   const teams = teamsInPlay();
 
   // Precompute per-round + overall team-hole point totals for team-total
