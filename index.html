@@ -1665,6 +1665,27 @@
   }
   .app-refresh-btn:hover { background: rgba(255,255,255,0.2); }
 
+  .scoreboard-wrap { position: relative; }
+  .scoreboard-toggle {
+    position: absolute;
+    right: 6px;
+    top: 6px;
+    width: 26px; height: 26px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 999px;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    z-index: 5;
+    transition: background 0.15s, border-color 0.15s, transform 0.2s;
+  }
+  .scoreboard-toggle:hover { background: var(--gold); color: #0f1929; border-color: var(--gold); }
+  .scoreboard-toggle-chev { font-size: 14px; font-weight: 900; line-height: 1; display: inline-block; transition: transform 0.2s; }
+  .team-scoreboard.collapsed ~ .scoreboard-toggle .scoreboard-toggle-chev,
+  .scoreboard-wrap.collapsed .scoreboard-toggle-chev { transform: rotate(-90deg); }
+  .team-scoreboard.collapsed { display: none; }
   .team-scoreboard {
     display: grid;
     gap: 4px;
@@ -1674,6 +1695,22 @@
     padding: 3px;
     grid-template-columns: 1fr;
   }
+  /* Compact strip shown when the scoreboard is collapsed — just a thin bar
+     with the leader summary so the chevron button has something to sit on. */
+  .scoreboard-collapsed-strip {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.15);
+    border-radius: 6px;
+    padding: 4px 34px 4px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: rgba(255,255,255,0.85);
+    text-transform: uppercase;
+  }
+  .scoreboard-wrap.collapsed .scoreboard-collapsed-strip { display: flex; }
   /* Symmetric layout by team count — used at every viewport. */
   .team-scoreboard.ts-cols-2 { grid-template-columns: 1fr 1fr; }
   .team-scoreboard.ts-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
@@ -1895,7 +1932,13 @@
         <button class="app-refresh-btn" onclick="refreshSyncNow()" type="button" id="sync-refresh-btn">Refresh</button>
       </div>
     </div>
-    <div class="team-scoreboard" id="header-scoreboard"><!-- populated by renderHeaderScoreboard() --></div>
+    <div class="scoreboard-wrap" id="scoreboard-wrap">
+      <div class="team-scoreboard" id="header-scoreboard"><!-- populated by renderHeaderScoreboard() --></div>
+      <div class="scoreboard-collapsed-strip" id="scoreboard-collapsed-strip"><!-- populated on collapse --></div>
+      <button type="button" class="scoreboard-toggle" id="scoreboard-toggle" onclick="toggleScoreboardCollapse()" aria-label="Show / hide team totals" title="Show / hide team totals">
+        <span class="scoreboard-toggle-chev" aria-hidden="true">&#9662;</span>
+      </button>
+    </div>
     <nav class="app-tab-bar" role="tablist" aria-label="Main sections">
       <button class="app-tab active" role="tab" aria-selected="true" data-tab-target="play" onclick="switchTab('play')">Play</button>
       <button class="app-tab" role="tab" aria-selected="false" data-tab-target="matches" onclick="switchTab('matches')">Matches</button>
@@ -5664,7 +5707,27 @@ function computeAllTeamStandings() {
   return { teams, totals, matchTotals, stablefordTotals, leaders };
 }
 
+// ---------- Header scoreboard collapse ----------
+const SCOREBOARD_COLLAPSE_KEY = "fancourt_scoreboard_collapsed_v1";
+function isScoreboardCollapsed() {
+  try { return localStorage.getItem(SCOREBOARD_COLLAPSE_KEY) === "1"; } catch (e) { return false; }
+}
+function setScoreboardCollapsed(v) {
+  try { localStorage.setItem(SCOREBOARD_COLLAPSE_KEY, v ? "1" : "0"); } catch (e) {}
+  applyScoreboardCollapse();
+}
+function toggleScoreboardCollapse() { setScoreboardCollapsed(!isScoreboardCollapsed()); }
+function applyScoreboardCollapse() {
+  const wrap = document.getElementById("scoreboard-wrap");
+  const board = document.getElementById("header-scoreboard");
+  if (!wrap || !board) return;
+  const collapsed = isScoreboardCollapsed();
+  wrap.classList.toggle("collapsed", collapsed);
+  board.classList.toggle("collapsed", collapsed);
+}
+
 function renderHeaderScoreboard() {
+  applyScoreboardCollapse();
   const wrap = document.getElementById("header-scoreboard");
   if (!wrap) return;
   const s = computeAllTeamStandings();
@@ -5720,6 +5783,20 @@ function renderHeaderScoreboard() {
     side.appendChild(metrics);
     wrap.appendChild(side);
   });
+  // Populate the compact "collapsed" summary strip.
+  const strip = document.getElementById("scoreboard-collapsed-strip");
+  if (strip) {
+    const parts = [];
+    if (showSb && maxSb > 0) {
+      const leader = s.teams.filter(t => (s.stablefordTotals[t] || 0) === maxSb);
+      parts.push("Stableford: " + leader.join("/") + " " + round1(maxSb));
+    }
+    if (showMp && maxMp > 0) {
+      const leader = s.teams.filter(t => (s.matchTotals[t] || 0) === maxMp);
+      parts.push("Match pts: " + leader.join("/") + " " + round1(maxMp));
+    }
+    strip.textContent = parts.length ? parts.join("  •  ") : "Team totals (tap to expand)";
+  }
   // If no players / no teams yet, keep the header non-empty with a placeholder
   if (!n) {
     wrap.innerHTML = '<div class="ts-side" style="background:rgba(255,255,255,0.06);color:#c8d3e0;">No teams configured</div>';
