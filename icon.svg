@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background: navy rounded square (matches app theme) -->
+  <rect x="0" y="0" width="512" height="512" rx="96" ry="96" fill="#15253e"/>
+  <!-- Subtle inner highlight for depth -->
+  <rect x="0" y="0" width="512" height="256" rx="96" ry="96" fill="#1f3358" opacity="0.35"/>
+
+  <!-- Rolling ground line -->
+  <path d="M 0 400 Q 128 360 256 380 T 512 400 L 512 512 L 0 512 Z" fill="#0d1929"/>
+  <path d="M 0 400 Q 128 360 256 380 T 512 400" fill="none" stroke="#e6b422" stroke-width="4" opacity="0.5"/>
+
+  <!-- Flagpole -->
+  <rect x="332" y="108" width="8" height="284" fill="#f5f7fa" rx="2"/>
+
+  <!-- Flag (gold triangular pennant with IG monogram) -->
+  <path d="M 340 108 L 460 148 L 340 188 Z" fill="#e6b422"/>
+  <path d="M 340 108 L 460 148 L 340 188 Z" fill="none" stroke="#a67c00" stroke-width="3"/>
+
+  <!-- IG monogram on the flag, in navy -->
+  <text x="370" y="163" font-family="Helvetica, Arial, sans-serif" font-size="42" font-weight="900"
+        fill="#15253e" letter-spacing="-2">IG</text>
+
+  <!-- Golf ball -->
+  <circle cx="188" cy="360" r="72" fill="#ffffff"/>
+  <circle cx="188" cy="360" r="72" fill="none" stroke="#c8d3e0" stroke-width="3"/>
+
+  <!-- Dimples on ball -->
+  <g fill="#c8d3e0" opacity="0.55">
+    <circle cx="168" cy="332" r="4"/>
+    <circle cx="188" cy="324" r="4"/>
+    <circle cx="208" cy="332" r="4"/>
+    <circle cx="228" cy="348" r="4"/>
+    <circle cx="156" cy="352" r="4"/>
+    <circle cx="176" cy="352" r="4"/>
+    <circle cx="196" cy="348" r="4"/>
+    <circle cx="216" cy="352" r="4"/>
+    <circle cx="148" cy="372" r="4"/>
+    <circle cx="168" cy="372" r="4"/>
+    <circle cx="188" cy="376" r="4"/>
+    <circle cx="208" cy="372" r="4"/>
+    <circle cx="228" cy="372" r="4"/>
+    <circle cx="160" cy="392" r="4"/>
+    <circle cx="180" cy="396" r="4"/>
+    <circle cx="200" cy="392" r="4"/>
+    <circle cx="220" cy="388" r="4"/>
+  </g>
+
+  <!-- Highlight on ball -->
+  <ellipse cx="164" cy="332" rx="18" ry="10" fill="#ffffff" opacity="0.8"/>
+
+  <!-- Small gold underline for the ball's shadow -->
+  <ellipse cx="188" cy="438" rx="60" ry="6" fill="#000000" opacity="0.28"/>
+</svg>

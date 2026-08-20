@@ -1,0 +1,14 @@
+{
+  "name": "Tour Score",
+  "short_name": "Tour Score",
+  "description": "Team golf scorekeeping — Better Ball, Combined Stableford, and Four-Ball Alliance formats.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#15253e",
+  "theme_color": "#15253e",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+  ]
+}
