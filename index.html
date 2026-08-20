@@ -2238,15 +2238,17 @@
 </div>
 
 <script>
+// Default roster is a generic Player 1..8 — users rename each slot in the
+// Setup → Players & Teams section on the way to running a real event.
 const DEFAULT_PLAYERS = [
-  "Ewan Scott",         // 0 - Team A
-  "Grant Wilson",       // 1 - Team A
-  "James O'Haughey",    // 2 - Team A
-  "Paul Kent",          // 3 - Team A
-  "Gavin Bye",          // 4 - Team B
-  "Warren Blount",      // 5 - Team B
-  "Neil Isdale",        // 6 - Team B
-  "Jamie Scott"         // 7 - Team B
+  "Player 1",   // 0 - Team A
+  "Player 2",   // 1 - Team A
+  "Player 3",   // 2 - Team A
+  "Player 4",   // 3 - Team A
+  "Player 5",   // 4 - Team B
+  "Player 6",   // 5 - Team B
+  "Player 7",   // 6 - Team B
+  "Player 8"    // 7 - Team B
 ];
 const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 16;
@@ -5930,7 +5932,7 @@ function renderHeaderScoreboard() {
       cells.push({ html: text, bg: colourFor(leaders) });
     }
     if (!cells.length) {
-      cells.push({ html: "Team totals (tap to expand)", bg: "" });
+      cells.push({ html: "Team totals", bg: "" });
     }
     cells.forEach(cellData => {
       const div = document.createElement("div");
