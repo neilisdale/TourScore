@@ -1667,10 +1667,7 @@
 
   .scoreboard-wrap { position: relative; }
   .scoreboard-toggle {
-    position: absolute;
-    right: 6px;
-    top: 6px;
-    width: 26px; height: 26px;
+    width: 22px; height: 22px;
     display: inline-flex; align-items: center; justify-content: center;
     background: rgba(255,255,255,0.14);
     border: 1px solid rgba(255,255,255,0.45);
@@ -1678,13 +1675,13 @@
     color: #fff;
     cursor: pointer;
     padding: 0;
-    z-index: 5;
+    margin-left: 4px;
     transition: background 0.15s, border-color 0.15s, transform 0.2s;
+    font-family: inherit;
   }
   .scoreboard-toggle:hover { background: var(--gold); color: #0f1929; border-color: var(--gold); }
-  .scoreboard-toggle-chev { font-size: 14px; font-weight: 900; line-height: 1; display: inline-block; transition: transform 0.2s; }
-  .team-scoreboard.collapsed ~ .scoreboard-toggle .scoreboard-toggle-chev,
-  .scoreboard-wrap.collapsed .scoreboard-toggle-chev { transform: rotate(-90deg); }
+  .scoreboard-toggle-chev { font-size: 13px; font-weight: 900; line-height: 1; display: inline-block; transition: transform 0.2s; }
+  .scoreboard-toggle.is-collapsed .scoreboard-toggle-chev { transform: rotate(-90deg); }
   .team-scoreboard.collapsed { display: none; }
   .team-scoreboard {
     display: grid;
@@ -1930,14 +1927,14 @@
         <span class="sync-dot" id="sync-dot"></span>
         <span id="sync-label">Sync: off</span>
         <button class="app-refresh-btn" onclick="refreshSyncNow()" type="button" id="sync-refresh-btn">Refresh</button>
+        <button type="button" class="scoreboard-toggle" id="scoreboard-toggle" onclick="toggleScoreboardCollapse()" aria-label="Show / hide team totals" title="Show / hide team totals">
+          <span class="scoreboard-toggle-chev" aria-hidden="true">&#9662;</span>
+        </button>
       </div>
     </div>
     <div class="scoreboard-wrap" id="scoreboard-wrap">
       <div class="team-scoreboard" id="header-scoreboard"><!-- populated by renderHeaderScoreboard() --></div>
       <div class="scoreboard-collapsed-strip" id="scoreboard-collapsed-strip"><!-- populated on collapse --></div>
-      <button type="button" class="scoreboard-toggle" id="scoreboard-toggle" onclick="toggleScoreboardCollapse()" aria-label="Show / hide team totals" title="Show / hide team totals">
-        <span class="scoreboard-toggle-chev" aria-hidden="true">&#9662;</span>
-      </button>
     </div>
     <nav class="app-tab-bar" role="tablist" aria-label="Main sections">
       <button class="app-tab active" role="tab" aria-selected="true" data-tab-target="play" onclick="switchTab('play')">Play</button>
@@ -5720,10 +5717,12 @@ function toggleScoreboardCollapse() { setScoreboardCollapsed(!isScoreboardCollap
 function applyScoreboardCollapse() {
   const wrap = document.getElementById("scoreboard-wrap");
   const board = document.getElementById("header-scoreboard");
+  const btn = document.getElementById("scoreboard-toggle");
   if (!wrap || !board) return;
   const collapsed = isScoreboardCollapsed();
   wrap.classList.toggle("collapsed", collapsed);
   board.classList.toggle("collapsed", collapsed);
+  if (btn) btn.classList.toggle("is-collapsed", collapsed);
 }
 
 function renderHeaderScoreboard() {
