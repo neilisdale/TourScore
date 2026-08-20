@@ -1122,22 +1122,35 @@
     .count-controls { padding: 10px 12px; gap: 8px; }
     .count-controls .hint { margin-top: 4px; }
 
-    /* Team scoreboard header: stack chips so labels & metrics don't clip */
-    .team-scoreboard { flex-direction: column; gap: 4px; padding: 4px; }
+    /* Team scoreboard header: compact symmetric grid so 4 teams fit in 2×2,
+       3 teams in a single row of 3, 2 teams side-by-side. Minimal padding
+       to keep the header out of the way of the app content. */
+    .team-scoreboard {
+      display: grid; gap: 3px; padding: 3px;
+      grid-template-columns: 1fr;   /* overridden below by ts-cols-N */
+    }
+    .team-scoreboard.ts-cols-2 { grid-template-columns: 1fr 1fr; }
+    .team-scoreboard.ts-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .team-scoreboard.ts-cols-4,
+    .team-scoreboard.ts-cols-6 { grid-template-columns: 1fr 1fr; }
+    .team-scoreboard.ts-cols-5 { grid-template-columns: 1fr 1fr 1fr; }
     .team-scoreboard .ts-side {
-      flex: 1 1 auto; width: 100%;
-      padding: 8px 12px; min-height: 46px;
-      border-radius: 6px;
+      flex: initial; width: auto;
+      padding: 4px 6px; min-height: 0;
+      border-radius: 5px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+      justify-content: center;
     }
     .team-scoreboard .ts-vs { display: none; }
-    .team-scoreboard .ts-label { font-size: 13px; letter-spacing: 0.4px; }
-    .team-scoreboard .ts-metrics { gap: 14px; }
-    .team-scoreboard .ts-metric-val { font-size: 20px; }
-    .team-scoreboard .ts-metric-unit { font-size: 8.5px; letter-spacing: 0.4px; }
-    /* Reset the `.multi` overrides — the stacked layout has room for full-size numbers */
-    .team-scoreboard.multi .ts-metric-val { font-size: 20px; }
-    .team-scoreboard.multi .ts-metric { padding: 2px 6px; }
-    .team-scoreboard.multi .ts-metrics { gap: 14px; }
+    .team-scoreboard .ts-label { font-size: 10px; letter-spacing: 0.3px; }
+    .team-scoreboard .ts-metrics { gap: 8px; align-self: stretch; justify-content: space-between; }
+    .team-scoreboard .ts-metric { padding: 0; align-items: flex-start; }
+    .team-scoreboard .ts-metric-val { font-size: 14px; font-weight: 800; }
+    .team-scoreboard .ts-metric-unit { font-size: 7.5px; letter-spacing: 0.25px; margin-top: 0; }
+    /* Reset the desktop `.multi` overrides */
+    .team-scoreboard.multi .ts-metric-val { font-size: 14px; }
+    .team-scoreboard.multi .ts-metric { padding: 0; }
+    .team-scoreboard.multi .ts-metrics { gap: 8px; }
 
     /* Matches tab — match cards should stack (status below the teams) so
        nothing gets squeezed off the right edge on narrow screens. */
@@ -1653,19 +1666,23 @@
   .app-refresh-btn:hover { background: rgba(255,255,255,0.2); }
 
   .team-scoreboard {
-    display: flex;
-    align-items: stretch;
-    flex-wrap: wrap;
+    display: grid;
     gap: 4px;
     background: rgba(0,0,0,0.15);
     border-radius: 8px;
     overflow: hidden;
-    padding: 2px;
+    padding: 3px;
+    grid-template-columns: 1fr;
   }
+  /* Symmetric layout by team count — used at every viewport. */
+  .team-scoreboard.ts-cols-2 { grid-template-columns: 1fr 1fr; }
+  .team-scoreboard.ts-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .team-scoreboard.ts-cols-4,
+  .team-scoreboard.ts-cols-6 { grid-template-columns: 1fr 1fr; }
+  .team-scoreboard.ts-cols-5 { grid-template-columns: 1fr 1fr 1fr; }
   .ts-side {
-    flex: 1 1 140px;
     min-width: 0;
-    padding: 8px 12px;
+    padding: 6px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -5535,6 +5552,10 @@ function switchTab(tabName) {
     btn.classList.toggle("active", isActive);
     btn.setAttribute("aria-selected", isActive ? "true" : "false");
   });
+  // Re-render tab-specific content on demand so a stale/empty container
+  // (e.g. from an older cached state) gets rebuilt when the user opens it.
+  if (tabName === "matches" && typeof renderMatchSchedule === "function") renderMatchSchedule();
+  if (tabName === "standings" && typeof refreshLeaderboards === "function") refreshLeaderboards();
   // Scroll to top of the container when switching tabs
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -5663,6 +5684,10 @@ function renderHeaderScoreboard() {
   wrap.innerHTML = "";
   const n = s.teams.length;
   wrap.classList.toggle("multi", n > 2);
+  // Add a ts-cols-N class so mobile CSS can render a symmetric grid
+  // (2 teams = 1×2, 3 = 1×3, 4 = 2×2, 5 = 2×3-ish, 6 = 2×3, etc.)
+  ["ts-cols-1","ts-cols-2","ts-cols-3","ts-cols-4","ts-cols-5","ts-cols-6"].forEach(c => wrap.classList.remove(c));
+  if (n >= 1 && n <= 6) wrap.classList.add("ts-cols-" + n);
   s.teams.forEach((t, idx) => {
     const side = document.createElement("div");
     side.className = "ts-side ts-" + t.toLowerCase();
@@ -5694,13 +5719,6 @@ function renderHeaderScoreboard() {
     side.appendChild(lbl);
     side.appendChild(metrics);
     wrap.appendChild(side);
-    // "vs" separator only when exactly two teams
-    if (n === 2 && idx === 0) {
-      const vs = document.createElement("div");
-      vs.className = "ts-vs";
-      vs.textContent = "vs";
-      wrap.appendChild(vs);
-    }
   });
   // If no players / no teams yet, keep the header non-empty with a placeholder
   if (!n) {
