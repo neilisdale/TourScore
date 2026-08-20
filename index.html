@@ -1170,6 +1170,12 @@
     table.team-lb-table td.tl-team .team-badge { padding: 2px 6px; font-size: 11px; margin-right: 4px; }
     table.team-totals-table th, table.team-totals-table td { padding: 8px 8px; font-size: 13px; }
     table.team-totals-table td.tt-players { font-size: 12px; }
+
+    /* Individual leaderboard: tighter padding + shorter name column so more
+       fits inside the card; overflow-x scroll handles the rest. */
+    .leaderboard th, .leaderboard td { padding: 5px 4px; font-size: 12px; }
+    .leaderboard td.lb-name { min-width: 90px; font-size: 12px; }
+    .leaderboard th.lb-total, .leaderboard td.lb-total { min-width: 44px; }
   }
   @media (max-width: 360px) {
     .player-card { gap: 6px; padding: 7px; }
@@ -1517,6 +1523,12 @@
     margin-left: 6px;
   }
 
+  /* Individual leaderboard scrolls horizontally inside its container so
+     wider setups (many rounds / many players) never overrun the white card. */
+  #individual-leaderboard {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   table.leaderboard { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 6px; }
   .leaderboard th, .leaderboard td { border: 1px solid var(--gray-200); padding: 6px 8px; text-align: center; }
   .leaderboard th {
