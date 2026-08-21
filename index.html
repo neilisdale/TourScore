@@ -485,6 +485,9 @@
     background: var(--gray-100);
     color: var(--gray-500);
   }
+  .scorecard td.name-cell .hcp-input-mini.hcp-suspect {
+    background: #fff4e5; color: #b45309; border: 2px solid #d97706;
+  }
   .scorecard td.name-cell .hcp-input-mini:focus {
     outline: 2px solid var(--gold);
     outline-offset: -1px;
@@ -1052,6 +1055,20 @@
     outline: 2px solid var(--gold);
     outline-offset: -1px;
   }
+  .course-selector-row .course-search-input {
+    padding: 8px 10px;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .course-selector-row .course-search-input:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: -1px;
+  }
   .course-selector-row .round-format-select {
     padding: 6px 10px;
     font-size: 13px;
@@ -1147,10 +1164,8 @@
     .team-scoreboard .ts-metric { padding: 0; align-items: flex-start; }
     .team-scoreboard .ts-metric-val { font-size: 14px; font-weight: 800; }
     .team-scoreboard .ts-metric-unit { font-size: 7.5px; letter-spacing: 0.25px; margin-top: 0; }
-    /* Reset the desktop `.multi` overrides */
-    .team-scoreboard.multi .ts-metric-val { font-size: 14px; }
-    .team-scoreboard.multi .ts-metric { padding: 0; }
-    .team-scoreboard.multi .ts-metrics { gap: 8px; }
+    /* (The universal ts-cols-N grid handles layout; no per-viewport .multi
+       overrides are needed any more.) */
 
     /* Matches tab — match cards should stack (status below the teams) so
        nothing gets squeezed off the right edge on narrow screens. */
@@ -1176,6 +1191,15 @@
     .leaderboard th, .leaderboard td { padding: 5px 4px; font-size: 12px; }
     .leaderboard td.lb-name { min-width: 90px; font-size: 12px; }
     .leaderboard th.lb-total, .leaderboard td.lb-total { min-width: 44px; }
+
+    /* Course-selector row: course input on top full width, round-format and
+       scoring-format side-by-side underneath so each round takes 2 rows
+       instead of 4 on a phone. */
+    .course-selector-row > div { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 6px; }
+    .course-selector-row > div > label,
+    .course-selector-row > div .course-search-input { grid-column: 1 / span 2; }
+    .course-selector-row .round-format-select,
+    .course-selector-row .scoring-format-select { margin-top: 0; }
   }
   @media (max-width: 360px) {
     .player-card { gap: 6px; padding: 7px; }
@@ -1294,7 +1318,7 @@
   }
 
 
-  /* ============ Fancourt Trophy CSS ============ */
+  /* ============ Tour Score CSS ============ */
   .header-title {
     color: white; font-size: 32px; font-weight: 700; letter-spacing: 0.5px;
     text-align: center; margin: 0;
@@ -1680,11 +1704,153 @@
     gap: 10px;
     margin-bottom: 6px;
   }
+  .app-title-wrap { display: flex; flex-direction: column; line-height: 1.15; min-width: 0; }
   .app-title {
     font-size: 18px;
     font-weight: 700;
     letter-spacing: 0.3px;
     color: white;
+  }
+  .app-tournament-name {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60vw;
+  }
+  .app-tournament-name:empty { display: none; }
+  /* Tournament setup panel */
+  #tournament-details-section .tournament-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px 12px;
+    margin-top: 6px;
+  }
+  .td-field { display: flex; flex-direction: column; gap: 4px; }
+  .td-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-500); }
+  .td-field input, .td-field select {
+    padding: 8px 10px; border: 1px solid var(--gray-300); border-radius: 4px;
+    font-size: 14px; font-family: inherit; background: white; width: 100%; box-sizing: border-box;
+  }
+  .td-field input:focus, .td-field select:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+  .tournament-actions {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+  }
+  .tournament-actions button {
+    padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 6px;
+    background: white; font-family: inherit; font-size: 13px; cursor: pointer;
+  }
+  .tournament-actions button:hover { background: var(--gray-50); border-color: var(--gray-700); }
+  /* Team-name editor row */
+  .team-names-editor {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 8px; margin-top: 10px; padding: 10px; background: var(--gray-50); border-radius: 6px;
+  }
+  .team-names-editor label { display: flex; flex-direction: column; gap: 3px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: var(--gray-500); }
+  .team-names-editor input {
+    padding: 6px 10px; border: 1px solid var(--gray-300); border-radius: 4px;
+    font-size: 14px; font-family: inherit; background: white;
+  }
+  .team-names-editor input:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+  .team-names-editor:empty { display: none; }
+  .team-names-editor .tne-badge {
+    display: inline-block; width: 18px; height: 18px; border-radius: 50%;
+    color: white; text-align: center; line-height: 18px; font-size: 10px; font-weight: 800; margin-right: 4px;
+  }
+  /* Toast (achievement / share confirmation) */
+  #toast-host {
+    position: fixed; z-index: 100;
+    left: 50%; bottom: 24px; transform: translateX(-50%);
+    display: flex; flex-direction: column; gap: 6px; align-items: center;
+    pointer-events: none;
+  }
+  #toast-host .toast {
+    background: var(--navy-dark); color: white;
+    padding: 10px 16px; border-radius: 8px;
+    font-size: 14px; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    max-width: 90vw;
+    animation: toastIn 0.25s ease-out;
+    border-left: 4px solid var(--gold);
+  }
+  #toast-host .toast.toast-achievement { border-left-color: var(--gold); }
+  #toast-host .toast.toast-success { border-left-color: #10b981; }
+  #toast-host .toast.toast-info { border-left-color: #3b82f6; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  /* Flash the just-updated score cell */
+  .scorecard td.score-cell.flash-recent { animation: flashRecent 1.4s ease-out; }
+  @keyframes flashRecent {
+    0% { background: var(--gold); }
+    100% { background: transparent; }
+  }
+  /* Team totals count-up transition */
+  .ts-metric-val { transition: transform 0.15s; }
+  .ts-metric-val.bump { transform: scale(1.15); color: var(--gold); }
+  /* Weather widget */
+  .weather-widget {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+    letter-spacing: 0.3px;
+    margin-left: 6px;
+  }
+  .weather-widget .weather-icon { display: inline-block; margin-right: 3px; }
+  /* Spectator badge (read-only mode) */
+  body.spectator-mode .setup-lock-btn,
+  body.spectator-mode .round-complete-btn,
+  body.spectator-mode .tournament-actions,
+  body.spectator-mode .admin-bar,
+  body.spectator-mode .app-tab[data-tab-target="setup"] { display: none !important; }
+  body.spectator-mode input:not([type="password"]), body.spectator-mode select { pointer-events: none; }
+  body.spectator-mode::before {
+    content: "SPECTATOR MODE — READ ONLY";
+    display: block; position: fixed; top: 0; left: 0; right: 0;
+    background: var(--gold); color: var(--navy-dark);
+    font-size: 11px; font-weight: 800; letter-spacing: 0.6px; text-align: center;
+    padding: 3px; z-index: 200;
+  }
+  body.spectator-mode { padding-top: 24px; }
+  /* Tournament picker modal */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 12px 12px;
+  }
+  .modal-panel {
+    background: white; color: var(--navy-dark);
+    border-radius: 10px; padding: 20px; width: 480px; max-width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    max-height: 80vh; overflow-y: auto;
+  }
+  .modal-panel h3 { margin-top: 0; margin-bottom: 8px; }
+  .modal-close { float: right; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray-500); }
+  .tournament-list-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: 6px; margin-bottom: 6px;
+  }
+  .tournament-list-item .tli-meta { font-size: 12px; color: var(--gray-500); }
+  .tournament-list-item button {
+    background: var(--navy); color: white; border: none; padding: 6px 10px; border-radius: 4px;
+    font-family: inherit; font-size: 12px; cursor: pointer; margin-left: 4px;
+  }
+  .tournament-list-item button.danger { background: #dc2626; }
+  .tournament-list-item button:hover { background: var(--navy-dark); }
+  /* Light theme (opt-in via body[data-theme="light"]) */
+  body[data-theme="light"] {
+    background: linear-gradient(180deg, #f4f6fa 0%, #e6ebf3 100%);
+  }
+  body[data-theme="light"] .app-header, body[data-theme="light"] .step, body[data-theme="light"] .modal-panel { color: var(--navy-dark); }
+  body[data-theme="light"] .team-scoreboard { background: rgba(0,0,0,0.06); }
+  body[data-theme="light"] .app-title, body[data-theme="light"] .app-tournament-name { color: var(--navy-dark); }
+  body[data-theme="light"] .app-tab { color: var(--navy-dark); }
+  body[data-theme="light"] .app-header-top { color: var(--navy-dark); }
+  body[data-theme="light"] .app-sync-cluster { color: var(--navy-dark); }
+  body[data-theme="light"] .app-refresh-btn, body[data-theme="light"] .scoreboard-toggle {
+    background: rgba(0,0,0,0.06); color: var(--navy-dark); border-color: rgba(0,0,0,0.2);
   }
   .app-sync-cluster {
     display: flex;
@@ -1865,25 +2031,7 @@
   }
   .ts-metric-lead .ts-metric-val { color: var(--gold); }
   .ts-metric-lead { background: rgba(0,0,0,0.25); }
-  .team-scoreboard.multi .ts-metric-val { font-size: 18px; }
-  .team-scoreboard.multi .ts-metric { padding: 2px 4px; }
-  .team-scoreboard.multi .ts-metrics { gap: 6px; }
-  .ts-vs {
-    display: flex;
-    align-items: center;
-    padding: 0 6px;
-    font-size: 10px;
-    color: #c8d3e0;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 700;
-    background: transparent;
-    flex: 0 0 auto;
-  }
   .ts-side.leading { box-shadow: inset 0 -3px 0 var(--gold); }
-  /* When 3+ teams are in play we stop showing "vs" and tighten each chip a bit */
-  .team-scoreboard.multi .ts-side { padding: 6px 10px; flex-basis: 100px; }
-  .team-scoreboard.multi .ts-score { font-size: 20px; }
 
   .app-tab-bar {
     display: flex;
@@ -1999,11 +2147,15 @@
 <div class="container">
   <header class="app-header">
     <div class="app-header-top">
-      <div class="app-title">Tour Score</div>
+      <div class="app-title-wrap">
+        <div class="app-title">Tour Score</div>
+        <div class="app-tournament-name" id="app-tournament-name"></div>
+      </div>
       <div class="app-sync-cluster">
         <span class="sync-dot" id="sync-dot"></span>
         <span id="sync-label">Sync: off</span>
         <button class="app-refresh-btn" onclick="refreshSyncNow()" type="button" id="sync-refresh-btn">Refresh</button>
+        <button class="app-refresh-btn" onclick="shareStandings()" type="button" id="share-btn" title="Copy live standings to clipboard for WhatsApp/etc.">Share</button>
         <button type="button" class="scoreboard-toggle" id="scoreboard-toggle" onclick="toggleScoreboardCollapse()" aria-label="Show / hide team totals" title="Show / hide team totals">
           <span class="scoreboard-toggle-chev" aria-hidden="true">&#9662;</span>
         </button>
@@ -2020,6 +2172,35 @@
       <button class="app-tab" role="tab" aria-selected="false" data-tab-target="setup" onclick="switchTab('setup')">Setup</button>
     </nav>
   </header>
+  <!-- Tournament details -->
+  <section class="step" data-tab="setup" id="tournament-details-section">
+    <h2>Tournament</h2>
+    <div class="tournament-details-grid">
+      <label class="td-field">
+        <span class="td-label">Name</span>
+        <input type="text" id="tournament-name-input" placeholder="e.g. Winter Cup 2026" autocomplete="off" autocapitalize="words">
+      </label>
+      <label class="td-field">
+        <span class="td-label">Date</span>
+        <input type="date" id="tournament-date-input">
+      </label>
+      <label class="td-field">
+        <span class="td-label">Appearance</span>
+        <select id="theme-select">
+          <option value="dark">Dark (default)</option>
+          <option value="light">Light (bright / daytime)</option>
+        </select>
+      </label>
+    </div>
+    <div class="tournament-actions">
+      <button type="button" onclick="saveCurrentTournament()">💾 Save this tournament</button>
+      <button type="button" onclick="showTournamentPicker()">📂 Load / manage tournaments</button>
+      <button type="button" onclick="startNewTournament()">➕ New tournament</button>
+      <button type="button" onclick="showSpectatorLink()">🔗 Spectator link</button>
+    </div>
+    <div class="help-text" style="margin-top:6px;">Save a snapshot to switch back to it later. Start New for a fresh event without wiping this one.</div>
+  </section>
+
   <!-- Setup lock control (Setup tab only) -->
   <section class="step" data-tab="setup" id="setup-lock-section">
     <button id="setup-lock-btn" class="setup-lock-btn" onclick="handleSetupLockClick()" type="button">&#10003; Lock Setup</button>
@@ -2033,10 +2214,11 @@
     <div class="count-controls">
       <label for="player-count-input">Number of players:</label>
       <input type="number" id="player-count-input" min="2" max="16" value="8">
-      <span class="hint">2&ndash;16. Team A = first half of players, Team B = second half. Add or remove players and match dropdowns will update automatically.</span>
+      <span class="hint">2&ndash;16 players. Assign each player to a team (A&ndash;F) using the team dropdown next to their name. Match dropdowns and standings update automatically as you edit.</span>
     </div>
     <div class="players-grid" id="players-list"></div>
-    <div class="help-text">Team A (first 4) plays Team B (last 4). Names are editable — the pairing schedule uses each player's <em>slot</em>, so if you rename a slot the schedule follows the new name automatically. Handicaps are set per course in Step 3.</div>
+    <div class="help-text">Each player has a name and a team letter. Handicaps are set per course in Step 3 (Course setup).</div>
+    <div class="team-names-editor" id="team-names-editor" aria-label="Rename teams"><!-- populated by renderTeamNamesEditor() --></div>
   </section>
 
   <!-- STEP 2: Match Schedule -->
@@ -2052,17 +2234,19 @@
     <div class="count-controls">
       <label for="round-count-input">Number of rounds:</label>
       <input type="number" id="round-count-input" min="1" max="4" value="3">
-      <span class="hint">1&ndash;4 rounds. Each round is 18 holes. Stableford totals sum across all active rounds.</span>
+      <span class="hint">1&ndash;4 rounds. Each round has its own scoring format &mdash; Better Ball rounds award match points, Combined/Alliance rounds accumulate team stableford points.</span>
     </div>
     <div class="info-box">
       Pick each round's course, format (holes played), and scoring format.
       Edit par or stroke index if your printed scorecard differs.
       <strong>SI 1 = hardest hole, SI 18 = easiest.</strong>
     </div>
+    <!-- Shared datalist for course search — populated once by renderCourseSelectors -->
+    <datalist id="courses-catalog-datalist"></datalist>
     <div class="course-selector-row" id="course-selectors-row">
       <div data-round-slot="round1">
         <label for="course-select-round1">Round 1</label>
-        <select id="course-select-round1"></select>
+        <input id="course-select-round1" list="courses-catalog-datalist" class="course-search-input" placeholder="Type or pick a course…" autocomplete="off" autocapitalize="words" spellcheck="false">
         <select id="round-format-round1" class="round-format-select">
           <option value="full">Full round (18 holes)</option>
           <option value="front9">Front 9 only (holes 1&ndash;9)</option>
@@ -2077,7 +2261,7 @@
       </div>
       <div data-round-slot="round2">
         <label for="course-select-round2">Round 2</label>
-        <select id="course-select-round2"></select>
+        <input id="course-select-round2" list="courses-catalog-datalist" class="course-search-input" placeholder="Type or pick a course…" autocomplete="off" autocapitalize="words" spellcheck="false">
         <select id="round-format-round2" class="round-format-select">
           <option value="full">Full round (18 holes)</option>
           <option value="front9">Front 9 only (holes 1&ndash;9)</option>
@@ -2092,7 +2276,7 @@
       </div>
       <div data-round-slot="round3" class="hidden">
         <label for="course-select-round3">Round 3</label>
-        <select id="course-select-round3"></select>
+        <input id="course-select-round3" list="courses-catalog-datalist" class="course-search-input" placeholder="Type or pick a course…" autocomplete="off" autocapitalize="words" spellcheck="false">
         <select id="round-format-round3" class="round-format-select">
           <option value="full">Full round (18 holes)</option>
           <option value="front9">Front 9 only (holes 1&ndash;9)</option>
@@ -2107,7 +2291,7 @@
       </div>
       <div data-round-slot="round4" class="hidden">
         <label for="course-select-round4">Round 4</label>
-        <select id="course-select-round4"></select>
+        <input id="course-select-round4" list="courses-catalog-datalist" class="course-search-input" placeholder="Type or pick a course…" autocomplete="off" autocapitalize="words" spellcheck="false">
         <select id="round-format-round4" class="round-format-select">
           <option value="full">Full round (18 holes)</option>
           <option value="front9">Front 9 only (holes 1&ndash;9)</option>
@@ -2145,22 +2329,22 @@
     <div class="round-chips" id="round-chips-play" role="tablist" aria-label="Select round"></div>
     <div class="help-text">Tap a round above to switch. Handicaps are entered next to each player name.</div>
     <div class="course-section" data-round-slot="round1">
-      <h3 id="scorecard-title-round1">Round 1 &mdash; holes 1&ndash;18</h3>
+      <h3 id="scorecard-title-round1">Round 1</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round1"></table></div>
       <button class="round-complete-btn" data-round-target="round1" onclick="handleRoundCompleteClick('round1')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section" data-round-slot="round2">
-      <h3 id="scorecard-title-round2">Round 2 &mdash; holes 1&ndash;18</h3>
+      <h3 id="scorecard-title-round2">Round 2</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round2"></table></div>
       <button class="round-complete-btn" data-round-target="round2" onclick="handleRoundCompleteClick('round2')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section hidden" data-round-slot="round3">
-      <h3 id="scorecard-title-round3">Round 3 &mdash; holes 1&ndash;18</h3>
+      <h3 id="scorecard-title-round3">Round 3</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round3"></table></div>
       <button class="round-complete-btn" data-round-target="round3" onclick="handleRoundCompleteClick('round3')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section hidden" data-round-slot="round4">
-      <h3 id="scorecard-title-round4">Round 4 &mdash; holes 1&ndash;18</h3>
+      <h3 id="scorecard-title-round4">Round 4</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round4"></table></div>
       <button class="round-complete-btn" data-round-target="round4" onclick="handleRoundCompleteClick('round4')" type="button">&#10003; Complete Round</button>
     </div>
@@ -2253,7 +2437,12 @@ const DEFAULT_PLAYERS = [
 const MIN_PLAYERS = 2;
 const MAX_PLAYERS = 16;
 const TEAMS = ["A", "B", "C", "D", "E", "F"];
-const TEAM_NAMES = { A: "Team A", B: "Team B", C: "Team C", D: "Team D", E: "Team E", F: "Team F" };
+// User-facing team name lookup — falls back to "Team X" if no custom name saved.
+function teamDisplayName(letter) {
+  const custom = state && state.teamNames && state.teamNames[letter];
+  const trimmed = (custom || "").trim();
+  return trimmed || ("Team " + letter);
+}
 // Legacy half-split default (used only to seed initial state / new players).
 function teamHalfPoint() {
   return Math.ceil((state && state.players ? state.players.length : DEFAULT_PLAYERS.length) / 2);
@@ -2570,6 +2759,147 @@ const COURSE_CATALOG = [
   { key: "westlake",              name: "Westlake",
     par: [4,4,3,5,4,3,5,4,4,  4,4,4,5,4,3,5,3,4],
     si:  [5,7,17,1,11,15,3,13,9,  10,4,12,2,14,18,6,16,8] },
+  // --- Additional South African courses (par/SI use plausible par-72
+  // templates; verify or edit per round in Course setup on the day). ---
+  { key: "blair_atholl",          name: "Blair Atholl",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "bloemfontein",          name: "Bloemfontein Golf Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "bryanston",             name: "Bryanston Country Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "champagne_sports",      name: "Champagne Sports Resort",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "ccj_rocklands",         name: "Country Club Johannesburg (Rocklands)",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "ccj_woodmead",          name: "Country Club Johannesburg (Woodmead)",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "durban_cc",             name: "Durban Country Club",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "east_london",           name: "East London Golf Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "gary_player_cc",        name: "Gary Player Country Club (Sun City)",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "glendower",             name: "Glendower",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "houghton",              name: "Houghton",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "humewood",              name: "Humewood",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "killarney",             name: "Killarney Country Club",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "king_david",            name: "King David",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "knysna",                name: "Knysna Golf Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "langebaan",             name: "Langebaan Country Estate",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "leopard_creek",         name: "Leopard Creek",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "mount_edgecombe",       name: "Mount Edgecombe Country Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "oubaai",                name: "Oubaai",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "paarl",                 name: "Paarl Golf Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "pinnacle_point",        name: "Pinnacle Point",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "plettenberg_bay",       name: "Plettenberg Bay Country Club",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "princes_grant",         name: "Prince's Grant",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "randpark_bushwillow",   name: "Randpark Golf Club — Bushwillow",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "randpark_firethorn",    name: "Randpark Golf Club — Firethorn",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "randpark_creek",        name: "Randpark Golf Club — The Creek",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "river_club",            name: "River Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "royal_durban",          name: "Royal Durban",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "royal_johannesburg",    name: "Royal Johannesburg & Kensington",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "san_lameer",            name: "San Lameer",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "selborne",              name: "Selborne Golf Estate",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "serengeti",             name: "Serengeti Golf Estate",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "silver_lakes",          name: "Silver Lakes",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "sishen",                name: "Sishen Golf Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "st_andrews_boksburg",   name: "St Andrews (Boksburg)",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "st_georges_pe",         name: "St George's Park (Port Elizabeth)",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "steyn_city",            name: "Steyn City",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "sun_city_lost",         name: "Sun City — Lost City",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "umhlali",               name: "Umhlali Country Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "wellington",            name: "Wellington Golf Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "wingate_park",          name: "Wingate Park Country Club",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "zebula",                name: "Zebula Golf Estate",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "zimbali",               name: "Zimbali",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+  { key: "zwartkop",              name: "Zwartkop Country Club",
+    par: [4,4,4,3,5,4,3,4,5,  4,3,5,4,4,4,3,4,5],
+    si:  [9,5,3,17,11,1,15,7,13,  6,14,2,10,4,12,16,8,18] },
+  { key: "southbroom",            name: "Southbroom Golf Club",
+    par: [4,5,3,4,4,4,5,3,4,  4,4,5,3,4,4,3,5,4],
+    si:  [7,3,15,1,9,13,17,5,11,  8,6,14,4,10,18,2,12,16] },
+  { key: "wild_coast_sun",        name: "Wild Coast Sun Country Club",
+    par: [5,4,4,3,4,4,4,3,5,  5,3,4,4,4,3,4,5,4],
+    si:  [1,9,13,17,5,11,3,15,7,  2,16,10,4,14,18,8,6,12] },
+
   { key: "custom",                name: "Custom Course",
     par: [4,4,4,4,4,4,4,4,4,  4,4,4,4,4,4,4,4,4],
     si:  [1,2,3,4,5,6,7,8,9,  10,11,12,13,14,15,16,17,18] }
@@ -2608,13 +2938,6 @@ function makeDefaultCourseInfo() {
   });
   return ci;
 }
-function isPlaceholderCourseInfo(info) {
-  if (!info || !Array.isArray(info.par) || !Array.isArray(info.si)) return true;
-  const allParFour = info.par.every(p => Number(p) === 4);
-  const siSequential = info.si.every((s, i) => Number(s) === i + 1);
-  return allParFour && siSequential;
-}
-
 function isGhostName(name) {
   return typeof name === "string" && name.trim().toLowerCase() === "ghost";
 }
@@ -2647,12 +2970,13 @@ function makeDefaultRoundFormat() {
 // "combined"      — total: sum ALL team players' stableford per hole, higher total wins the match
 // "alliance2"     — total: sum TOP 2 of 4 team players' stableford per hole, higher total wins
 // "alliance3"     — total: sum TOP 3 of 4 team players' stableford per hole, higher total wins
-const SCORING_FORMATS = ["betterBall", "combined", "alliance2", "alliance3"];
+const SCORING_FORMATS = ["betterBall", "combined", "alliance2", "alliance3", "skins"];
 const SCORING_FORMAT_LABELS = {
   betterBall: "Better Ball Stableford",
   combined:   "Combined Stableford",
   alliance2:  "Four-Ball Alliance — 2 scores to count",
-  alliance3:  "Four-Ball Alliance — 3 scores to count"
+  alliance3:  "Four-Ball Alliance — 3 scores to count",
+  skins:      "Skins (best net score per hole, ties roll over)"
 };
 // Per-round scoring format. Backward-compatible with the older single-format
 // state (state.scoringFormat) — if the per-round map isn't populated, fall
@@ -2699,6 +3023,9 @@ function freshState() {
     scoringFormat: "betterBall",
     scoringFormats: makeDefaultScoringFormats(),
     playerTeams: defaultTeamAssignments(DEFAULT_PLAYERS.length),
+    tournamentName: "",
+    tournamentDate: new Date().toISOString().slice(0, 10),
+    teamNames: {},   // { A: "Team A", B: "Team B", ... }; blanks fall back to "Team X"
     pairs: null,
     oddsEvens: null,
     revealed: false,
@@ -2730,6 +3057,11 @@ for (let _i = 0; _i < state.players.length; _i++) {
     state.playerTeams[_i] = (_i < Math.ceil(state.players.length / 2)) ? "A" : "B";
   }
 }
+// Tournament metadata (v2)
+if (typeof state.tournamentName !== "string") state.tournamentName = "";
+if (typeof state.tournamentDate !== "string") state.tournamentDate = new Date().toISOString().slice(0, 10);
+if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
+if (typeof state.theme !== "string") state.theme = "dark";
 // Reshape schedule to fit current player+round counts (in case they differ from when saved)
 conformScheduleToCounts();
 // If we're in a team-total format, replace the schedule with a team-grouped
@@ -2767,6 +3099,31 @@ COURSES.forEach(c => {
   if (!info.name) {
     const entry = findCatalogEntry(info.catalogKey);
     info.name = entry ? entry.name : (c.name || c.id);
+  }
+  // Heal legacy stored names: if catalogKey points to a known non-custom
+  // entry but the stored name matches the KEY (e.g. "wild_coast_sun" from
+  // an older selector), replace it with the canonical catalog name.
+  if (info.catalogKey && info.catalogKey !== "custom") {
+    const entry = findCatalogEntry(info.catalogKey);
+    if (entry && (info.name === info.catalogKey || info.name === entry.key)) {
+      info.name = entry.name;
+    }
+  }
+  // Extra heal pass: if info.name looks unusual (all-lowercase, underscores,
+  // just a stub) — regardless of what catalogKey says — try to resolve it
+  // against the catalog by KEY and by case-insensitive NAME, and repair.
+  if (info.name) {
+    const trimmed = String(info.name).trim();
+    let entry = null;
+    if (/^[a-z0-9_\-]+$/.test(trimmed)) entry = findCatalogEntry(trimmed);
+    if (!entry) {
+      const low = trimmed.toLowerCase();
+      entry = COURSE_CATALOG.find(x => x.name.toLowerCase() === low && x.key !== "custom");
+    }
+    if (entry && entry.name !== info.name) {
+      info.catalogKey = entry.key;
+      info.name = entry.name;
+    }
   }
   // Repair pass: if the stored round format is Full but the saved info has
   // blank par/SI in either 9 (leftover from a prior Front 9 / Back 9 session),
@@ -3117,7 +3474,7 @@ function renderPlayers() {
     const nameInp = document.createElement("input");
     nameInp.className = "player-input";
     nameInp.value = name;
-    nameInp.placeholder = "(blank)";
+    nameInp.placeholder = "Player " + (i + 1);
     nameInp.addEventListener("input", () => {
       state.players[i] = nameInp.value;
       saveState();
@@ -3145,6 +3502,8 @@ function renderPlayers() {
     wrap.appendChild(teamSel);
     c.appendChild(wrap);
   });
+  // Keep the "rename team" editor in sync with the teams currently in play.
+  if (typeof renderTeamNamesEditor === "function") renderTeamNamesEditor();
 }
 
 function setPlayerTeam(pi, team) {
@@ -3191,7 +3550,11 @@ function setPlayerCount(newCount) {
     if (!Array.isArray(state.playerTeams)) state.playerTeams = defaultTeamAssignments(oldCount);
     for (let i = oldCount; i < newCount; i++) {
       state.players.push("");
-      state.playerTeams.push(i < Math.ceil(newCount / 2) ? "A" : "B");
+      // Balance-aware default: put each new player on whichever existing team
+      // currently has fewer members, so growing a roster keeps teams even.
+      const counts = { A: 0, B: 0 };
+      state.playerTeams.forEach(t => { counts[t] = (counts[t] || 0) + 1; });
+      state.playerTeams.push((counts.A || 0) <= (counts.B || 0) ? "A" : "B");
       COURSES.forEach(c => {
         state.scores[c.id].push(Array(HOLES).fill(""));
         state.handicapsByCourse[c.id].push(0);
@@ -3297,21 +3660,94 @@ function refreshCourseTitles() {
   });
 }
 function renderCourseSelectors() {
+  // Populate the shared course-search datalist once, sorted alphabetically so
+  // the browser's typing filter shows sensible matches from any first letter.
+  const dl = document.getElementById("courses-catalog-datalist");
+  if (dl && !dl._populated) {
+    const sorted = COURSE_CATALOG.slice().sort((a, b) => a.name.localeCompare(b.name));
+    sorted.forEach(entry => {
+      const opt = document.createElement("option");
+      opt.value = entry.name;
+      dl.appendChild(opt);
+    });
+    dl._populated = true;
+  }
   COURSES.forEach(c => {
     const sel = document.getElementById("course-select-" + c.id);
     if (!sel) return;
     if (!sel._populated) {
-      COURSE_CATALOG.forEach(entry => {
-        const opt = document.createElement("option");
-        opt.value = entry.key;
-        opt.textContent = entry.name;
-        sel.appendChild(opt);
+      // Track the "committed" value so blur-without-selection can restore it,
+      // and so we don't overwrite a good name with a partial-typed string
+      // when the browser fires a stray change event.
+      const commit = (typed) => {
+        const t = (typed || "").trim();
+        const match = COURSE_CATALOG.find(x => x.name.toLowerCase() === t.toLowerCase());
+        if (match) {
+          applyCatalogCourse(c.id, match.key);
+          sel.value = match.name;   // canonicalise capitalisation & spaces
+          sel._lastGood = match.name;
+        } else if (t) {
+          // Reject anything that still looks like a raw catalog key
+          // (all-lowercase with underscores or hyphens) — it's almost
+          // certainly a stale value, not a real course name.
+          if (/^[a-z0-9_\-]+$/.test(t)) {
+            sel.value = sel._lastGood || (state.courseInfo[c.id] && state.courseInfo[c.id].name) || "";
+            return;
+          }
+          // Free-text: keep the typed name but reset par/SI to a par-72 template.
+          const custom = findCatalogEntry("custom") || {
+            par: [4,4,4,4,4,4,4,4,4, 4,4,4,4,4,4,4,4,4],
+            si:  [1,2,3,4,5,6,7,8,9, 10,11,12,13,14,15,16,17,18]
+          };
+          state.courseInfo[c.id] = {
+            catalogKey: "custom",
+            name: t,
+            par: custom.par.slice(),
+            si: custom.si.slice()
+          };
+          saveState();
+          if (typeof refreshCourseTitles === "function") refreshCourseTitles();
+          if (typeof renderCourseSetup === "function") renderCourseSetup();
+          if (typeof renderScorecards === "function") renderScorecards();
+          sel._lastGood = t;
+        }
+      };
+      // Focus/click: select all so the user can immediately type over the
+      // current value (and iOS shows the datalist picker). Clearing was
+      // considered, but selection preserves the previous value if they blur.
+      const selectAll = () => {
+        try { sel.setSelectionRange(0, (sel.value || "").length); } catch (e) {}
+      };
+      sel.addEventListener("focus", () => { sel._lastGood = sel.value; setTimeout(selectAll, 0); });
+      sel.addEventListener("click", () => { setTimeout(selectAll, 0); });
+      // `change` fires on blur after typing, or immediately when picking from
+      // the datalist. `input` fires on every keystroke — used only to commit
+      // instantly when the typed value exactly matches a catalog entry.
+      sel.addEventListener("change", () => commit(sel.value));
+      sel.addEventListener("input", () => {
+        const t = (sel.value || "").trim();
+        const match = COURSE_CATALOG.find(x => x.name.toLowerCase() === t.toLowerCase());
+        if (match) commit(sel.value);
       });
-      sel.addEventListener("change", () => applyCatalogCourse(c.id, sel.value));
+      sel.addEventListener("blur", () => {
+        const t = (sel.value || "").trim();
+        if (!t) sel.value = sel._lastGood || "";
+      });
       sel._populated = true;
     }
     const info = state.courseInfo[c.id];
-    if (info && info.catalogKey) sel.value = info.catalogKey;
+    if (info) {
+      // Show the catalog's canonical name whenever the round is bound to a
+      // known non-custom catalog entry. Custom rounds keep whatever free-text
+      // name the user typed.
+      const catalog = info.catalogKey ? findCatalogEntry(info.catalogKey) : null;
+      if (catalog && info.catalogKey !== "custom") {
+        sel.value = catalog.name;
+        if (info.name !== catalog.name) info.name = catalog.name;
+      } else {
+        sel.value = info.name || "";
+      }
+    }
 
     // Round-format selector (Full / Front 9 / Back 9)
     const fmtSel = document.getElementById("round-format-" + c.id);
@@ -3346,7 +3782,7 @@ function renderCourseSelectors() {
 // two selected pairs; only the per-hole aggregation differs (sum vs. max).
 function isTeamTotalFormat(fmt) {
   if (!fmt) fmt = currentScoringFormat();
-  return fmt === "alliance2" || fmt === "alliance3";
+  return fmt === "alliance2" || fmt === "alliance3" || fmt === "skins";
 }
 // No-op stub — the per-round format is now bound inside renderCourseSelectors
 // (see the scoring-format-<id> select there). Kept so any older callsites
@@ -3687,7 +4123,7 @@ function updateMatchResultRows() {
         // there's no A-vs-B opponent (all match players on the same team).
         const labelCell = row.querySelector(".match-result-label");
         if (labelCell) {
-          const labelText = singleTeam ? (" Team " + singleTeam + " ") : " Result ";
+          const labelText = singleTeam ? (" " + teamDisplayName(singleTeam) + " ") : " Result ";
           labelCell.innerHTML = '<span class="mr-tag">M' + (mi + 1) + '</span>' + labelText + '<span class="mrr-chevron" aria-hidden="true">&#9662;</span>';
         }
       });
@@ -4030,7 +4466,14 @@ function renderScorecards() {
         saveState();
         refreshAllStablefordDisplays();
         if (state.revealed) revealWinners();
+        // v2: flag suspiciously large/negative handicaps as a visual warning.
+        if (typeof isHcpSuspect === "function") {
+          hcpInp.classList.toggle("hcp-suspect", isHcpSuspect(hcpInp.value));
+        }
       });
+      if (typeof isHcpSuspect === "function") {
+        hcpInp.classList.toggle("hcp-suspect", isHcpSuspect(hcpInp.value));
+      }
       hcpDiv.appendChild(hcpLab);
       hcpDiv.appendChild(hcpInp);
       nameTd.appendChild(hcpDiv);
@@ -4135,33 +4578,48 @@ function renderScorecards() {
           }
           if (inp.value === "__other__") {
             const previous = state.scores[course.id][pi][h] || "";
-            const answer = prompt("Enter score (1–99):", previous || "");
-            if (answer === null) { inp.value = previous; return; }  // cancelled
-            const n = parseInt(answer);
-            if (isNaN(n) || n < 1 || n > 99) {
-              alert("Please enter a whole number between 1 and 99.");
-              inp.value = previous;
-              return;
-            }
-            // Ensure the select has an <option> for this value so it can be displayed
-            let existingOpt = null;
-            for (let i = 0; i < inp.options.length; i++) {
-              if (inp.options[i].value === String(n)) { existingOpt = inp.options[i]; break; }
-            }
-            if (!existingOpt) {
-              const newOpt = document.createElement("option");
-              newOpt.value = String(n); newOpt.textContent = String(n);
-              inp.insertBefore(newOpt, otherOpt);
-            }
-            inp.value = String(n);
-            state.scores[course.id][pi][h] = String(n);
-          } else {
-            state.scores[course.id][pi][h] = inp.value;
+            // v2: use numeric-keypad-friendly custom prompt (async).
+            promptNumber("Enter score (1–99):", previous || "").then(answer => {
+              if (answer === null) { inp.value = previous; return; }
+              const n = parseInt(answer);
+              if (isNaN(n) || n < 1 || n > 99) {
+                showToast("Please enter a whole number between 1 and 99.", { type: "info" });
+                inp.value = previous;
+                return;
+              }
+              let existingOpt = null;
+              for (let i = 0; i < inp.options.length; i++) {
+                if (inp.options[i].value === String(n)) { existingOpt = inp.options[i]; break; }
+              }
+              if (!existingOpt) {
+                const newOpt = document.createElement("option");
+                newOpt.value = String(n); newOpt.textContent = String(n);
+                inp.insertBefore(newOpt, otherOpt);
+              }
+              inp.value = String(n);
+              state.scores[course.id][pi][h] = String(n);
+              saveState();
+              refreshAllStablefordDisplays();
+              if (state.revealed) revealWinners();
+              _stripLabels();
+              if (typeof flashScoreCell === "function") flashScoreCell(course.id, pi, h);
+              if (typeof checkAchievement === "function") checkAchievement(pi, course.id, h, n);
+              if (typeof autoAdvanceFrom === "function") autoAdvanceFrom(course.id, pi, h);
+              if (typeof animateHeaderMetricChanges === "function") setTimeout(animateHeaderMetricChanges, 30);
+            });
+            return;   // early exit — async continuation handled above
           }
+          state.scores[course.id][pi][h] = inp.value;
           saveState();
           refreshAllStablefordDisplays();
           if (state.revealed) revealWinners();
           _stripLabels();
+          // v2 hooks: flash the cell, check for an achievement, auto-advance.
+          const savedNum = parseInt(state.scores[course.id][pi][h]);
+          if (typeof flashScoreCell === "function") flashScoreCell(course.id, pi, h);
+          if (savedNum > 0 && typeof checkAchievement === "function") checkAchievement(pi, course.id, h, savedNum);
+          if (savedNum > 0 && typeof autoAdvanceFrom === "function") autoAdvanceFrom(course.id, pi, h);
+          if (typeof animateHeaderMetricChanges === "function") setTimeout(animateHeaderMetricChanges, 30);
         });
         td.appendChild(inp);
         const pts = document.createElement("div");
@@ -4355,7 +4813,7 @@ function shuffle(arr) {
   return a;
 }
 
-function randomisePairs() { /* n/a for Fancourt Trophy */ }
+function randomisePairs() { /* n/a for Tour Score */ }
 
 function setStatus(id, text, done) {
   const el = document.getElementById(id);
@@ -4772,6 +5230,11 @@ function applyRemoteState(remote) {
   for (let i = 0; i < state.players.length; i++) {
     if (TEAMS.indexOf(state.playerTeams[i]) < 0) state.playerTeams[i] = (i < Math.ceil(state.players.length / 2)) ? "A" : "B";
   }
+  // v2 tournament metadata
+  if (typeof state.tournamentName !== "string") state.tournamentName = "";
+  if (typeof state.tournamentDate !== "string") state.tournamentDate = new Date().toISOString().slice(0, 10);
+  if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
+  if (typeof state.theme !== "string") state.theme = "dark";
   conformScheduleToCounts();
   if (anyTeamTotalFormat()) {
     state.matchSchedule = generateAllianceSchedule();
@@ -5072,7 +5535,7 @@ function makeMatchSelect(dayIdx, matchIdx, team, slot, currentPi) {
   // any other team on the Matches tab.
   teamsInPlay().forEach(t => {
     const group = document.createElement("optgroup");
-    group.label = "Team " + t;
+    group.label = teamDisplayName(t);
     indicesOfTeam(t).forEach(pi => {
       const opt = document.createElement("option");
       opt.value = String(pi);
@@ -5177,7 +5640,15 @@ function renderMatchSchedule() {
   getActiveCourses().forEach(course => {
     const fmtR = currentScoringFormat(course.id);
     ptsByRound[course.id] = {};
-    if (isTeamTotalFormat(fmtR)) {
+    if (fmtR === "skins") {
+      // Skins: count skins per team on this round.
+      const skinsRes = computeSkinsForRound(course.id);
+      teams.forEach(t => {
+        const n = skinsRes.perTeam[t] || 0;
+        ptsByRound[course.id][t] = n;
+        overall[t] += n;
+      });
+    } else if (isTeamTotalFormat(fmtR)) {
       teams.forEach(t => {
         const pis = indicesOfTeam(t);
         let total = 0;
@@ -5311,7 +5782,9 @@ function renderTeamTotalsDay(container, day, course, fmt, teams, ptsByRound, ove
   dayWrap.appendChild(dayBody);
   const tbl = document.createElement("table");
   tbl.className = "team-totals-table";
-  tbl.innerHTML = "<thead><tr><th>Team</th><th>Players</th><th class=\"tt-round\">This round</th><th class=\"tt-total\">Overall</th></tr></thead>";
+  const roundColLabel = (fmt === "skins") ? "Skins won" : "This round";
+  const totalColLabel = (fmt === "skins") ? "Total skins" : "Overall";
+  tbl.innerHTML = "<thead><tr><th>Team</th><th>Players</th><th class=\"tt-round\">" + roundColLabel + "</th><th class=\"tt-total\">" + totalColLabel + "</th></tr></thead>";
   const tbody = document.createElement("tbody");
   let roundLeader = null;
   teams.forEach(t => {
@@ -5337,88 +5810,6 @@ function renderTeamTotalsDay(container, day, course, fmt, teams, ptsByRound, ove
   tbl.appendChild(tbody);
   dayBody.appendChild(tbl);
   container.appendChild(dayWrap);
-}
-
-// Legacy full-schedule alliance view — kept for callers that don't dispatch
-// per-day. Currently unused since renderMatchSchedule dispatches per round.
-function renderTeamTotalsSchedule(container) {
-  const teams = teamsInPlay();
-  const rounds = getActiveCourses();
-  const round1 = n => (Math.round(n * 10) / 10);
-
-  // Precompute per-round team totals — each round uses its OWN scoring format.
-  const ptsByRound = {};
-  rounds.forEach(course => {
-    const fmtR = currentScoringFormat(course.id);
-    ptsByRound[course.id] = {};
-    teams.forEach(t => {
-      const pis = indicesOfTeam(t);
-      let total = 0;
-      for (let h = 0; h < HOLES; h++) {
-        if (!isHoleActive(course.id, h)) continue;
-        total += teamHolePoints(pis, course.id, h, fmtR);
-      }
-      ptsByRound[course.id][t] = total;
-    });
-  });
-  const overall = {};
-  teams.forEach(t => {
-    overall[t] = 0;
-    rounds.forEach(course => { overall[t] += ptsByRound[course.id][t]; });
-  });
-  const leaderOverall = teams.reduce((best, t) => (best == null || overall[t] > overall[best] ? t : best), null);
-
-  // Banner: show the single format if all rounds match, otherwise "Mixed".
-  const uniformFmt = allSameScoringFormat();
-  const fmtLabel = uniformFmt ? (SCORING_FORMAT_LABELS[uniformFmt] || uniformFmt) : "Mixed (see rounds)";
-  const header = document.createElement("div");
-  header.className = "alliance-format-banner";
-  header.innerHTML = "Scoring format: <strong>" + fmtLabel + "</strong>" +
-    ' <span class="alliance-format-teams">' + teams.length + " team" + (teams.length === 1 ? "" : "s") + " in play</span>";
-  container.appendChild(header);
-
-  // One card per round
-  rounds.forEach((course, rIdx) => {
-    const courseName = (state.courseInfo[course.id] && state.courseInfo[course.id].name) || course.name;
-    const day = document.createElement("div");
-    day.className = "day-block";
-    day.innerHTML = '<div class="day-header">Round ' + (rIdx + 1) + " &middot; " + courseName +
-      ' <span class="alliance-format-teams">' + (SCORING_FORMAT_LABELS[currentScoringFormat(course.id)] || "") + '</span></div>';
-    const tbl = document.createElement("table");
-    tbl.className = "team-totals-table";
-    tbl.innerHTML = "<thead><tr><th>Team</th><th>Players</th><th class=\"tt-round\">This round</th><th class=\"tt-total\">Overall</th></tr></thead>";
-    const tbody = document.createElement("tbody");
-    // Leader on THIS round
-    let roundLeader = null;
-    teams.forEach(t => { if (roundLeader == null || ptsByRound[course.id][t] > ptsByRound[course.id][roundLeader]) roundLeader = t; });
-    teams.forEach(t => {
-      const pis = indicesOfTeam(t);
-      const names = pis.map(pi => (state.players[pi] || "Player " + (pi + 1))).join(", ") || "—";
-      const roundPts = ptsByRound[course.id][t] || 0;
-      const overallPts = overall[t] || 0;
-      const tr = document.createElement("tr");
-      tr.className = "tt-row tt-team-" + t.toLowerCase() +
-        (roundLeader === t && roundPts > 0 ? " tt-round-leader" : "") +
-        (leaderOverall === t && overallPts > 0 ? " tt-overall-leader" : "");
-      tr.innerHTML =
-        '<td class="tt-team-cell"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span></td>' +
-        '<td class="tt-players">' + names + "</td>" +
-        '<td class="tt-round">' + round1(roundPts) + "</td>" +
-        '<td class="tt-total">' + round1(overallPts) + "</td>";
-      tbody.appendChild(tr);
-    });
-    tbl.appendChild(tbody);
-    day.appendChild(tbl);
-    container.appendChild(day);
-  });
-
-  // If no rounds / no teams, show a placeholder
-  if (!rounds.length || !teams.length) {
-    const empty = document.createElement("div");
-    empty.className = "alliance-empty";
-    empty.textContent = "Set up rounds and team assignments in the Setup tab.";
-    container.appendChild(empty);
-  }
 }
 
 function computeIndividualStandings() {
@@ -5518,7 +5909,7 @@ function renderTeamLeaderboard() {
     const mpLead = maxMp > 0 && mp === maxMp;
     html +=
       '<tr class="team-' + t.toLowerCase() + '-row">' +
-        '<td class="tl-team"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span> Team ' + t + '</td>' +
+        '<td class="tl-team"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span> ' + teamDisplayName(t) + '</td>' +
         '<td class="tl-num' + (sbLead ? ' tl-lead' : '') + '">' + round1(sb) + '</td>' +
         '<td class="tl-num' + (mpLead ? ' tl-lead' : '') + '">' + round1(mp) + '</td>' +
       '</tr>';
@@ -5795,9 +6186,21 @@ function computeAllTeamStandings() {
   // Team-total (alliance only): sum each team's own team-hole points across
   // the round. Combined and Better Ball do NOT accumulate here — they run as
   // matches and their outcomes are captured as match points above.
+  // Track skins won so we can surface them separately in the header/standings.
+  const skinsTotals = {};
+  teams.forEach(t => { skinsTotals[t] = 0; });
   getActiveCourses().forEach(course => {
     const fmtR = currentScoringFormat(course.id);
     if (!isTeamTotalFormat(fmtR)) return;
+    if (fmtR === "skins") {
+      const res = computeSkinsForRound(course.id);
+      teams.forEach(t => {
+        const n = res.perTeam[t] || 0;
+        totals[t] += n;
+        skinsTotals[t] += n;
+      });
+      return;
+    }
     teams.forEach(t => {
       const pis = indicesOfTeam(t);
       if (!pis.length) return;
@@ -5815,7 +6218,7 @@ function computeAllTeamStandings() {
   let max = -Infinity;
   teams.forEach(t => { if (totals[t] > max) max = totals[t]; });
   const leaders = teams.filter(t => totals[t] === max && max > 0);
-  return { teams, totals, matchTotals, stablefordTotals, leaders };
+  return { teams, totals, matchTotals, stablefordTotals, skinsTotals, leaders };
 }
 
 // ---------- Header scoreboard collapse ----------
@@ -5848,18 +6251,21 @@ function renderHeaderScoreboard() {
   // Detect which metrics have any activity — only surface columns that matter.
   const anySb = s.teams.some(t => (s.stablefordTotals[t] || 0) > 0);
   const anyMp = s.teams.some(t => (s.matchTotals[t] || 0) > 0);
+  const anySk = s.teams.some(t => (s.skinsTotals && s.skinsTotals[t] || 0) > 0);
   // If nothing's been played yet, fall back to showing whichever formats exist
   // so the layout doesn't collapse to a single blank number.
   const hasBetterBall = COURSES.some(c => currentScoringFormat(c.id) === "betterBall");
-  const hasTeamTotal  = COURSES.some(c => isTeamTotalFormat(currentScoringFormat(c.id)));
-  const showSb = anySb || hasTeamTotal;
+  const hasStableford = COURSES.some(c => { const f = currentScoringFormat(c.id); return f === "combined" || f === "alliance2" || f === "alliance3"; });
+  const hasSkins      = COURSES.some(c => currentScoringFormat(c.id) === "skins");
+  const showSb = anySb || hasStableford;
   const showMp = anyMp || hasBetterBall;
+  const showSk = anySk || hasSkins;
   const maxSb = Math.max(...s.teams.map(t => s.stablefordTotals[t] || 0), 0);
   const maxMp = Math.max(...s.teams.map(t => s.matchTotals[t] || 0), 0);
+  const maxSk = Math.max(...s.teams.map(t => (s.skinsTotals && s.skinsTotals[t]) || 0), 0);
 
   wrap.innerHTML = "";
   const n = s.teams.length;
-  wrap.classList.toggle("multi", n > 2);
   // Add a ts-cols-N class so mobile CSS can render a symmetric grid
   // (2 teams = 1×2, 3 = 1×3, 4 = 2×2, 5 = 2×3-ish, 6 = 2×3, etc.)
   ["ts-cols-1","ts-cols-2","ts-cols-3","ts-cols-4","ts-cols-5","ts-cols-6"].forEach(c => wrap.classList.remove(c));
@@ -5870,7 +6276,7 @@ function renderHeaderScoreboard() {
     side.id = "ts-side-" + t.toLowerCase();
     const lbl = document.createElement("span");
     lbl.className = "ts-label";
-    lbl.textContent = "Team " + t;
+    lbl.textContent = teamDisplayName(t);
     // Stack the two metrics on the right — labelled so it's clear what each is.
     const metrics = document.createElement("span");
     metrics.className = "ts-metrics";
@@ -5890,6 +6296,15 @@ function renderHeaderScoreboard() {
         '<span class="ts-metric' + (isLead ? " ts-metric-lead" : "") + '">' +
           '<span class="ts-metric-val">' + round1(mp) + '</span>' +
           '<span class="ts-metric-unit">MATCH PTS</span>' +
+        '</span>';
+    }
+    if (showSk) {
+      const sk = (s.skinsTotals && s.skinsTotals[t]) || 0;
+      const isLead = maxSk > 0 && sk === maxSk;
+      metrics.innerHTML +=
+        '<span class="ts-metric' + (isLead ? " ts-metric-lead" : "") + '">' +
+          '<span class="ts-metric-val">' + sk + '</span>' +
+          '<span class="ts-metric-unit">SKINS</span>' +
         '</span>';
     }
     side.appendChild(lbl);
@@ -6068,7 +6483,465 @@ function init() {
   switchRound(uiState.activeRound || "round1");
   bootSync();
 }
+// ================= NEW FEATURES (v2) =================
+
+// ---------- Numeric prompt (iOS shows number pad instead of text) ----------
+function promptNumber(message, defaultVal) {
+  return new Promise(resolve => {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+    overlay.style.zIndex = 2000;
+    const panel = document.createElement("div");
+    panel.className = "modal-panel";
+    panel.style.width = "260px";
+    panel.innerHTML =
+      '<h3 style="margin-bottom:8px">' + message + '</h3>' +
+      '<input type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="99" step="1" ' +
+      'id="__prompt_num" style="width:100%; padding:12px; font-size:22px; text-align:center; border:1px solid #ccc; border-radius:6px;" value="' + (defaultVal||"") + '">' +
+      '<div style="display:flex; gap:8px; margin-top:12px;">' +
+        '<button id="__prompt_cancel" style="flex:1; padding:10px;">Cancel</button>' +
+        '<button id="__prompt_ok" style="flex:1; padding:10px; background:var(--navy); color:white; border:none; border-radius:4px;">OK</button>' +
+      '</div>';
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    const inp = panel.querySelector("#__prompt_num");
+    const cleanup = (val) => { overlay.remove(); resolve(val); };
+    panel.querySelector("#__prompt_ok").onclick = () => cleanup(inp.value);
+    panel.querySelector("#__prompt_cancel").onclick = () => cleanup(null);
+    overlay.onclick = (e) => { if (e.target === overlay) cleanup(null); };
+    inp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); cleanup(inp.value); } });
+    setTimeout(() => { inp.focus(); inp.select(); }, 30);
+  });
+}
+
+// ---------- Toast notifications ----------
+function showToast(message, opts) {
+  opts = opts || {};
+  const host = document.getElementById("toast-host");
+  if (!host) { console.log("[toast]", message); return; }
+  const el = document.createElement("div");
+  el.className = "toast toast-" + (opts.type || "info");
+  el.textContent = message;
+  host.appendChild(el);
+  setTimeout(() => {
+    el.style.transition = "opacity 0.4s";
+    el.style.opacity = "0";
+    setTimeout(() => el.remove(), 400);
+  }, opts.duration || 3200);
+}
+
+// ---------- Tournament name / date ----------
+function renderTournamentDetails() {
+  const nameInp = document.getElementById("tournament-name-input");
+  const dateInp = document.getElementById("tournament-date-input");
+  const themeSel = document.getElementById("theme-select");
+  const headerNm = document.getElementById("app-tournament-name");
+  if (nameInp) {
+    if (!nameInp._bound) {
+      nameInp.addEventListener("input", () => {
+        state.tournamentName = nameInp.value;
+        saveState();
+        updateTournamentHeader();
+      });
+      nameInp._bound = true;
+    }
+    nameInp.value = state.tournamentName || "";
+  }
+  if (dateInp) {
+    if (!dateInp._bound) {
+      dateInp.addEventListener("change", () => {
+        state.tournamentDate = dateInp.value;
+        saveState();
+      });
+      dateInp._bound = true;
+    }
+    dateInp.value = state.tournamentDate || "";
+  }
+  if (themeSel) {
+    if (!themeSel._bound) {
+      themeSel.addEventListener("change", () => {
+        state.theme = themeSel.value;
+        saveState();
+        applyTheme();
+      });
+      themeSel._bound = true;
+    }
+    themeSel.value = state.theme || "dark";
+  }
+  updateTournamentHeader();
+}
+function updateTournamentHeader() {
+  const el = document.getElementById("app-tournament-name");
+  if (el) el.textContent = state.tournamentName || "";
+  // Also reflect in the browser tab title.
+  document.title = state.tournamentName ? (state.tournamentName + " — Tour Score") : "Tour Score";
+}
+function applyTheme() {
+  document.body.setAttribute("data-theme", state.theme === "light" ? "light" : "dark");
+}
+
+// ---------- Team names editor ----------
+const TEAM_HEX = { A:"#1d4ed8", B:"#b91c1c", C:"#047857", D:"#b45309", E:"#6d28d9", F:"#be185d" };
+function renderTeamNamesEditor() {
+  const host = document.getElementById("team-names-editor");
+  if (!host) return;
+  const teams = teamsInPlay();
+  host.innerHTML = "";
+  if (!teams.length) return;
+  teams.forEach(letter => {
+    const label = document.createElement("label");
+    const legend = document.createElement("span");
+    legend.innerHTML = '<span class="tne-badge" style="background:' + (TEAM_HEX[letter]||"#333") + '">' + letter + '</span>' + 'Team ' + letter + ' name';
+    const inp = document.createElement("input");
+    inp.type = "text";
+    inp.placeholder = "Team " + letter;
+    inp.value = (state.teamNames && state.teamNames[letter]) || "";
+    inp.setAttribute("autocapitalize", "words");
+    inp.addEventListener("input", () => {
+      if (!state.teamNames) state.teamNames = {};
+      state.teamNames[letter] = inp.value;
+      saveState();
+      refreshAllStablefordDisplays();
+      if (typeof renderMatchSchedule === "function") renderMatchSchedule();
+    });
+    label.appendChild(legend);
+    label.appendChild(inp);
+    host.appendChild(label);
+  });
+}
+
+// ---------- Handicap sanity ----------
+function isHcpSuspect(v) {
+  const n = Number(v);
+  if (isNaN(n)) return false;
+  return n > 36 || n < -5;
+}
+
+// ---------- Share standings ----------
+function buildStandingsText() {
+  const s = computeAllTeamStandings();
+  const round1 = n => (Math.round(n * 10) / 10);
+  const lines = [];
+  const name = state.tournamentName || "Tour Score";
+  lines.push("*" + name + "*" + (state.tournamentDate ? " — " + state.tournamentDate : ""));
+  lines.push("");
+  s.teams.forEach(t => {
+    const disp = teamDisplayName(t);
+    const parts = [];
+    if ((s.stablefordTotals[t]||0) > 0) parts.push(round1(s.stablefordTotals[t]) + " stableford");
+    if ((s.matchTotals[t]||0) > 0)     parts.push(round1(s.matchTotals[t]) + " match pts");
+    lines.push(disp + ": " + (parts.length ? parts.join(" · ") : "no scores yet"));
+  });
+  lines.push("");
+  // Rounds summary
+  getActiveCourses().forEach((c, i) => {
+    const cname = (state.courseInfo[c.id] && state.courseInfo[c.id].name) || c.name;
+    const fmt = SCORING_FORMAT_LABELS[currentScoringFormat(c.id)] || "";
+    lines.push("R" + (i+1) + " " + cname + " — " + fmt);
+  });
+  return lines.join("\n");
+}
+function shareStandings() {
+  const text = buildStandingsText();
+  if (navigator.share) {
+    navigator.share({ text: text, title: state.tournamentName || "Tour Score" })
+      .catch(() => { copyStandingsToClipboard(text); });
+  } else {
+    copyStandingsToClipboard(text);
+  }
+}
+function copyStandingsToClipboard(text) {
+  const done = () => showToast("Standings copied — paste into WhatsApp!", { type: "success" });
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done, () => showToast("Copy failed", { type: "info" }));
+  } else {
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { showToast("Copy failed", { type: "info" }); }
+    ta.remove();
+  }
+}
+
+// ---------- Achievement toasts ----------
+const _achievementsSeen = new Set();
+function _achievementKey(pi, courseId, hole, kind) { return pi + "|" + courseId + "|" + hole + "|" + kind; }
+function checkAchievement(pi, courseId, hole, strokes) {
+  const info = state.courseInfo[courseId];
+  if (!info) return;
+  const par = parseInt(info.par[hole]);
+  if (!(par > 0)) return;
+  const label = scoreLabel(strokes, par);
+  if (!label) return;
+  // Only toast for special outcomes
+  if (["Hole-in-One", "Condor", "Albatross", "Eagle"].indexOf(label) < 0) return;
+  const key = _achievementKey(pi, courseId, hole, label);
+  if (_achievementsSeen.has(key)) return;
+  _achievementsSeen.add(key);
+  const name = state.players[pi] || ("Player " + (pi+1));
+  const courseName = (info.name || COURSES.find(c => c.id === courseId).name);
+  showToast("🏆 " + name + " — " + label + "! (" + courseName + " · hole " + (hole+1) + ")", { type: "achievement", duration: 4500 });
+}
+
+// ---------- Score cell flash ----------
+function flashScoreCell(courseId, pi, hole) {
+  document.querySelectorAll('[id="stroke-' + courseId + '-' + pi + '-' + hole + '"]').forEach(inp => {
+    const td = inp.closest("td");
+    if (!td) return;
+    td.classList.remove("flash-recent");
+    void td.offsetWidth;   // restart animation
+    td.classList.add("flash-recent");
+  });
+}
+
+// ---------- Auto-advance to next player on same hole ----------
+function autoAdvanceFrom(courseId, pi, hole) {
+  const roster = _visibleMatchRoster(courseId);
+  if (!roster.length) return;
+  const idx = roster.indexOf(pi);
+  if (idx < 0 || idx === roster.length - 1) return;
+  const nextPi = roster[idx + 1];
+  const nextInp = document.getElementById("stroke-" + courseId + "-" + nextPi + "-" + hole);
+  if (nextInp && !nextInp.disabled) {
+    setTimeout(() => { try { nextInp.focus(); } catch (e) {} }, 30);
+  }
+}
+function _visibleMatchRoster(courseId) {
+  const rc = COURSES.findIndex(c => c.id === courseId);
+  const day = (state.matchSchedule || []).find(d => d.roundIdx === rc);
+  if (!day) return state.players.map((_, i) => i);
+  const pis = [];
+  day.matches.forEach(m => { (m.teamA||[]).concat(m.teamB||[]).forEach(pi => pis.push(pi)); });
+  return pis;
+}
+
+// ---------- Team totals count-up bump ----------
+const _lastMetricValues = {};
+function animateHeaderMetricChanges() {
+  document.querySelectorAll(".ts-metric-val").forEach(el => {
+    const key = el.textContent + "@" + (el.parentElement && el.parentElement.previousSibling ? el.parentElement.previousSibling.textContent : "");
+    // We can't reliably track by element ID, so track by parent .ts-side id.
+    const side = el.closest(".ts-side");
+    if (!side) return;
+    const val = parseFloat(el.textContent);
+    const metricLabel = el.parentElement.querySelector(".ts-metric-unit");
+    const trackKey = side.id + "|" + (metricLabel ? metricLabel.textContent : "");
+    const prev = _lastMetricValues[trackKey];
+    if (prev != null && val > prev) {
+      el.classList.remove("bump");
+      void el.offsetWidth;
+      el.classList.add("bump");
+      setTimeout(() => el.classList.remove("bump"), 400);
+    }
+    _lastMetricValues[trackKey] = val;
+  });
+}
+
+// ---------- Multiple tournaments ----------
+const TOURNAMENTS_KEY = "tour_score_tournaments_v1";
+function loadSavedTournaments() {
+  try { return JSON.parse(localStorage.getItem(TOURNAMENTS_KEY) || "[]"); } catch (e) { return []; }
+}
+function persistSavedTournaments(list) { try { localStorage.setItem(TOURNAMENTS_KEY, JSON.stringify(list)); } catch (e) {} }
+function saveCurrentTournament() {
+  const list = loadSavedTournaments();
+  const now = Date.now();
+  const label = (state.tournamentName || "Untitled tournament");
+  const snapshot = JSON.parse(JSON.stringify(state));
+  // Replace any existing snapshot with same name, else add
+  const existingIdx = list.findIndex(t => t.label === label);
+  const entry = { id: (existingIdx >= 0 ? list[existingIdx].id : "t_" + now), label, savedAt: now, state: snapshot };
+  if (existingIdx >= 0) list[existingIdx] = entry; else list.push(entry);
+  persistSavedTournaments(list);
+  showToast("Saved: " + label, { type: "success" });
+}
+function startNewTournament() {
+  if (!confirm("Start a NEW tournament? Your current setup can be reloaded later from the picker if you've saved it first.")) return;
+  state = freshState();
+  try { localStorage.setItem("tour_score_show_wizard_next", "1"); } catch (e) {}
+  saveState();
+  location.reload();
+}
+// Post-load onboarding: on first run OR after "New tournament", nudge the user
+// to the Setup tab and toast a short getting-started tip.
+function maybeShowFirstRunWizard() {
+  let show = false;
+  try {
+    if (localStorage.getItem("tour_score_show_wizard_next") === "1") {
+      show = true;
+      localStorage.removeItem("tour_score_show_wizard_next");
+    } else if (!localStorage.getItem("tour_score_wizard_seen")) {
+      show = true;
+      localStorage.setItem("tour_score_wizard_seen", "1");
+    }
+  } catch (e) {}
+  if (!show) return;
+  if (typeof switchTab === "function") switchTab("setup");
+  setTimeout(() => {
+    showToast("👋 Welcome — set your tournament name, players, teams, and rounds in Setup, then hit Play.", { type: "info", duration: 6500 });
+  }, 400);
+}
+function showTournamentPicker() {
+  const list = loadSavedTournaments();
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const panel = document.createElement("div");
+  panel.className = "modal-panel";
+  let html = '<button class="modal-close" onclick="this.closest(\'.modal-overlay\').remove()">&times;</button>' +
+    '<h3>Saved tournaments</h3>';
+  if (!list.length) {
+    html += '<p style="color: var(--gray-500);">No saved tournaments yet. Save the current one from Setup to build your list.</p>';
+  } else {
+    list.sort((a,b) => b.savedAt - a.savedAt).forEach(t => {
+      const when = new Date(t.savedAt).toLocaleString();
+      html += '<div class="tournament-list-item">' +
+        '<div><strong>' + (t.label || "Untitled") + '</strong><br><span class="tli-meta">Saved ' + when + '</span></div>' +
+        '<div>' +
+          '<button onclick="loadTournament(\'' + t.id + '\')">Load</button>' +
+          '<button class="danger" onclick="deleteTournament(\'' + t.id + '\')">Delete</button>' +
+        '</div>' +
+      '</div>';
+    });
+  }
+  panel.innerHTML = html;
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+}
+function loadTournament(id) {
+  const list = loadSavedTournaments();
+  const t = list.find(x => x.id === id);
+  if (!t) return;
+  if (!confirm("Load '" + (t.label||"Untitled") + "'? Current unsaved state will be replaced.")) return;
+  state = JSON.parse(JSON.stringify(t.state));
+  saveState();
+  location.reload();
+}
+function deleteTournament(id) {
+  const list = loadSavedTournaments();
+  const t = list.find(x => x.id === id);
+  if (!t) return;
+  if (!confirm("Delete '" + (t.label||"Untitled") + "' permanently?")) return;
+  persistSavedTournaments(list.filter(x => x.id !== id));
+  document.querySelector(".modal-overlay").remove();
+  showTournamentPicker();
+}
+
+// ---------- Spectator link ----------
+function isSpectatorMode() {
+  try { return new URLSearchParams(window.location.search).get("spectator") === "1"; } catch (e) { return false; }
+}
+function showSpectatorLink() {
+  const url = window.location.origin + window.location.pathname + "?spectator=1";
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const panel = document.createElement("div");
+  panel.className = "modal-panel";
+  panel.innerHTML =
+    '<button class="modal-close" onclick="this.closest(\'.modal-overlay\').remove()">&times;</button>' +
+    '<h3>Spectator link</h3>' +
+    '<p>Share this URL with anyone who should view the live standings without editing:</p>' +
+    '<input type="text" value="' + url + '" readonly style="width:100%; padding:8px; font-family:inherit; font-size:13px; border:1px solid var(--gray-300); border-radius:4px;" onfocus="this.select()">' +
+    '<div style="margin-top:10px;">' +
+      '<button onclick="navigator.clipboard.writeText(\'' + url + '\').then(()=>showToast(\'Link copied!\', {type:\'success\'}))">Copy link</button>' +
+    '</div>';
+  overlay.appendChild(panel);
+  document.body.appendChild(overlay);
+}
+function applySpectatorMode() {
+  if (isSpectatorMode()) {
+    document.body.classList.add("spectator-mode");
+    showToast("Read-only spectator view", { type: "info", duration: 4000 });
+  }
+}
+
+// ---------- Skins format (basic: per-hole best net score wins; ties carry over) ----------
+function playerNetStroke(pi, courseId, hole) {
+  const scores = state.scores[courseId] && state.scores[courseId][pi];
+  if (!scores) return null;
+  const s = parseInt(scores[hole]);
+  if (!(s > 0)) return null;
+  const hcp = (state.handicapsByCourse && state.handicapsByCourse[courseId] && state.handicapsByCourse[courseId][pi]) || 0;
+  const info = state.courseInfo[courseId];
+  const si = info && info.si ? parseInt(info.si[hole]) : 0;
+  const strokesRec = strokesReceivedOnHole(hcp, si);
+  return s - strokesRec;
+}
+function computeSkinsForRound(courseId) {
+  // For each active hole, find the team with the lowest single-player net stroke.
+  // Ties (multiple teams with same low) carry the skin over to the next hole.
+  const result = { perTeam: {}, perHole: [] };
+  const teams = teamsInPlay();
+  teams.forEach(t => { result.perTeam[t] = 0; });
+  let carry = 0;
+  for (let h = 0; h < HOLES; h++) {
+    if (!isHoleActive(courseId, h)) { result.perHole.push({ winner: null, carry: carry, skin: 0 }); continue; }
+    let bestNet = null, bestTeam = null, tied = false;
+    teams.forEach(t => {
+      indicesOfTeam(t).forEach(pi => {
+        const net = playerNetStroke(pi, courseId, h);
+        if (net == null) return;
+        if (bestNet == null || net < bestNet) { bestNet = net; bestTeam = t; tied = false; }
+        else if (net === bestNet && t !== bestTeam) { tied = true; }
+      });
+    });
+    if (bestNet == null) { result.perHole.push({ winner: null, carry: carry, skin: 0 }); continue; }
+    if (tied) { result.perHole.push({ winner: "carry", carry: carry, skin: 0 }); carry++; continue; }
+    const skin = 1 + carry;
+    result.perTeam[bestTeam] = (result.perTeam[bestTeam] || 0) + skin;
+    result.perHole.push({ winner: bestTeam, carry: carry, skin: skin });
+    carry = 0;
+  }
+  return result;
+}
+
+// ---------- Weather widget ----------
+async function fetchWeather(lat, lon) {
+  try {
+    const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current_weather=true&temperature_unit=celsius&windspeed_unit=kmh");
+    const j = await r.json();
+    return j && j.current_weather ? j.current_weather : null;
+  } catch (e) { return null; }
+}
+function weatherIconFor(code) {
+  if (code == null) return "";
+  if (code === 0) return "☀️";
+  if (code <= 3) return "🌤️";
+  if (code <= 48) return "🌫️";
+  if (code <= 67) return "🌧️";
+  if (code <= 77) return "❄️";
+  if (code <= 82) return "🌦️";
+  if (code <= 99) return "⛈️";
+  return "";
+}
+function renderWeather() {
+  const host = document.getElementById("app-tournament-name");
+  if (!host || !navigator.geolocation) return;
+  // Only fetch once per session.
+  if (window._weatherFetched) return;
+  window._weatherFetched = true;
+  navigator.geolocation.getCurrentPosition(async (pos) => {
+    const w = await fetchWeather(pos.coords.latitude.toFixed(3), pos.coords.longitude.toFixed(3));
+    if (!w) return;
+    const widget = document.createElement("span");
+    widget.className = "weather-widget";
+    widget.innerHTML = ' <span class="weather-icon">' + weatherIconFor(w.weathercode) + '</span>' +
+      Math.round(w.temperature) + '°C · ' + Math.round(w.windspeed) + ' km/h';
+    host.appendChild(widget);
+  }, () => { /* denied — quiet */ }, { timeout: 8000, maximumAge: 900000 });
+}
+
+// Kick off new-feature wiring after init
+setTimeout(() => {
+  renderTournamentDetails();
+  renderTeamNamesEditor();
+  applyTheme();
+  applySpectatorMode();
+  renderWeather();
+  maybeShowFirstRunWizard();
+}, 60);
 init();
 </script>
+<div id="toast-host" aria-live="polite" aria-atomic="true"></div>
 </body>
 </html>
