@@ -1845,19 +1845,119 @@
   }
   .tournament-list-item button.danger { background: #dc2626; }
   .tournament-list-item button:hover { background: var(--navy-dark); }
-  /* Light theme (opt-in via body[data-theme="light"]) */
+  /* =========================================================
+     LIGHT THEME — bright, daylight-friendly palette.
+     Enabled via body[data-theme="light"]. Overrides CSS variables so the
+     entire app (headers, cards, tables, buttons, modals, admin panel)
+     flips to a legible light appearance without touching structural CSS.
+     ========================================================= */
   body[data-theme="light"] {
+    /* Repoint the semantic tokens */
+    --cream: #f4f6fa;              /* page background */
+    --navy: #1f3358;                /* accents (buttons, headers) stay navy for brand */
+    --navy-dark: #0d1929;
+    --navy-mid: #2d456f;
+    --navy-50: #eef2f8;
+    --green-light: #eef2f8;         /* sticky-name cell tint */
+    --gold-light: #fff8e0;
+    /* Slightly warmer greys for a print-friendly feel */
+    --gray-50: #ffffff;
+    --gray-100: #f5f7fb;
+    --gray-200: #e4e8ef;
+    --gray-300: #cfd6e1;
+    --gray-500: #5b6474;
+    --gray-700: #303945;
+    --gray-900: #0f172a;
     background: linear-gradient(180deg, #f4f6fa 0%, #e6ebf3 100%);
+    color: var(--gray-900);
   }
-  body[data-theme="light"] .app-header, body[data-theme="light"] .step, body[data-theme="light"] .modal-panel { color: var(--navy-dark); }
-  body[data-theme="light"] .team-scoreboard { background: rgba(0,0,0,0.06); }
-  body[data-theme="light"] .app-title, body[data-theme="light"] .app-tournament-name { color: var(--navy-dark); }
-  body[data-theme="light"] .app-tab { color: var(--navy-dark); }
-  body[data-theme="light"] .app-header-top { color: var(--navy-dark); }
-  body[data-theme="light"] .app-sync-cluster { color: var(--navy-dark); }
-  body[data-theme="light"] .app-refresh-btn, body[data-theme="light"] .scoreboard-toggle {
-    background: rgba(0,0,0,0.06); color: var(--navy-dark); border-color: rgba(0,0,0,0.2);
+  /* App header — dark chrome that reads well on light */
+  body[data-theme="light"] .app-header {
+    background: white;
+    color: var(--navy-dark);
+    box-shadow: 0 2px 12px rgba(15,37,62,0.06);
+    border-bottom: 1px solid var(--gray-200);
   }
+  body[data-theme="light"] .app-title,
+  body[data-theme="light"] .app-tournament-name { color: var(--navy-dark); }
+  body[data-theme="light"] .app-tournament-name { color: var(--gold-dark); }
+  body[data-theme="light"] .app-sync-cluster,
+  body[data-theme="light"] #sync-label { color: var(--gray-700); }
+  body[data-theme="light"] .app-refresh-btn {
+    background: var(--gray-100); color: var(--navy-dark);
+    border: 1px solid var(--gray-300);
+  }
+  body[data-theme="light"] .app-refresh-btn:hover { background: var(--gray-200); }
+  body[data-theme="light"] .scoreboard-toggle {
+    background: var(--gray-100); color: var(--navy-dark);
+    border: 1px solid var(--gray-300);
+  }
+  body[data-theme="light"] .scoreboard-toggle:hover { background: var(--gold); color: var(--navy-dark); }
+  /* Tabs strip and buttons */
+  body[data-theme="light"] .app-tab-bar { background: white; border-bottom: 1px solid var(--gray-200); }
+  body[data-theme="light"] .app-tab { color: var(--gray-500); }
+  body[data-theme="light"] .app-tab.active { background: var(--navy); color: white; }
+  /* Team scoreboard — light chrome bg, team-coloured chips keep their brand palette */
+  body[data-theme="light"] .team-scoreboard { background: var(--gray-100); }
+  body[data-theme="light"] .ts-label { color: rgba(255,255,255,0.9); }
+  body[data-theme="light"] .ts-metric-unit { color: rgba(255,255,255,0.85); }
+  /* Body / step containers */
+  body[data-theme="light"] .step { background: white; box-shadow: 0 1px 3px rgba(15,37,62,0.05); }
+  body[data-theme="light"] .step h2, body[data-theme="light"] .step h3 { color: var(--navy-dark); }
+  body[data-theme="light"] .help-text, body[data-theme="light"] .hint { color: var(--gray-500); }
+  body[data-theme="light"] .info-box { background: var(--navy-50); color: var(--navy-dark); border: 1px solid var(--gray-200); }
+  /* Round chips (Play tab) */
+  body[data-theme="light"] .round-chip { background: white; color: var(--gray-700); border-color: var(--gray-200); }
+  body[data-theme="light"] .round-chip.active { background: var(--navy); color: white; border-color: var(--navy); }
+  body[data-theme="light"] .round-chip-label { color: var(--gray-500); }
+  body[data-theme="light"] .round-chip.active .round-chip-label { color: rgba(255,255,255,0.85); }
+  /* Scorecard — mostly white already; ensure text stays readable */
+  body[data-theme="light"] .scorecard th, body[data-theme="light"] .scorecard td,
+  body[data-theme="light"] .course-setup th, body[data-theme="light"] .course-setup td { color: var(--navy-dark); }
+  body[data-theme="light"] .scorecard tr.match-result-row td { background: #0f172a; color: white; }   /* stay dark for contrast */
+  /* Day cards (Matches tab) */
+  body[data-theme="light"] .day-block { background: white; border-color: var(--gray-200); }
+  /* Standings table + team-lb-table */
+  body[data-theme="light"] table.team-lb-table, body[data-theme="light"] table.team-totals-table { background: white; }
+  body[data-theme="light"] table.team-lb-table th, body[data-theme="light"] table.team-lb-table td,
+  body[data-theme="light"] table.team-totals-table th, body[data-theme="light"] table.team-totals-table td { color: var(--navy-dark); }
+  body[data-theme="light"] table.team-lb-table th, body[data-theme="light"] table.team-totals-table th { background: var(--gray-100); color: var(--gray-700); }
+  /* Player cards & inputs */
+  body[data-theme="light"] .player-card { background: white; border-color: var(--gray-200); }
+  body[data-theme="light"] .player-input, body[data-theme="light"] .hcp-input,
+  body[data-theme="light"] input[type="text"], body[data-theme="light"] input[type="number"],
+  body[data-theme="light"] input[type="date"], body[data-theme="light"] select {
+    background: white; color: var(--navy-dark); border-color: var(--gray-300);
+  }
+  body[data-theme="light"] .team-names-editor { background: var(--gray-100); }
+  /* Buttons */
+  body[data-theme="light"] button.action { background: var(--navy); color: white; }
+  body[data-theme="light"] button.action:hover { background: var(--navy-dark); }
+  body[data-theme="light"] .round-complete-btn { background: var(--gold); color: var(--navy-dark); }
+  body[data-theme="light"] .setup-lock-btn { background: var(--navy); color: white; }
+  body[data-theme="light"] .setup-lock-btn.locked { background: var(--gold); color: var(--navy-dark); }
+  body[data-theme="light"] .tournament-actions button { background: white; color: var(--navy-dark); border: 1px solid var(--gray-300); }
+  body[data-theme="light"] .tournament-actions button:hover { background: var(--gray-100); }
+  /* Admin bar */
+  body[data-theme="light"] .sync-bar, body[data-theme="light"] .admin-bar { background: white; color: var(--navy-dark); border: 1px solid var(--gray-200); }
+  body[data-theme="light"] .sync-help { color: var(--gray-500); }
+  body[data-theme="light"] .sync-bar button, body[data-theme="light"] .admin-bar button {
+    background: var(--gray-100); color: var(--navy-dark); border: 1px solid var(--gray-300);
+  }
+  /* Modals (tournament picker, spectator link, promptNumber) */
+  body[data-theme="light"] .modal-overlay { background: rgba(15,37,62,0.4); }
+  body[data-theme="light"] .modal-panel { background: white; color: var(--navy-dark); }
+  /* Toast */
+  body[data-theme="light"] #toast-host .toast { background: var(--navy); color: white; }
+  /* Day headers on Matches tab (stay dark for contrast) */
+  body[data-theme="light"] .day-header { background: var(--navy); color: white; }
+  body[data-theme="light"] .day-header:hover { background: var(--navy-mid); }
+  /* Course-setup / course-selector-row */
+  body[data-theme="light"] .count-controls { background: var(--gray-100); color: var(--navy-dark); border: 1px solid var(--gray-200); }
+  body[data-theme="light"] .count-controls label { color: var(--navy-dark); }
+  body[data-theme="light"] .count-controls .hint { color: var(--gray-500); }
+  /* Overall body text default */
+  body[data-theme="light"] * { -webkit-tap-highlight-color: rgba(0,0,0,0.06); }
   .app-sync-cluster {
     display: flex;
     align-items: center;
