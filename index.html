@@ -1105,6 +1105,12 @@
     color: #065f46;
     border-color: #047857;
   }
+  .course-selector-row .scoring-format-select[data-format="skins"] {
+    background: #fef3c7;
+    color: #78350f;
+    border-color: #d4a017;
+    font-weight: 700;
+  }
 
   .footer-actions {
     margin-top: 24px;
@@ -2257,6 +2263,7 @@
           <option value="combined">Combined Stableford</option>
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
+          <option value="skins">Skins (best net per hole, ties carry)</option>
         </select>
       </div>
       <div data-round-slot="round2">
@@ -2272,6 +2279,7 @@
           <option value="combined">Combined Stableford</option>
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
+          <option value="skins">Skins (best net per hole, ties carry)</option>
         </select>
       </div>
       <div data-round-slot="round3" class="hidden">
@@ -2287,6 +2295,7 @@
           <option value="combined">Combined Stableford</option>
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
+          <option value="skins">Skins (best net per hole, ties carry)</option>
         </select>
       </div>
       <div data-round-slot="round4" class="hidden">
@@ -2302,6 +2311,7 @@
           <option value="combined">Combined Stableford</option>
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
+          <option value="skins">Skins (best net per hole, ties carry)</option>
         </select>
       </div>
     </div>
@@ -6625,20 +6635,33 @@ function buildStandingsText() {
   const name = state.tournamentName || "Tour Score";
   lines.push("*" + name + "*" + (state.tournamentDate ? " — " + state.tournamentDate : ""));
   lines.push("");
+  // Team standings
   s.teams.forEach(t => {
     const disp = teamDisplayName(t);
     const parts = [];
     if ((s.stablefordTotals[t]||0) > 0) parts.push(round1(s.stablefordTotals[t]) + " stableford");
     if ((s.matchTotals[t]||0) > 0)     parts.push(round1(s.matchTotals[t]) + " match pts");
+    if ((s.skinsTotals && s.skinsTotals[t]||0) > 0) parts.push(s.skinsTotals[t] + " skins");
     lines.push(disp + ": " + (parts.length ? parts.join(" · ") : "no scores yet"));
   });
-  lines.push("");
-  // Rounds summary
-  getActiveCourses().forEach((c, i) => {
-    const cname = (state.courseInfo[c.id] && state.courseInfo[c.id].name) || c.name;
-    const fmt = SCORING_FORMAT_LABELS[currentScoringFormat(c.id)] || "";
-    lines.push("R" + (i+1) + " " + cname + " — " + fmt);
-  });
+  // Top 3 individuals (by total stableford across active rounds)
+  const indiv = (typeof computeIndividualStandings === "function") ? computeIndividualStandings() : [];
+  const scored = indiv.filter(p => (p.total || 0) > 0).slice(0, 3);
+  if (scored.length) {
+    lines.push("");
+    lines.push("*Top 3 individuals*");
+    scored.forEach((p, i) => {
+      const nm = state.players[p.pi] || ("Player " + (p.pi + 1));
+      const t = teamOfPlayer(p.pi);
+      lines.push((i + 1) + ". " + nm + " (" + t + ") — " + Math.round(p.total) + " pts");
+    });
+  }
+  // Spectator link at the bottom so anyone can tap in for live view.
+  try {
+    const url = window.location.origin + window.location.pathname + "?spectator=1";
+    lines.push("");
+    lines.push("Live standings: " + url);
+  } catch (e) {}
   return lines.join("\n");
 }
 function shareStandings() {
