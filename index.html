@@ -1797,14 +1797,34 @@
   /* Team totals count-up transition */
   .ts-metric-val { transition: transform 0.15s; }
   .ts-metric-val.bump { transform: scale(1.15); color: var(--gold); }
-  /* Weather widget */
-  .weather-widget {
-    font-size: 11px;
-    color: rgba(255,255,255,0.75);
-    letter-spacing: 0.3px;
-    margin-left: 6px;
+  /* Weather widget — attached to each round's title (Play + Matches tabs) */
+  .round-weather {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    margin-left: 8px;
+    background: var(--gray-100);
+    color: var(--navy-dark);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+    white-space: nowrap;
   }
-  .weather-widget .weather-icon { display: inline-block; margin-right: 3px; }
+  .round-weather:empty { display: none; }
+  .round-weather .weather-icon { font-size: 14px; }
+  .round-weather.weather-locked-view { background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); }
+  .round-weather .weather-locked { margin-left: 2px; opacity: 0.7; font-size: 10px; }
+  /* On the dark Matches-tab day header, invert the pill's palette */
+  .round-weather.round-weather-inv {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .round-weather.round-weather-inv.weather-locked-view {
+    background: var(--gold); color: var(--navy-dark); border-color: var(--gold);
+  }
   /* Spectator badge (read-only mode) */
   body.spectator-mode .setup-lock-btn,
   body.spectator-mode .round-complete-btn,
@@ -3172,6 +3192,7 @@ if (typeof state.tournamentName !== "string") state.tournamentName = "";
 if (typeof state.tournamentDate !== "string") state.tournamentDate = new Date().toISOString().slice(0, 10);
 if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
 if (typeof state.theme !== "string") state.theme = "dark";
+if (!state.weatherByRound || typeof state.weatherByRound !== "object") state.weatherByRound = {};
 // Reshape schedule to fit current player+round counts (in case they differ from when saved)
 conformScheduleToCounts();
 // If we're in a team-total format, replace the schedule with a team-grouped
@@ -3763,7 +3784,9 @@ function refreshCourseTitles() {
     const scoreT = document.getElementById("scorecard-title-" + c.id);
     if (scoreT) {
       const fmtLbl = SCORING_FORMAT_LABELS[currentScoringFormat(c.id)] || "";
-      scoreT.innerHTML = name + ' <span class="scorecard-title-fmt">— ' + fmtLbl + '</span>';
+      scoreT.innerHTML = name +
+        ' <span class="scorecard-title-fmt">— ' + fmtLbl + '</span>' +
+        ' <span class="round-weather" data-round="' + c.id + '"></span>';
     }
     const sel = document.getElementById("course-select-" + c.id);
     if (sel && info && info.catalogKey) sel.value = info.catalogKey;
@@ -5345,6 +5368,7 @@ function applyRemoteState(remote) {
   if (typeof state.tournamentDate !== "string") state.tournamentDate = new Date().toISOString().slice(0, 10);
   if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
   if (typeof state.theme !== "string") state.theme = "dark";
+if (!state.weatherByRound || typeof state.weatherByRound !== "object") state.weatherByRound = {};
   conformScheduleToCounts();
   if (anyTeamTotalFormat()) {
     state.matchSchedule = generateAllianceSchedule();
@@ -5704,7 +5728,9 @@ function buildDayHeader(day, course, fmt) {
   return '<div class="day-header" onclick="toggleDayCollapse(' + day.roundIdx + ')" role="button" tabindex="0">' +
       '<div class="dh-main">' +
         '<span class="dh-round">Round ' + (day.roundIdx + 1) + '</span>' +
-        '<span class="dh-course">' + courseName + '</span>' +
+        '<span class="dh-course">' + courseName +
+          ' <span class="round-weather round-weather-inv" data-round="' + course.id + '"></span>' +
+        '</span>' +
         (fmtLabel ? '<span class="dh-fmt">' + fmtLabel + '</span>' : '') +
       '</div>' +
       '<span class="dh-chev" aria-hidden="true">&#9662;</span>' +
@@ -6211,6 +6237,8 @@ function switchTab(tabName) {
   // (e.g. from an older cached state) gets rebuilt when the user opens it.
   if (tabName === "matches" && typeof renderMatchSchedule === "function") renderMatchSchedule();
   if (tabName === "standings" && typeof refreshLeaderboards === "function") refreshLeaderboards();
+  // Paint per-round weather pills (async fetch fills them in when available)
+  if (typeof paintAllRoundWeather === "function") setTimeout(paintAllRoundWeather, 30);
   // Scroll to top of the container when switching tabs
   window.scrollTo({ top: 0, behavior: "instant" });
 }
@@ -6535,10 +6563,13 @@ function promptCompleteRound(courseId) {
   if (!confirm("Complete " + name + "?\n\nScores and handicaps for this round will be locked. Match statuses will be finalised based on holes played so far.")) return;
   if (!Array.isArray(state.completedRounds)) state.completedRounds = [];
   if (state.completedRounds.indexOf(courseId) < 0) state.completedRounds.push(courseId);
+  // Snapshot the weather AT completion so it's frozen even if we re-open later.
+  if (typeof ensureRoundWeather === "function") ensureRoundWeather(courseId);
   saveState();
   renderScorecards();
   refreshLeaderboards();
   updateRoundCompleteButtons();
+  if (typeof paintAllRoundWeather === "function") paintAllRoundWeather();
 }
 
 function uncompleteRound(courseId) {
@@ -7018,7 +7049,7 @@ function computeSkinsForRound(courseId) {
   return result;
 }
 
-// ---------- Weather widget ----------
+// ---------- Weather (per round; locked when the round is marked complete) ----------
 async function fetchWeather(lat, lon) {
   try {
     const r = await fetch("https://api.open-meteo.com/v1/forecast?latitude=" + lat + "&longitude=" + lon + "&current_weather=true&temperature_unit=celsius&windspeed_unit=kmh");
@@ -7037,21 +7068,51 @@ function weatherIconFor(code) {
   if (code <= 99) return "⛈️";
   return "";
 }
-function renderWeather() {
-  const host = document.getElementById("app-tournament-name");
-  if (!host || !navigator.geolocation) return;
-  // Only fetch once per session.
-  if (window._weatherFetched) return;
-  window._weatherFetched = true;
+function formatWeather(w) {
+  if (!w) return "";
+  return '<span class="weather-icon">' + weatherIconFor(w.weathercode) + '</span>' +
+    Math.round(w.temperature) + '°C · ' + Math.round(w.windspeed) + ' km/h';
+}
+// Fetch and store weather for a round. Skips if the round is marked complete
+// (weather is snapshotted at completion time and shouldn't update after).
+function ensureRoundWeather(courseId) {
+  if (!state.weatherByRound) state.weatherByRound = {};
+  const stored = state.weatherByRound[courseId];
+  if (isRoundCompleted && isRoundCompleted(courseId)) return;             // locked
+  // Skip if we fetched < 30 min ago and it's not stale.
+  if (stored && stored.fetchedAt && (Date.now() - stored.fetchedAt) < 1800000) return;
+  if (!navigator.geolocation) return;
+  if (window["_weatherFetchInFlight_" + courseId]) return;
+  window["_weatherFetchInFlight_" + courseId] = true;
   navigator.geolocation.getCurrentPosition(async (pos) => {
     const w = await fetchWeather(pos.coords.latitude.toFixed(3), pos.coords.longitude.toFixed(3));
+    window["_weatherFetchInFlight_" + courseId] = false;
     if (!w) return;
-    const widget = document.createElement("span");
-    widget.className = "weather-widget";
-    widget.innerHTML = ' <span class="weather-icon">' + weatherIconFor(w.weathercode) + '</span>' +
-      Math.round(w.temperature) + '°C · ' + Math.round(w.windspeed) + ' km/h';
-    host.appendChild(widget);
-  }, () => { /* denied — quiet */ }, { timeout: 8000, maximumAge: 900000 });
+    state.weatherByRound[courseId] = {
+      temperature: w.temperature, windspeed: w.windspeed, weathercode: w.weathercode, fetchedAt: Date.now()
+    };
+    saveState();
+    paintWeatherForRound(courseId);
+  }, () => { window["_weatherFetchInFlight_" + courseId] = false; }, { timeout: 8000, maximumAge: 900000 });
+}
+// Paint the round's weather widget into any DOM node with matching data-round.
+function paintWeatherForRound(courseId) {
+  const w = state.weatherByRound && state.weatherByRound[courseId];
+  const locked = isRoundCompleted && isRoundCompleted(courseId);
+  document.querySelectorAll('.round-weather[data-round="' + courseId + '"]').forEach(el => {
+    if (w) {
+      el.innerHTML = formatWeather(w) + (locked ? ' <span class="weather-locked" title="Locked when round completed">🔒</span>' : '');
+      el.classList.toggle("weather-locked-view", !!locked);
+    } else {
+      el.innerHTML = '';
+    }
+  });
+}
+function paintAllRoundWeather() {
+  COURSES.forEach(c => paintWeatherForRound(c.id));
+}
+function refreshRoundWeather() {
+  COURSES.forEach(c => ensureRoundWeather(c.id));
 }
 
 // Kick off new-feature wiring after init
@@ -7060,7 +7121,8 @@ setTimeout(() => {
   renderTeamNamesEditor();
   applyTheme();
   applySpectatorMode();
-  renderWeather();
+  refreshRoundWeather();
+  paintAllRoundWeather();
   maybeShowFirstRunWizard();
 }, 60);
 init();
