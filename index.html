@@ -883,6 +883,30 @@
     margin-top: 1px;
     white-space: nowrap;
   }
+  /* Wolfie total-cell line (only rendered on Wolfie rounds) */
+  .scorecard .total-cell .tot-wolfie {
+    font-size: 11px;
+    font-weight: 700;
+    color: #c4b5fd;
+    margin-top: 3px;
+    white-space: nowrap;
+  }
+  .scorecard .total-cell .tot-wolfie .tot-wolfie-r {
+    font-size: 9px;
+    font-weight: 800;
+    color: #f5f3ff;
+    opacity: 0.85;
+    margin-left: 2px;
+  }
+  .scorecard .total-cell .tot-wolfie-lbl {
+    font-size: 9px;
+    font-weight: 800;
+    color: #c4b5fd;
+    text-transform: uppercase;
+    letter-spacing: 0.1px;
+    margin-top: 1px;
+    white-space: nowrap;
+  }
   .scorecard tr.ghost-row .total-cell {
     background: var(--navy-dark);
     color: var(--gold);
@@ -1083,6 +1107,149 @@
     font-weight: 600;
     border-color: #d4a017;
   }
+  /* Prominent "How scores are Calculated" button (Standings tab) */
+  .standings-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .how-scored-btn {
+    background: #15253e;
+    color: #e6b422;
+    border: 2px solid #e6b422;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: transform 0.1s ease, background 0.15s ease;
+  }
+  .how-scored-btn:hover { background: #1f3358; transform: translateY(-1px); }
+  .how-scored-btn:focus { outline: 2px solid #ffd54a; outline-offset: 2px; }
+  .how-scored-modal-overlay {
+    position: fixed; inset: 0; z-index: 5000;
+    background: rgba(15, 20, 35, 0.6);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 12px;
+    overflow-y: auto;
+  }
+  .how-scored-modal {
+    background: white;
+    color: #1f2937;
+    border-radius: 8px;
+    max-width: 720px;
+    width: 100%;
+    padding: 20px 22px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    position: relative;
+  }
+  .how-scored-modal h2 {
+    margin: 0 0 12px 0;
+    color: #15253e;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+  }
+  .how-scored-modal h3 {
+    margin: 16px 0 6px 0;
+    color: #15253e;
+    font-size: 15px;
+    border-bottom: 2px solid #e6b422;
+    padding-bottom: 3px;
+  }
+  .how-scored-modal p { margin: 6px 0; font-size: 13px; line-height: 1.5; }
+  .how-scored-modal ul { margin: 4px 0 8px 20px; font-size: 13px; }
+  .how-scored-modal table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    font-size: 12px;
+  }
+  .how-scored-modal th, .how-scored-modal td {
+    border: 1px solid #d1d5db;
+    padding: 5px 9px;
+    text-align: left;
+  }
+  .how-scored-modal th { background: #f5f7fa; color: #15253e; }
+  .how-scored-modal .rounds-summary {
+    background: #f5f7fa;
+    border-left: 3px solid #e6b422;
+    padding: 8px 12px;
+    margin: 8px 0 14px;
+    font-size: 13px;
+  }
+  .how-scored-modal .rounds-summary strong { color: #15253e; }
+  .how-scored-modal .modal-close {
+    position: absolute; top: 8px; right: 12px;
+    background: none; border: none; font-size: 24px; cursor: pointer;
+    color: #64748b; padding: 4px 8px;
+  }
+  .how-scored-modal .modal-close:hover { color: #15253e; }
+  /* Scoring-format info tooltip button */
+  .scoring-info-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid var(--gray-300);
+    background: white;
+    color: var(--navy);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    margin-left: 4px;
+    flex-shrink: 0;
+  }
+  .scoring-info-btn:hover { background: #f0f4f8; border-color: var(--navy); }
+  .scoring-info-btn:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+  .scoring-info-tip {
+    position: absolute;
+    z-index: 4000;
+    max-width: 340px;
+    min-width: 260px;
+    background: #15253e;
+    color: #f5f7fa;
+    border: 1px solid #e6b422;
+    border-radius: 6px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .scoring-info-tip h5 {
+    margin: 0 0 6px 0;
+    color: #e6b422;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+  .scoring-info-tip p { margin: 4px 0; }
+  .scoring-info-tip table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 6px 0 2px 0;
+    font-size: 11px;
+  }
+  .scoring-info-tip th, .scoring-info-tip td {
+    border: 1px solid #2c3e5c;
+    padding: 3px 6px;
+    text-align: left;
+  }
+  .scoring-info-tip th {
+    background: #1f3358;
+    color: #e6b422;
+    font-weight: 700;
+  }
+  .scoring-info-tip .tip-close {
+    position: absolute; top: 4px; right: 6px;
+    background: none; border: none; color: #f5f7fa;
+    font-size: 16px; cursor: pointer; padding: 2px 6px;
+    line-height: 1;
+  }
   .course-selector-row .scoring-format-select {
     padding: 6px 10px;
     font-size: 13px;
@@ -1111,6 +1278,52 @@
     border-color: #d4a017;
     font-weight: 700;
   }
+  .course-selector-row .skin-value-field {
+    display: flex; flex-direction: column; gap: 3px;
+    margin-top: 4px;
+  }
+  .course-selector-row .skin-value-field.hidden { display: none; }
+  .course-selector-row .skin-value-lbl {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; color: #78350f;
+  }
+  .course-selector-row .skin-value-input {
+    padding: 6px 10px; border: 1.5px solid #d4a017; border-radius: 4px;
+    background: #fffbeb; color: #78350f;
+    font-size: 14px; font-family: inherit; font-weight: 700;
+  }
+  .course-selector-row .skin-value-input:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+  .course-selector-row .wolfie-value-field {
+    display: flex; flex-direction: column; gap: 3px; margin-top: 4px;
+  }
+  .course-selector-row .wolfie-value-field.hidden { display: none; }
+  .course-selector-row .wolfie-value-lbl {
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #6d28d9;
+  }
+  .course-selector-row .wolfie-value-input {
+    padding: 6px 10px; border: 1.5px solid #6d28d9; border-radius: 4px;
+    background: #f5f3ff; color: #4c1d95;
+    font-size: 14px; font-family: inherit; font-weight: 700;
+  }
+  .course-selector-row .wolfie-value-input:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+  .course-selector-row .scoring-format-select[data-format="wolfie"] {
+    background: #ede9fe; color: #4c1d95; border-color: #6d28d9; font-weight: 700;
+  }
+  .course-selector-row .skins-side-toggle {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 4px;
+    padding: 5px 8px;
+    background: #fef3c7;
+    border: 1px dashed #d4a017;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #78350f;
+    cursor: pointer;
+    user-select: none;
+  }
+  .course-selector-row .skins-side-toggle.hidden { display: none; }
+  .course-selector-row .skins-side-toggle input[type="checkbox"] { margin: 0; }
+  .course-selector-row .skins-side-toggle strong { color: #78350f; }
 
   .footer-actions {
     margin-top: 24px;
@@ -1603,6 +1816,186 @@
   }
   .leaderboard tr.lb-leader td { background: var(--gold-light); }
   .leaderboard tr.lb-leader td.lb-total { background: var(--gold); color: white; }
+  /* Skins column — visually separated from Total so it doesn't look like
+     part of the stableford tally. Amber accent for the skins theme. */
+  .leaderboard th.lb-skins, .leaderboard td.lb-skins {
+    border-left: 3px solid var(--gold);
+    background: #fffbeb;
+    color: #78350f;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .leaderboard th.lb-skins { background: #fef3c7; }
+  .leaderboard .lb-total-sub, .leaderboard .lb-skins-sub {
+    display: block;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--gray-500);
+    margin-top: 1px;
+  }
+  .leaderboard th.lb-skins .lb-skins-sub { color: #78350f; opacity: 0.75; }
+  .leaderboard td.lb-skins.net-pos { color: #047857; background: #ecfdf5; }
+  .leaderboard td.lb-skins.net-neg { color: #b91c1c; background: #fef2f2; }
+  /* Wolfie column — purple accent to distinguish from Skins (amber). */
+  .leaderboard th.lb-wolfie, .leaderboard td.lb-wolfie {
+    border-left: 3px solid #6d28d9;
+    background: #f5f3ff;
+    color: #4c1d95;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .leaderboard th.lb-wolfie { background: #ede9fe; }
+  /* Wolfie decision panel (Play tab, below the scorecard for wolfie rounds) */
+  .wolfie-decisions {
+    margin-top: 12px;
+    padding: 12px;
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-left: 4px solid #6d28d9;
+    border-radius: 6px;
+  }
+  .wolfie-decisions.hidden { display: none; }
+  .wolfie-panel-title {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #4c1d95;
+  }
+  .wolfie-panel-help {
+    font-size: 11px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+  .wolfie-match-block { margin-bottom: 10px; }
+  .wolfie-match-hdr {
+    font-size: 12px; font-weight: 700; color: #4c1d95;
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px;
+  }
+  .wolfie-match-msg {
+    font-size: 12px; color: #b91c1c; font-style: italic; margin: 6px 0;
+  }
+  .wolfie-hole-grid { display: flex; flex-direction: column; gap: 3px; }
+  .wolfie-hole-row {
+    display: grid;
+    grid-template-columns: 34px 1fr auto auto;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 6px;
+    background: white;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .wolfie-hole-num { font-weight: 800; color: #4c1d95; text-align: center; }
+  .wolfie-hole-wolf { font-weight: 600; color: #1f2937; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .wolfie-hole-mode { display: flex; gap: 6px; }
+  .wolfie-hole-mode label {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; color: #4c1d95; cursor: pointer;
+  }
+  .wolfie-hole-mode input[type="radio"] { margin: 0; accent-color: #6d28d9; }
+  .wolfie-partner-sel {
+    padding: 3px 6px; border: 1px solid #c4b5fd; border-radius: 3px;
+    font-size: 11px; background: white; font-family: inherit;
+    max-width: 120px;
+  }
+  .wolfie-partner-sel:disabled { opacity: 0.35; }
+  /* Inline Wolfie rows injected per-match into the scorecard tbody */
+  .scorecard tr.hdr-wolfie td,
+  .scorecard tr.hdr-wolfie th {
+    background: #ede9fe;
+    color: #4c1d95;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    text-align: center;
+  }
+  .scorecard tr.hdr-wolfie td.name-cell,
+  .scorecard tr.hdr-wolfie th.name-cell { background: #ede9fe; color: #4c1d95; text-align: left; padding-left: 6px; }
+  .scorecard tr.hdr-wolfie .wolfie-wolf-init {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #6d28d9; color: white; font-weight: 800; font-size: 12px;
+    line-height: 1;
+  }
+  .scorecard tr.hdr-wolfie-decision td,
+  .scorecard tr.hdr-wolfie-decision th {
+    background: #f5f3ff;
+    padding: 3px 2px;
+    text-align: center;
+  }
+  .scorecard tr.hdr-wolfie-decision td.name-cell,
+  .scorecard tr.hdr-wolfie-decision th.name-cell { background: #f5f3ff; color: #4c1d95; font-weight: 700; text-align: left; padding-left: 6px; }
+  /* Starting-Wolf picker row (one per Wolfie match) */
+  .scorecard tr.hdr-wolfie-start td {
+    background: #e9d5ff;
+    color: #4c1d95;
+    font-weight: 700;
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .scorecard tr.hdr-wolfie-start td.name-cell { background: #e9d5ff; text-align: left; padding-left: 6px; }
+  .scorecard tr.hdr-wolfie-start td.wolfie-start-cell { text-align: left; }
+  .wolfie-start-sel {
+    padding: 3px 6px;
+    border: 1px solid #6d28d9;
+    border-radius: 4px;
+    background: white;
+    color: #4c1d95;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .wolfie-start-hint { opacity: 0.85; font-weight: 500; margin-left: 6px; font-size: 11px; }
+  .wolfie-inline-sel {
+    width: 100%;
+    max-width: 68px;
+    padding: 2px 1px;
+    border: 1px solid #6d28d9;
+    border-radius: 3px;
+    background: white;
+    color: #4c1d95;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+    text-align: center;
+    text-overflow: ellipsis;
+  }
+  .wolfie-inline-sel:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+  /* Highlight the Wolf's own score cell for the hole where they are Wolf */
+  .scorecard td.score-cell.is-wolf {
+    box-shadow: inset 0 0 0 2px #6d28d9;
+    background: #faf5ff;
+  }
+  /* Shade the partner's score cell (holes where they're chosen to play with the Wolf) */
+  .scorecard td.score-cell.is-wolf-partner {
+    background: #f3e8ff;
+    box-shadow: inset 0 0 0 1px #a78bfa;
+  }
+  .scorecard td.score-cell.is-wolf::before {
+    content: "🐺";
+    position: absolute;
+    top: 1px; left: 2px;
+    font-size: 8px;
+    line-height: 1;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .scorecard td.score-cell { position: relative; }
+  /* Hide the below-scorecard wolfie panel now that decisions are inline */
+  .wolfie-decisions { display: none !important; }
+  @media (max-width: 640px) {
+    .wolfie-hole-row {
+      grid-template-columns: 30px 1fr;
+      grid-template-rows: auto auto;
+      row-gap: 4px;
+    }
+    .wolfie-hole-wolf { grid-column: 2 / 3; }
+    .wolfie-hole-mode { grid-column: 1 / 3; }
+    .wolfie-hole-partner { grid-column: 1 / 3; }
+  }
   .team-tag {
     display: inline-block; padding: 1px 6px; border-radius: 8px;
     color: white; font-size: 10px; font-weight: 700;
@@ -2384,7 +2777,22 @@
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
           <option value="skins">Skins (best net per hole, ties carry)</option>
+          <option value="wolfie">Wolfie (3-player Wolf, rotating Lone Wolf)</option>
         </select>
+        <button type="button" class="scoring-info-btn" aria-label="How is this scored?" title="How is this scored?">&#9432;</button>
+        <label class="skins-side-toggle">
+          <input type="checkbox" id="skins-enable-round1" class="skins-enable-cb">
+          <span>Also run <strong>Skins</strong> (side game)</span>
+          <button type="button" class="scoring-info-btn scoring-info-btn-skins" data-info-fmt="skins" aria-label="How is Skins scored?" title="How is Skins scored?">&#9432;</button>
+        </label>
+        <label class="skin-value-field hidden">
+          <span class="skin-value-lbl">R per skin</span>
+          <input type="number" min="0" step="1" id="skin-value-round1" class="skin-value-input" placeholder="e.g. 10">
+        </label>
+        <label class="wolfie-value-field hidden">
+          <span class="wolfie-value-lbl">R per Wolfie pt</span>
+          <input type="number" min="0" step="1" id="wolfie-value-round1" class="wolfie-value-input" placeholder="e.g. 5">
+        </label>
       </div>
       <div data-round-slot="round2">
         <label for="course-select-round2">Round 2</label>
@@ -2400,7 +2808,22 @@
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
           <option value="skins">Skins (best net per hole, ties carry)</option>
+          <option value="wolfie">Wolfie (3-player Wolf, rotating Lone Wolf)</option>
         </select>
+        <button type="button" class="scoring-info-btn" aria-label="How is this scored?" title="How is this scored?">&#9432;</button>
+        <label class="skins-side-toggle">
+          <input type="checkbox" id="skins-enable-round2" class="skins-enable-cb">
+          <span>Also run <strong>Skins</strong> (side game)</span>
+          <button type="button" class="scoring-info-btn scoring-info-btn-skins" data-info-fmt="skins" aria-label="How is Skins scored?" title="How is Skins scored?">&#9432;</button>
+        </label>
+        <label class="skin-value-field hidden">
+          <span class="skin-value-lbl">R per skin</span>
+          <input type="number" min="0" step="1" id="skin-value-round2" class="skin-value-input" placeholder="e.g. 10">
+        </label>
+        <label class="wolfie-value-field hidden">
+          <span class="wolfie-value-lbl">R per Wolfie pt</span>
+          <input type="number" min="0" step="1" id="wolfie-value-round2" class="wolfie-value-input" placeholder="e.g. 5">
+        </label>
       </div>
       <div data-round-slot="round3" class="hidden">
         <label for="course-select-round3">Round 3</label>
@@ -2416,7 +2839,22 @@
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
           <option value="skins">Skins (best net per hole, ties carry)</option>
+          <option value="wolfie">Wolfie (3-player Wolf, rotating Lone Wolf)</option>
         </select>
+        <button type="button" class="scoring-info-btn" aria-label="How is this scored?" title="How is this scored?">&#9432;</button>
+        <label class="skins-side-toggle">
+          <input type="checkbox" id="skins-enable-round3" class="skins-enable-cb">
+          <span>Also run <strong>Skins</strong> (side game)</span>
+          <button type="button" class="scoring-info-btn scoring-info-btn-skins" data-info-fmt="skins" aria-label="How is Skins scored?" title="How is Skins scored?">&#9432;</button>
+        </label>
+        <label class="skin-value-field hidden">
+          <span class="skin-value-lbl">R per skin</span>
+          <input type="number" min="0" step="1" id="skin-value-round3" class="skin-value-input" placeholder="e.g. 10">
+        </label>
+        <label class="wolfie-value-field hidden">
+          <span class="wolfie-value-lbl">R per Wolfie pt</span>
+          <input type="number" min="0" step="1" id="wolfie-value-round3" class="wolfie-value-input" placeholder="e.g. 5">
+        </label>
       </div>
       <div data-round-slot="round4" class="hidden">
         <label for="course-select-round4">Round 4</label>
@@ -2432,7 +2870,22 @@
           <option value="alliance2">Alliance &mdash; 2 scores</option>
           <option value="alliance3">Alliance &mdash; 3 scores</option>
           <option value="skins">Skins (best net per hole, ties carry)</option>
+          <option value="wolfie">Wolfie (3-player Wolf, rotating Lone Wolf)</option>
         </select>
+        <button type="button" class="scoring-info-btn" aria-label="How is this scored?" title="How is this scored?">&#9432;</button>
+        <label class="skins-side-toggle">
+          <input type="checkbox" id="skins-enable-round4" class="skins-enable-cb">
+          <span>Also run <strong>Skins</strong> (side game)</span>
+          <button type="button" class="scoring-info-btn scoring-info-btn-skins" data-info-fmt="skins" aria-label="How is Skins scored?" title="How is Skins scored?">&#9432;</button>
+        </label>
+        <label class="skin-value-field hidden">
+          <span class="skin-value-lbl">R per skin</span>
+          <input type="number" min="0" step="1" id="skin-value-round4" class="skin-value-input" placeholder="e.g. 10">
+        </label>
+        <label class="wolfie-value-field hidden">
+          <span class="wolfie-value-lbl">R per Wolfie pt</span>
+          <input type="number" min="0" step="1" id="wolfie-value-round4" class="wolfie-value-input" placeholder="e.g. 5">
+        </label>
       </div>
     </div>
     <div class="course-section" data-round-slot="round1">
@@ -2461,21 +2914,25 @@
     <div class="course-section" data-round-slot="round1">
       <h3 id="scorecard-title-round1">Round 1</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round1"></table></div>
+      <div class="wolfie-decisions hidden" id="wolfie-decisions-round1"></div>
       <button class="round-complete-btn" data-round-target="round1" onclick="handleRoundCompleteClick('round1')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section" data-round-slot="round2">
       <h3 id="scorecard-title-round2">Round 2</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round2"></table></div>
+      <div class="wolfie-decisions hidden" id="wolfie-decisions-round2"></div>
       <button class="round-complete-btn" data-round-target="round2" onclick="handleRoundCompleteClick('round2')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section hidden" data-round-slot="round3">
       <h3 id="scorecard-title-round3">Round 3</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round3"></table></div>
+      <div class="wolfie-decisions hidden" id="wolfie-decisions-round3"></div>
       <button class="round-complete-btn" data-round-target="round3" onclick="handleRoundCompleteClick('round3')" type="button">&#10003; Complete Round</button>
     </div>
     <div class="course-section hidden" data-round-slot="round4">
       <h3 id="scorecard-title-round4">Round 4</h3>
       <div class="scorecard-wrap"><table class="scorecard" id="scorecard-round4"></table></div>
+      <div class="wolfie-decisions hidden" id="wolfie-decisions-round4"></div>
       <button class="round-complete-btn" data-round-target="round4" onclick="handleRoundCompleteClick('round4')" type="button">&#10003; Complete Round</button>
     </div>
   </section>
@@ -2483,7 +2940,10 @@
   <!-- STEP 5: Leaderboards -->
   <section class="step" data-tab="standings">
     <h2><span class="step-num">5</span> Leaderboards</h2>
-    <div class="help-text">Both leaderboards update live as scores are entered.</div>
+    <div class="standings-header-row">
+      <div class="help-text">Both leaderboards update live as scores are entered.</div>
+      <button type="button" id="how-scored-btn" class="how-scored-btn" onclick="_showHowScoredModal()">&#10068; How scores are Calculated</button>
+    </div>
     <h3 style="color: var(--green-dark); font-size: 15px; margin-top: 14px;">Team competition</h3>
     <div id="team-leaderboard"></div>
     <h3 style="color: var(--green-dark); font-size: 15px; margin-top: 16px;">Individual competition (total stableford)</h3>
@@ -2639,6 +3099,20 @@ function generateMatchesForRound(roundIdx) {
   if (!course) return [{ teamA: [], teamB: [] }];
   const fmt = currentScoringFormat(course.id);
   const teams = teamsInPlay();
+  // Wolfie: split every player into 3-person groups. Wolf rotates within each
+  // group per hole. teamA holds all 3 players, teamB stays empty.
+  if (fmt === "wolfie") {
+    const allPis = [];
+    teams.forEach(t => indicesOfTeam(t).forEach(pi => {
+      if (!isGhostName(state.players[pi])) allPis.push(pi);
+    }));
+    const matches = [];
+    for (let i = 0; i < allPis.length; i += 3) {
+      matches.push({ teamA: allPis.slice(i, i + 3), teamB: [] });
+    }
+    if (!matches.length) matches.push({ teamA: [], teamB: [] });
+    return matches;
+  }
   if (isTeamTotalFormat(fmt)) {
     const matches = [];
     teams.forEach(t => {
@@ -2664,33 +3138,71 @@ function generateMatchesForRound(roundIdx) {
     );
     if (valid) return cloneSchedule(templateDay.matches);
   }
-  // Auto-pair teams two at a time (A vs B, C vs D, E vs F). Inside each
-  // pairing, split into as many 2-vs-2 4-balls as the smaller team can fill,
-  // so a 16-player 4-team roster yields 4 matches (A[0,1]vB[0,1], A[2,3]vB[2,3],
-  // C[0,1]vD[0,1], C[2,3]vD[2,3]).
+  // Better Ball auto-allocation across ANY team count.
+  //
+  //   • 2 teams → repeated 2-vs-2 4-balls until every player has a match
+  //   • 3+ teams → round-robin: pair every team against every other team,
+  //     drawing next 2 unused players from each side per allocation. Nearest-
+  //     neighbour pairs are prioritised first (A-B, B-C, C-D, then A-C, B-D,
+  //     then A-D, etc.) so no team is left with unused players.
   const matches = [];
   const chunkSize = 2;
-  for (let ti = 0; ti + 1 < teams.length; ti += 2) {
-    const aPis = indicesOfTeam(teams[ti]);
-    const bPis = indicesOfTeam(teams[ti + 1]);
-    if (!aPis.length && !bPis.length) continue;
-    const nMatches = Math.max(1, Math.ceil(Math.max(aPis.length, bPis.length) / chunkSize));
-    for (let i = 0; i < nMatches; i++) {
-      const a = aPis.slice(i * chunkSize, i * chunkSize + chunkSize);
-      const b = bPis.slice(i * chunkSize, i * chunkSize + chunkSize);
-      if (a.length || b.length) matches.push({ teamA: a, teamB: b });
+  // Build all pair combinations, sorted by "team-distance" so closer neighbours
+  // get first pick of players (produces sensible bracketing).
+  const pairs = [];
+  for (let i = 0; i < teams.length; i++) {
+    for (let j = i + 1; j < teams.length; j++) {
+      pairs.push([teams[i], teams[j], j - i]);   // [t1, t2, distance]
     }
   }
-  // If an odd team is left over (e.g. 3 teams in play), give it a match with
-  // itself so those players still appear on the Play tab; the "singleTeam"
-  // detection will render it as a team total row rather than A-vs-B garbage.
-  if (teams.length % 2 === 1) {
-    const leftover = teams[teams.length - 1];
-    const pis = indicesOfTeam(leftover);
-    for (let i = 0; i < pis.length; i += 4) {
-      matches.push({ teamA: pis.slice(i, i + 4), teamB: [] });
+  pairs.sort((a, b) => a[2] - b[2]);
+  const used = {};
+  teams.forEach(t => { used[t] = 0; });
+  // Multi-pass allocation until no pair has enough unused players for another 4-ball.
+  let allocated = true;
+  const teamSize = t => indicesOfTeam(t).length;
+  while (allocated) {
+    allocated = false;
+    for (let p = 0; p < pairs.length; p++) {
+      const t1 = pairs[p][0], t2 = pairs[p][1];
+      if (used[t1] + chunkSize > teamSize(t1)) continue;
+      if (used[t2] + chunkSize > teamSize(t2)) continue;
+      const t1pis = indicesOfTeam(t1).slice(used[t1], used[t1] + chunkSize);
+      const t2pis = indicesOfTeam(t2).slice(used[t2], used[t2] + chunkSize);
+      matches.push({ teamA: t1pis, teamB: t2pis });
+      used[t1] += chunkSize;
+      used[t2] += chunkSize;
+      allocated = true;
     }
   }
+  // Any players still unused (odd numbers per team) get pooled together and
+  // packed into full 4-balls — with an even split across teamA/teamB — rather
+  // than left as 1-vs-1 stubs. So 12 players / 4 teams (3 per team) produce
+  // 2 clean 4-balls from the round-robin PLUS a single mixed 3rd 4-ball,
+  // matching the natural "3 four-balls" expectation.
+  const leftoverFlat = [];
+  teams.forEach(t => { indicesOfTeam(t).slice(used[t]).forEach(pi => leftoverFlat.push(pi)); });
+  const isSkinsFmt = (fmt === "skins");
+  for (let i = 0; i < leftoverFlat.length; i += 4) {
+    const four = leftoverFlat.slice(i, i + 4);
+    if (!four.length) break;
+    if (four.length >= 4) {
+      // Split into 2-vs-2. Alternate letters so opponents differ where possible.
+      matches.push({ teamA: [four[0], four[2]], teamB: [four[1], four[3]] });
+    } else if (four.length === 3) {
+      // 3-player group — 2-vs-1
+      matches.push({ teamA: four.slice(0, 2), teamB: four.slice(2) });
+    } else if (four.length === 2) {
+      // Two lingerers: 1v1 (Better Ball) or paired group (skins).
+      if (isSkinsFmt) matches.push({ teamA: four, teamB: [] });
+      else            matches.push({ teamA: [four[0]], teamB: [four[1]] });
+    } else if (isSkinsFmt) {
+      // Single leftover player, skins side-game — put alone in their own row.
+      matches.push({ teamA: four, teamB: [] });
+    }
+  }
+  // If a truly single team is left over (odd team count with unused players),
+  // that team sits the round out — no A-vs-B ghost match created.
   if (!matches.length) matches.push({ teamA: teamAIndices(), teamB: teamBIndices() });
   return matches;
 }
@@ -3100,13 +3612,14 @@ function makeDefaultRoundFormat() {
 // "combined"      — total: sum ALL team players' stableford per hole, higher total wins the match
 // "alliance2"     — total: sum TOP 2 of 4 team players' stableford per hole, higher total wins
 // "alliance3"     — total: sum TOP 3 of 4 team players' stableford per hole, higher total wins
-const SCORING_FORMATS = ["betterBall", "combined", "alliance2", "alliance3", "skins"];
+const SCORING_FORMATS = ["betterBall", "combined", "alliance2", "alliance3", "skins", "wolfie"];
 const SCORING_FORMAT_LABELS = {
   betterBall: "Better Ball Stableford",
   combined:   "Combined Stableford",
   alliance2:  "Four-Ball Alliance — 2 scores to count",
   alliance3:  "Four-Ball Alliance — 3 scores to count",
-  skins:      "Skins (best net score per hole, ties roll over)"
+  skins:      "Skins (best net score per hole, ties roll over)",
+  wolfie:     "Wolfie (3-player Wolf, rotating Lone Wolf default)"
 };
 // Per-round scoring format. Backward-compatible with the older single-format
 // state (state.scoringFormat) — if the per-round map isn't populated, fall
@@ -3125,6 +3638,13 @@ function currentScoringFormat(courseId) {
   return "betterBall";
 }
 function isMatchPlayFormat(courseId) { return currentScoringFormat(courseId) === "betterBall"; }
+// Skins may run as the PRIMARY scoring format OR as a side game bolted onto
+// another format (Better Ball / Combined / Alliance). This helper returns true
+// in either case, so all downstream skins math + display code can rely on it.
+function isSkinsActiveForRound(courseId) {
+  if (currentScoringFormat(courseId) === "skins") return true;
+  return !!(state && state.skinsEnabledByRound && state.skinsEnabledByRound[courseId]);
+}
 function makeDefaultScoringFormats() {
   const map = {};
   COURSES.forEach(c => { map[c.id] = "betterBall"; });
@@ -3156,6 +3676,11 @@ function freshState() {
     tournamentName: "",
     tournamentDate: new Date().toISOString().slice(0, 10),
     teamNames: {},   // { A: "Team A", B: "Team B", ... }; blanks fall back to "Team X"
+    skinValueByRound: {},   // per-round Rand value per skin (only relevant for Skins rounds)
+    skinsEnabledByRound: {},// per-round: run Skins as a SIDE game alongside another scoring format
+    wolfieValueByRound: {}, // per-round Rand-per-Wolfie-point
+    wolfieDecisionsByRound: {}, // { roundId: { "m<matchIdx>": { holeIdx: { mode, partnerPi } } } }
+    wolfieStartByRound: {}, // { roundId: { <matchIdx>: startPlayerIndex } }
     pairs: null,
     oddsEvens: null,
     revealed: false,
@@ -3193,8 +3718,39 @@ if (typeof state.tournamentDate !== "string") state.tournamentDate = new Date().
 if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
 if (typeof state.theme !== "string") state.theme = "dark";
 if (!state.weatherByRound || typeof state.weatherByRound !== "object") state.weatherByRound = {};
+if (!state.skinValueByRound || typeof state.skinValueByRound !== "object") state.skinValueByRound = {};
+if (!state.skinsEnabledByRound || typeof state.skinsEnabledByRound !== "object") state.skinsEnabledByRound = {};
+if (!state.wolfieValueByRound || typeof state.wolfieValueByRound !== "object") state.wolfieValueByRound = {};
+if (!state.wolfieDecisionsByRound || typeof state.wolfieDecisionsByRound !== "object") state.wolfieDecisionsByRound = {};
+if (!state.wolfieStartByRound || typeof state.wolfieStartByRound !== "object") state.wolfieStartByRound = {};
+// One-shot migration: convert old flat wolfieDecisionsByRound[courseId][holeIdx]
+// to the per-match shape wolfieDecisionsByRound[courseId]["m0"][holeIdx].
+Object.keys(state.wolfieDecisionsByRound).forEach(function(cid) {
+  const bag = state.wolfieDecisionsByRound[cid];
+  if (!bag || typeof bag !== "object") return;
+  const keys = Object.keys(bag);
+  const looksFlat = keys.length > 0 && keys.every(function(k) { return /^\d+$/.test(k); });
+  if (looksFlat) state.wolfieDecisionsByRound[cid] = { m0: bag };
+});
 // Reshape schedule to fit current player+round counts (in case they differ from when saved)
 conformScheduleToCounts();
+// Better Ball rounds: strip any "leftover team" or same-team matches that
+// snuck into a persisted schedule from an earlier version. They cause the
+// standings and match-status text to compute nonsense results.
+if (Array.isArray(state.matchSchedule)) {
+  state.matchSchedule.forEach(day => {
+    const course = COURSES[day.roundIdx];
+    if (!course) return;
+    if (currentScoringFormat(course.id) !== "betterBall") return;
+    if (!Array.isArray(day.matches)) return;
+    day.matches = day.matches.filter(m => {
+      if (!m.teamA || !m.teamA.length || !m.teamB || !m.teamB.length) return false;
+      const teamsInMatch = m.teamA.concat(m.teamB).map(pi => teamOfPlayer(pi));
+      const uniq = teamsInMatch.filter((t, i) => teamsInMatch.indexOf(t) === i);
+      return uniq.length >= 2;
+    });
+  });
+}
 // If we're in a team-total format, replace the schedule with a team-grouped
 // alliance schedule (one 4-ball per team, split into 4-balls if larger). This
 // runs at boot so a mis-aligned or legacy schedule (from Better Ball defaults
@@ -3905,6 +4461,83 @@ function renderCourseSelectors() {
       scSel.value = cur;
       scSel.setAttribute("data-format", cur);
     }
+    // Scoring-format info tooltip button (ⓘ next to the selector)
+    const infoBtn = scSel && scSel.parentElement && scSel.parentElement.querySelector(".scoring-info-btn:not(.scoring-info-btn-skins)");
+    if (infoBtn && !infoBtn._bound) {
+      infoBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        _showScoringInfoTip(infoBtn, scSel.value);
+      });
+      infoBtn._bound = true;
+    }
+    // Skins side-game info tooltip button
+    const skinsInfoBtn = scSel && scSel.parentElement && scSel.parentElement.querySelector(".scoring-info-btn-skins");
+    if (skinsInfoBtn && !skinsInfoBtn._bound) {
+      skinsInfoBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        e.preventDefault(); // prevent toggling the checkbox
+        _showScoringInfoTip(skinsInfoBtn, "skins");
+      });
+      skinsInfoBtn._bound = true;
+    }
+    // Skins side-game checkbox. Only shown when the PRIMARY format is not
+    // already Skins (in which case the round IS skins — no toggle needed).
+    const skinsCb = document.getElementById("skins-enable-" + c.id);
+    const primaryIsSkins = currentScoringFormat(c.id) === "skins";
+    if (skinsCb) {
+      const cbLabel = skinsCb.closest(".skins-side-toggle");
+      if (cbLabel) cbLabel.classList.toggle("hidden", primaryIsSkins);
+      if (!skinsCb._bound) {
+        skinsCb.addEventListener("change", () => {
+          if (!state.skinsEnabledByRound) state.skinsEnabledByRound = {};
+          state.skinsEnabledByRound[c.id] = !!skinsCb.checked;
+          saveState();
+          renderCourseSelectors();
+          if (typeof refreshLeaderboards === "function") refreshLeaderboards();
+        });
+        skinsCb._bound = true;
+      }
+      skinsCb.checked = !!(state.skinsEnabledByRound && state.skinsEnabledByRound[c.id]);
+    }
+    // R-per-skin input. Visible whenever Skins is active for the round —
+    // either the primary format is skins, or the side-game checkbox is on.
+    const skinInp = document.getElementById("skin-value-" + c.id);
+    if (skinInp) {
+      const wrap = skinInp.closest(".skin-value-field");
+      const skinsOn = isSkinsActiveForRound(c.id);
+      if (wrap) wrap.classList.toggle("hidden", !skinsOn);
+      if (!skinInp._bound) {
+        skinInp.addEventListener("input", () => {
+          if (!state.skinValueByRound) state.skinValueByRound = {};
+          const v = parseFloat(skinInp.value);
+          state.skinValueByRound[c.id] = isFinite(v) && v >= 0 ? v : 0;
+          saveState();
+          if (typeof refreshLeaderboards === "function") refreshLeaderboards();
+        });
+        skinInp._bound = true;
+      }
+      const val = (state.skinValueByRound && state.skinValueByRound[c.id]) || 0;
+      skinInp.value = val > 0 ? val : "";
+    }
+    // R-per-Wolfie-point input. Visible only when the round is a Wolfie round.
+    const wolfInp = document.getElementById("wolfie-value-" + c.id);
+    if (wolfInp) {
+      const wrap = wolfInp.closest(".wolfie-value-field");
+      const wolfieOn = currentScoringFormat(c.id) === "wolfie";
+      if (wrap) wrap.classList.toggle("hidden", !wolfieOn);
+      if (!wolfInp._bound) {
+        wolfInp.addEventListener("input", () => {
+          if (!state.wolfieValueByRound) state.wolfieValueByRound = {};
+          const v = parseFloat(wolfInp.value);
+          state.wolfieValueByRound[c.id] = isFinite(v) && v >= 0 ? v : 0;
+          saveState();
+          if (typeof refreshLeaderboards === "function") refreshLeaderboards();
+        });
+        wolfInp._bound = true;
+      }
+      const val = (state.wolfieValueByRound && state.wolfieValueByRound[c.id]) || 0;
+      wolfInp.value = val > 0 ? val : "";
+    }
   });
 }
 
@@ -3915,7 +4548,11 @@ function renderCourseSelectors() {
 // two selected pairs; only the per-hole aggregation differs (sum vs. max).
 function isTeamTotalFormat(fmt) {
   if (!fmt) fmt = currentScoringFormat();
-  return fmt === "alliance2" || fmt === "alliance3" || fmt === "skins";
+  // Alliance formats run as team totals (no A-vs-B match). Skins used to be
+  // routed here too, but it now supports editable 4-balls like a match-play
+  // format — the skins winners are computed per hole across all players in
+  // the round regardless of who's paired with whom.
+  return fmt === "alliance2" || fmt === "alliance3";
 }
 // No-op stub — the per-round format is now bound inside renderCourseSelectors
 // (see the scoring-format-<id> select there). Kept so any older callsites
@@ -3939,6 +4576,9 @@ function applyScoringFormatForRound(courseId, fmt) {
   // Reflect visual state on the select
   const sel = document.getElementById("scoring-format-" + courseId);
   if (sel) sel.setAttribute("data-format", fmt);
+  // Re-render course selectors so the "R per skin" input appears/disappears
+  // in sync with the format choice.
+  if (typeof renderCourseSelectors === "function") renderCourseSelectors();
 }
 // Legacy single-format applier — kept for backward-compat; applies to all rounds.
 function applyScoringFormat(fmt) {
@@ -4489,8 +5129,10 @@ function renderScorecards() {
       }
     }
     const totalTh = document.createElement("th");
-    totalTh.innerHTML = '<div class="tot-strokes-lbl">Strokes</div><div class="tot-pts-lbl">Stableford</div>';
-    totalTh.className = "total-cell";
+    const _isWolfieHead = currentScoringFormat(course.id) === "wolfie";
+    totalTh.innerHTML = '<div class="tot-strokes-lbl">Strokes</div><div class="tot-pts-lbl">Stableford</div>' +
+      (_isWolfieHead ? '<div class="tot-wolfie-lbl">Wolfie</div>' : '');
+    totalTh.className = "total-cell" + (_isWolfieHead ? " has-wolfie" : "");
     totalTh.rowSpan = 3;
     holeRow.appendChild(totalTh);
     thead.appendChild(holeRow);
@@ -4550,6 +5192,12 @@ function renderScorecards() {
       }
     }
     thead.appendChild(siRow);
+
+    // Wolfie header rows are injected PER MATCH in the tbody loop (see below),
+    // so multi-match Wolfie rounds each get their own rotating-Wolf + Decision
+    // strip using that match's actual 3-player roster.
+    const isWolfieRound = currentScoringFormat(course.id) === "wolfie";
+
     // Also grey out the hole-number header for inactive holes.
     // Index layout: [Hole, 1..9, OUT, 10..18, IN, Total]
     // → holes 0..8 sit at indices 1..9; holes 9..17 sit at indices 11..19.
@@ -4620,9 +5268,34 @@ function renderScorecards() {
         st.id = "subtotal-" + (nine === 0 ? "out" : "in") + "-" + course.id + "-" + pi;
         tr.appendChild(st);
       };
+      // For Wolfie rounds, precompute the Wolf's player index per hole so we
+      // can flag their score cell.
+      const _isWolfieRound = currentScoringFormat(course.id) === "wolfie";
+      let _wolfieRoster = null;
+      let _wolfieDecisions = null;
+      if (_isWolfieRound && scheduleDay) {
+        const _mIdx = scheduleDay.matches.findIndex(mm => (mm.teamA||[]).concat(mm.teamB||[]).indexOf(pi) >= 0);
+        if (_mIdx >= 0) {
+          const _m = scheduleDay.matches[_mIdx];
+          const _raw = (_m.teamA || []).concat(_m.teamB || []).filter(px => !isGhostName(state.players[px]));
+          if (_raw.length === 3) {
+            _wolfieRoster = _wolfieRotatedRoster(course.id, _mIdx, _raw);
+            const _byRound = (state.wolfieDecisionsByRound && state.wolfieDecisionsByRound[course.id]) || {};
+            _wolfieDecisions = _byRound["m" + _mIdx] || {};
+          }
+        }
+      }
       for (let h = 0; h < HOLES; h++) {
         const td = document.createElement("td");
         td.className = "score-cell " + (h < 9 ? "hole-front" : "hole-back");
+        if (_wolfieRoster && _wolfieRoster[h % 3] === pi) td.classList.add("is-wolf");
+        // Shade partner's own score cell for the hole where they are Wolf's partner
+        if (_wolfieRoster && _wolfieDecisions) {
+          const _dec = _wolfieDecisions[h];
+          if (_dec && _dec.mode === "partner" && _dec.partnerPi === pi && _wolfieRoster[h % 3] !== pi) {
+            td.classList.add("is-wolf-partner");
+          }
+        }
         const holeActive = isHoleActive(course.id, h);
         if (!holeActive) td.classList.add("hole-inactive");
         // Native <select> renders as a scrollable wheel picker on mobile (iOS / Android)
@@ -4817,6 +5490,15 @@ function renderScorecards() {
     // Iterate matches: for each, add its 4 player rows, then a Result row
     if (scheduleDay) {
       scheduleDay.matches.forEach((m, mi) => {
+        // Wolfie strip goes BEFORE this match's player rows when the round is Wolfie
+        // and this match has exactly 3 real (non-ghost) players.
+        if (isWolfieRound) {
+          const rawRoster = (m.teamA || []).concat(m.teamB || []);
+          const wolfRoster = rawRoster.filter(pi => !isGhostName(state.players[pi]));
+          if (wolfRoster.length === 3) {
+            _appendWolfieMatchStrip(tbody, course.id, mi, wolfRoster);
+          }
+        }
         const matchPlayers = m.teamA.concat(m.teamB);
         matchPlayers.forEach((pi, subIdx) => {
           addPlayerRow(pi, { matchStart: (mi > 0 && subIdx === 0), matchIndex: mi });
@@ -4835,6 +5517,7 @@ function renderScorecards() {
   });
   refreshAllStablefordDisplays();
   if (typeof invalidateFloatingHeaders === "function") invalidateFloatingHeaders();
+  if (typeof renderWolfieDecisions === "function") renderWolfieDecisions();
 }
 
 // Returns every element matching the given id. A player scheduled in more than one
@@ -4884,9 +5567,21 @@ function refreshAllStablefordDisplays() {
       _allById("total-" + course.id + "-" + pi).forEach(totEl => {
         const pts = playerCourseStablefordTotal(pi, course.id);
         const strokes = playerCourseStrokesTotal(pi, course.id);
+        const isWolfie = currentScoringFormat(course.id) === "wolfie";
+        let wolfLine = "";
+        if (isWolfie) {
+          const w = (typeof computeWolfieForRound === "function") ? computeWolfieForRound(course.id) : null;
+          const wp = (w && w.perPlayer && w.perPlayer[pi]) ? w.perPlayer[pi] : 0;
+          const val = (state.wolfieValueByRound && state.wolfieValueByRound[course.id]) || 0;
+          const rands = wp * val;
+          wolfLine = '<div class="tot-wolfie">' + wp + ' pt' + (wp === 1 ? '' : 's') +
+            (val > 0 ? ' <span class="tot-wolfie-r">R' + Math.round(rands).toLocaleString("en-ZA") + '</span>' : '') +
+            '</div>';
+        }
         totEl.innerHTML =
           '<div class="tot-strokes">' + (strokes > 0 ? strokes : "") + '</div>' +
-          '<div class="tot-pts">' + (Math.round(pts * 10) / 10) + ' pts</div>';
+          '<div class="tot-pts">' + (Math.round(pts * 10) / 10) + ' pts</div>' +
+          wolfLine;
       });
       // OUT / IN per-9 subtotals
       [0, 1].forEach(nine => {
@@ -5369,6 +6064,18 @@ function applyRemoteState(remote) {
   if (!state.teamNames || typeof state.teamNames !== "object") state.teamNames = {};
   if (typeof state.theme !== "string") state.theme = "dark";
 if (!state.weatherByRound || typeof state.weatherByRound !== "object") state.weatherByRound = {};
+if (!state.skinValueByRound || typeof state.skinValueByRound !== "object") state.skinValueByRound = {};
+if (!state.skinsEnabledByRound || typeof state.skinsEnabledByRound !== "object") state.skinsEnabledByRound = {};
+if (!state.wolfieValueByRound || typeof state.wolfieValueByRound !== "object") state.wolfieValueByRound = {};
+if (!state.wolfieDecisionsByRound || typeof state.wolfieDecisionsByRound !== "object") state.wolfieDecisionsByRound = {};
+if (!state.wolfieStartByRound || typeof state.wolfieStartByRound !== "object") state.wolfieStartByRound = {};
+Object.keys(state.wolfieDecisionsByRound).forEach(function(cid) {
+  const bag = state.wolfieDecisionsByRound[cid];
+  if (!bag || typeof bag !== "object") return;
+  const keys = Object.keys(bag);
+  const looksFlat = keys.length > 0 && keys.every(function(k) { return /^\d+$/.test(k); });
+  if (looksFlat) state.wolfieDecisionsByRound[cid] = { m0: bag };
+});
   conformScheduleToCounts();
   if (anyTeamTotalFormat()) {
     state.matchSchedule = generateAllianceSchedule();
@@ -5658,31 +6365,91 @@ function computeMatchStatus(match, roundIdx) {
   return { aWins, bWins, halved, holesPlayed, holesLeft, lead, status, complete, provisional, aPoints, bPoints, aTotal, bTotal, matchPlay, teamAletter, teamBletter };
 }
 
+// Collect every player index used somewhere in this round's schedule, so
+// each dropdown can grey-out the ones already taken elsewhere.
+function _playersUsedInDay(day) {
+  const used = new Set();
+  (day.matches || []).forEach(m => {
+    (m.teamA || []).forEach(pi => used.add(pi));
+    (m.teamB || []).forEach(pi => used.add(pi));
+  });
+  return used;
+}
+
 function makeMatchSelect(dayIdx, matchIdx, team, slot, currentPi) {
   const sel = document.createElement("select");
-  // Colour the select's left border to the ACTUAL team the currently-selected
-  // player belongs to (rather than the hardcoded slot letter), so 3+ team
-  // pairings look right visually.
   const currentTeamLetter = (currentPi != null) ? teamOfPlayer(currentPi) : team;
   sel.className = "match-select match-select-" + currentTeamLetter.toLowerCase();
-  // Include ALL players, grouped by team, so any team can be paired against
-  // any other team on the Matches tab.
+  const day = (state.matchSchedule || [])[dayIdx];
+  const takenElsewhere = day ? _playersUsedInDay(day) : new Set();
+  takenElsewhere.delete(currentPi);
   teamsInPlay().forEach(t => {
     const group = document.createElement("optgroup");
     group.label = teamDisplayName(t);
     indicesOfTeam(t).forEach(pi => {
       const opt = document.createElement("option");
       opt.value = String(pi);
-      opt.textContent = displayName(pi);
+      opt.textContent = displayName(pi) + (takenElsewhere.has(pi) ? "  ↔  (auto-swap)" : "");
       if (pi === currentPi) opt.selected = true;
       group.appendChild(opt);
     });
+    // Add a Ghost placeholder per team — selecting it substitutes an
+    // "unavailable" ghost into this slot (uses team-average scoring).
+    const ghostOpt = document.createElement("option");
+    ghostOpt.value = "ghost:" + t;
+    ghostOpt.textContent = "👻 Ghost (" + t + ")";
+    group.appendChild(ghostOpt);
     if (group.childNodes.length) sel.appendChild(group);
   });
   sel.addEventListener("change", () => {
-    handleMatchPairChange(dayIdx, matchIdx, team, slot, parseInt(sel.value));
+    const raw = sel.value;
+    if (raw && raw.indexOf("ghost:") === 0) {
+      const ghostTeam = raw.slice(6);
+      const ghostPi = ensureGhostPlayerForTeam(ghostTeam, dayIdx);
+      if (ghostPi == null) { sel.value = String(currentPi); return; }
+      handleMatchPairChange(dayIdx, matchIdx, team, slot, ghostPi);
+      return;
+    }
+    handleMatchPairChange(dayIdx, matchIdx, team, slot, parseInt(raw));
   });
   return sel;
+}
+
+// Return the player index of a Ghost slot on the given team. Prefers to
+// re-use an existing Ghost on that team ONLY when the ghost isn't already
+// scheduled in the current day's matches; otherwise creates a brand-new
+// Ghost so multiple ghost slots can co-exist on one team.
+function ensureGhostPlayerForTeam(letter, dayIdx) {
+  if (TEAMS.indexOf(letter) < 0) return null;
+  if (!state.players) return null;
+  const day = (state.matchSchedule || [])[dayIdx];
+  const usedInDay = day ? _playersUsedInDay(day) : new Set();
+  // Prefer an existing Ghost on this team that's not already in the day's schedule.
+  for (let pi = 0; pi < state.players.length; pi++) {
+    if (isGhostName(state.players[pi]) && teamOfPlayer(pi) === letter && !usedInDay.has(pi)) {
+      return pi;
+    }
+  }
+  // Cap at MAX_PLAYERS
+  if (state.players.length >= MAX_PLAYERS) {
+    if (typeof showToast === "function") {
+      showToast("Roster is full — remove a player in Setup before adding another Ghost.", { type: "info" });
+    }
+    return null;
+  }
+  // Create a new Ghost slot (allows multiple Ghosts per team when needed).
+  const pi = state.players.length;
+  state.players.push("Ghost");
+  if (!Array.isArray(state.playerTeams)) state.playerTeams = defaultTeamAssignments(pi);
+  state.playerTeams.push(letter);
+  COURSES.forEach(c => {
+    state.scores[c.id].push(Array(HOLES).fill(""));
+    state.handicapsByCourse[c.id].push(0);
+  });
+  saveState();
+  if (typeof renderPlayers === "function") renderPlayers();
+  if (typeof renderScorecards === "function") renderScorecards();
+  return pi;
 }
 
 function handleMatchPairChange(dayIdx, matchIdx, team, slot, newPi) {
@@ -5693,18 +6460,25 @@ function handleMatchPairChange(dayIdx, matchIdx, team, slot, newPi) {
   const arr = team === "A" ? match.teamA : match.teamB;
   const oldPi = arr[slot];
   if (oldPi === newPi) return;
-  // Auto-swap: if newPi is already in another match on the same day (same team), swap it with oldPi
+  // Whole-day dedupe: if newPi already appears anywhere else in this round
+  // (either side of any match), swap that occurrence with oldPi so no player
+  // is scheduled twice in the same round.
   for (let mi = 0; mi < day.matches.length; mi++) {
-    if (mi === matchIdx) continue;
-    const otherArr = team === "A" ? day.matches[mi].teamA : day.matches[mi].teamB;
-    for (let si = 0; si < otherArr.length; si++) {
-      if (otherArr[si] === newPi) otherArr[si] = oldPi;
-    }
+    ["teamA","teamB"].forEach(side => {
+      const otherArr = day.matches[mi][side];
+      if (!Array.isArray(otherArr)) return;
+      for (let si = 0; si < otherArr.length; si++) {
+        if (mi === matchIdx && side === (team === "A" ? "teamA" : "teamB") && si === slot) continue;
+        if (otherArr[si] === newPi) otherArr[si] = oldPi;
+      }
+    });
   }
   arr[slot] = newPi;
   saveState();
-  renderScorecards();      // reorder scorecard rows to reflect new pairing order
+  renderScorecards();
   refreshLeaderboards();
+  // Re-render the Matches tab so dropdowns re-compute "in use" flags.
+  if (typeof renderMatchSchedule === "function") renderMatchSchedule();
 }
 
 // ---------- Matches tab: per-round collapse ----------
@@ -5817,6 +6591,23 @@ function renderMatchSchedule() {
     dayBody.className = "day-body";
     dayWrap.appendChild(dayBody);
     day.matches.forEach((m, mi) => {
+      // Better Ball / Combined require an opponent (A vs B). Skip malformed
+      // rows there to avoid ghost "wins X up" statuses. Skins is a per-hole
+      // best-net game with no A-vs-B concept — its 4-balls are just physical
+      // groupings and any roster composition is valid.
+      const _rosterTeams = (m.teamA||[]).concat(m.teamB||[]).map(pi => teamOfPlayer(pi));
+      const _uniqueTeams = _rosterTeams.filter((t, idx) => _rosterTeams.indexOf(t) === idx);
+      const _needsOpponent = (fmt === "betterBall" || fmt === "combined");
+      if (_needsOpponent && (!m.teamA || !m.teamA.length || !m.teamB || !m.teamB.length || _uniqueTeams.length < 2)) {
+        return;
+      }
+      // Skip ghost-only matches — every player in the roster is a Ghost, so
+      // the "match" has no real competitors. Also skip and exclude them from
+      // standings so phantom entries don't clutter the Matches tab.
+      const _allRoster = (m.teamA||[]).concat(m.teamB||[]);
+      if (_allRoster.length && _allRoster.every(pi => isGhostName(state.players[pi]))) {
+        return;
+      }
       const status = computeMatchStatus(m, day.roundIdx);
       const card = document.createElement("div");
       card.className = "match-card" + (status && status.complete ? " match-done" : "");
@@ -5949,22 +6740,100 @@ function renderTeamTotalsDay(container, day, course, fmt, teams, ptsByRound, ove
 }
 
 function computeIndividualStandings() {
-  return state.players.map((_, pi) => {
+  const skinsByRound = {};
+  const wolfieByRound = {};
+  const potInfo = { totalPot: 0, contribution: 0, hasValue: false };
+  const wolfiePot = { totalPot: 0, contribution: 0, hasValue: false };
+  const players = state.players || [];
+  const N = players.filter(n => !isGhostName(n)).length;
+  const hasSkins = getActiveCourses().some(c => isSkinsActiveForRound(c.id));
+  const hasWolfie = getActiveCourses().some(c => currentScoringFormat(c.id) === "wolfie");
+  if (hasSkins) {
+    getActiveCourses().forEach(c => {
+      if (!isSkinsActiveForRound(c.id)) return;
+      skinsByRound[c.id] = computeSkinsForRound(c.id);
+      const value = (state.skinValueByRound && state.skinValueByRound[c.id]) || 0;
+      if (value > 0) {
+        potInfo.hasValue = true;
+        let activeHoles = 0;
+        for (let h = 0; h < HOLES; h++) if (isHoleActive(c.id, h)) activeHoles++;
+        potInfo.totalPot += value * activeHoles;
+      }
+    });
+    if (N > 0) potInfo.contribution = potInfo.totalPot / N;
+  }
+  // Wolfie: total pot = value × total Wolfie points awarded (~3 per hole in
+  // typical play). Each player contributes equally regardless of participation.
+  if (hasWolfie) {
+    getActiveCourses().forEach(c => {
+      if (currentScoringFormat(c.id) !== "wolfie") return;
+      wolfieByRound[c.id] = computeWolfieForRound(c.id);
+      const value = (state.wolfieValueByRound && state.wolfieValueByRound[c.id]) || 0;
+      if (value > 0) {
+        wolfiePot.hasValue = true;
+        let totalPts = 0;
+        Object.keys(wolfieByRound[c.id].perPlayer).forEach(pi => {
+          totalPts += wolfieByRound[c.id].perPlayer[pi];
+        });
+        wolfiePot.totalPot += value * totalPts;
+      }
+    });
+    if (N > 0) wolfiePot.contribution = wolfiePot.totalPot / N;
+  }
+  return state.players.map((name, pi) => ({ name, pi }))
+    .filter(p => !isGhostName(p.name))
+    .map(({ pi }) => {
     const perRound = {};
     let total = 0;
+    let skins = 0;
+    let winnings = 0;
+    let wolfiePoints = 0;
+    let wolfieWinnings = 0;
     getActiveCourses().forEach(c => {
       const t = playerCourseStablefordTotal(pi, c.id);
       perRound[c.id] = t;
       total += t;
+      if (skinsByRound[c.id]) {
+        const share = skinsByRound[c.id].perPlayer[pi] || 0;
+        skins += share;
+        const value = (state.skinValueByRound && state.skinValueByRound[c.id]) || 0;
+        winnings += share * value;
+      }
+      if (wolfieByRound[c.id]) {
+        const wp = wolfieByRound[c.id].perPlayer[pi] || 0;
+        wolfiePoints += wp;
+        const value = (state.wolfieValueByRound && state.wolfieValueByRound[c.id]) || 0;
+        wolfieWinnings += wp * value;
+      }
     });
-    return { pi, total, perRound, team: teamOfPlayer(pi) };
-  }).sort((a, b) => b.total - a.total);
+    const net = (winnings - potInfo.contribution) + (wolfieWinnings - wolfiePot.contribution);
+    return { pi, total, perRound, skins, winnings, wolfiePoints, wolfieWinnings, net, team: teamOfPlayer(pi) };
+  }).sort((a, b) => {
+    if (b.total !== a.total) return b.total - a.total;
+    if ((b.skins || 0) !== (a.skins || 0)) return (b.skins || 0) - (a.skins || 0);
+    return (b.wolfiePoints || 0) - (a.wolfiePoints || 0);
+  });
+}
+// Expose whether any skin round has a Rand value assigned (used to conditionally
+// show Winnings/Net columns in the leaderboard).
+function hasSkinValueSet() {
+  if (!state.skinValueByRound) return false;
+  return getActiveCourses().some(c => isSkinsActiveForRound(c.id) && (state.skinValueByRound[c.id] || 0) > 0);
 }
 
 function renderIndividualLeaderboard() {
   const c = document.getElementById("individual-leaderboard");
   if (!c) return;
   const standings = computeIndividualStandings();
+  const round1 = n => (Math.round(n * 10) / 10);
+  const showSkins = getActiveCourses().some(c => isSkinsActiveForRound(c.id))
+                    && standings.some(s => (s.skins || 0) > 0);
+  const showRands = showSkins && (typeof hasSkinValueSet === "function") && hasSkinValueSet();
+  const showWolfie = getActiveCourses().some(c => currentScoringFormat(c.id) === "wolfie")
+                    && standings.some(s => (s.wolfiePoints || 0) > 0);
+  const showWolfieRands = showWolfie && getActiveCourses().some(c =>
+    currentScoringFormat(c.id) === "wolfie" && (state.wolfieValueByRound && state.wolfieValueByRound[c.id] || 0) > 0);
+  const rand = n => "R" + (Math.round(n)).toLocaleString("en-ZA");
   const table = document.createElement("table");
   table.className = "leaderboard";
   const thead = document.createElement("thead");
@@ -5973,7 +6842,13 @@ function renderIndividualLeaderboard() {
     const nm = (state.courseInfo[course.id] && state.courseInfo[course.id].name) || course.name;
     hdr += '<th title="' + nm + '">R' + (idx + 1) + '</th>';
   });
-  hdr += '<th class="lb-total">Total</th></tr>';
+  hdr += '<th class="lb-total">Total<br><span class="lb-total-sub">stableford</span></th>';
+  if (showSkins) hdr += '<th class="lb-skins">Skins<br><span class="lb-skins-sub">separate</span></th>';
+  if (showRands) hdr += '<th class="lb-skins">Winnings<br><span class="lb-skins-sub">skins rands</span></th>';
+  if (showWolfie) hdr += '<th class="lb-wolfie">Wolfie<br><span class="lb-skins-sub">points</span></th>';
+  if (showWolfieRands) hdr += '<th class="lb-wolfie">Wolfie R<br><span class="lb-skins-sub">rands</span></th>';
+  if (showRands || showWolfieRands) hdr += '<th class="lb-skins">Net<br><span class="lb-skins-sub">after pot</span></th>';
+  hdr += '</tr>';
   thead.innerHTML = hdr;
   table.appendChild(thead);
   const tbody = document.createElement("tbody");
@@ -5986,7 +6861,12 @@ function renderIndividualLeaderboard() {
       '<td class="lb-name">' + displayName(s.pi) + '</td>' +
       '<td><span class="team-tag team-tag-' + s.team.toLowerCase() + '">' + s.team + '</span></td>' +
       getActiveCourses().map(course => '<td>' + Math.round(s.perRound[course.id]) + '</td>').join("") +
-      '<td class="lb-total">' + Math.round(s.total) + '</td>';
+      '<td class="lb-total">' + Math.round(s.total) + '</td>' +
+      (showSkins ? '<td class="lb-skins">' + (s.skins ? round1(s.skins) : "—") + '</td>' : "") +
+      (showRands ? '<td class="lb-skins">' + (s.winnings > 0 ? rand(s.winnings) : "—") + '</td>' : "") +
+      (showWolfie ? '<td class="lb-wolfie">' + (s.wolfiePoints > 0 ? s.wolfiePoints : "—") + '</td>' : "") +
+      (showWolfieRands ? '<td class="lb-wolfie">' + (s.wolfieWinnings > 0 ? rand(s.wolfieWinnings) : "—") + '</td>' : "") +
+      ((showRands || showWolfieRands) ? '<td class="lb-skins ' + (s.net > 0 ? "net-pos" : (s.net < 0 ? "net-neg" : "")) + '">' + (s.net > 0 ? "+" + rand(s.net) : (s.net < 0 ? "-" + rand(Math.abs(s.net)) : "R0")) + '</td>' : "");
     tbody.appendChild(row);
   });
   table.appendChild(tbody);
@@ -6029,25 +6909,32 @@ function renderTeamLeaderboard() {
     return dt !== 0 ? dt : TEAMS.indexOf(a) - TEAMS.indexOf(b);
   });
 
-  // Highlight leaders of each independent metric (Stableford, Match pts).
+  // Highlight leaders of each independent metric (Stableford, Match pts, Skins).
   const maxSb = Math.max(...s.teams.map(t => s.stablefordTotals[t] || 0), 0);
   const maxMp = Math.max(...s.teams.map(t => s.matchTotals[t] || 0), 0);
+  const maxSk = Math.max(...s.teams.map(t => (s.skinsTotals && s.skinsTotals[t]) || 0), 0);
+  // Only show the Skins column when a skins round exists or has been played.
+  const showSkins = maxSk > 0 || COURSES.some(c => isSkinsActiveForRound(c.id));
 
   let html = '<table class="team-lb-table"><thead><tr>' +
     '<th class="tl-team">Team</th>' +
     '<th class="tl-num">Stableford</th>' +
     '<th class="tl-num">Match pts</th>' +
+    (showSkins ? '<th class="tl-num">Skins</th>' : '') +
     '</tr></thead><tbody>';
   teamsSorted.forEach(t => {
     const sb = s.stablefordTotals[t] || 0;
     const mp = s.matchTotals[t] || 0;
+    const sk = (s.skinsTotals && s.skinsTotals[t]) || 0;
     const sbLead = maxSb > 0 && sb === maxSb;
     const mpLead = maxMp > 0 && mp === maxMp;
+    const skLead = maxSk > 0 && sk === maxSk;
     html +=
       '<tr class="team-' + t.toLowerCase() + '-row">' +
         '<td class="tl-team"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span> ' + teamDisplayName(t) + '</td>' +
         '<td class="tl-num' + (sbLead ? ' tl-lead' : '') + '">' + round1(sb) + '</td>' +
         '<td class="tl-num' + (mpLead ? ' tl-lead' : '') + '">' + round1(mp) + '</td>' +
+        (showSkins ? '<td class="tl-num' + (skLead ? ' tl-lead' : '') + '">' + (sk > 0 ? round1(sk) : "—") + '</td>' : '') +
       '</tr>';
   });
   html += '</tbody></table>';
@@ -6072,7 +6959,7 @@ function renderTeamLeaderboard() {
       .join(" &middot; ");
     html +=
       '<div class="team-lb-summary">' +
-        'Stableford column = sum of team-hole points on Combined/Alliance rounds. Match pts = points from Better Ball rounds.' +
+        'Stableford = team-hole points from every round (best-of-pair, sum, or top-2/3 per format). Match pts = Better Ball / Combined outcomes plus ranked Alliance placings.' +
         ' <br><em>' + perRound + '</em>' +
       '</div>';
   }
@@ -6310,6 +7197,9 @@ function computeAllTeamStandings() {
       const teamAletter = teamOfPlayer(m.teamA[0]);
       const teamBletter = teamOfPlayer(m.teamB[0]);
       if (teamAletter === teamBletter) return;
+      // Skip ghost-only matches — no real competitors.
+      const _allPis = m.teamA.concat(m.teamB);
+      if (_allPis.every(pi => isGhostName(state.players[pi]))) return;
       const s = computeMatchStatus(m, day.roundIdx);
       if (!s) return;
       if (totals[teamAletter] == null) { totals[teamAletter] = 0; matchTotals[teamAletter] = 0; stablefordTotals[teamAletter] = 0; }
@@ -6321,15 +7211,27 @@ function computeAllTeamStandings() {
     });
   });
 
-  // Team-total (alliance only): sum each team's own team-hole points across
-  // the round. Combined and Better Ball do NOT accumulate here — they run as
-  // matches and their outcomes are captured as match points above.
+  // Aggregate team stableford points across every round (except Skins, which
+  // has its own metric). Each round uses its own format's team-hole aggregation
+  // (best-of-pair for Better Ball, sum for Combined, top-2/top-3 for Alliance).
+  // Match points for Better Ball and Combined are handled in the block above;
+  // Alliance rounds award ranked match points inside this loop.
   // Track skins won so we can surface them separately in the header/standings.
   const skinsTotals = {};
   teams.forEach(t => { skinsTotals[t] = 0; });
   getActiveCourses().forEach(course => {
     const fmtR = currentScoringFormat(course.id);
-    if (!isTeamTotalFormat(fmtR)) return;
+    // Side-game skins: even if the primary format isn't Skins, if skins is
+    // enabled for this round, accumulate skins per team.
+    if (fmtR !== "skins" && isSkinsActiveForRound(course.id)) {
+      const res = computeSkinsForRound(course.id);
+      teams.forEach(t => {
+        const n = res.perTeam[t] || 0;
+        skinsTotals[t] += n;
+      });
+      // Do NOT `return` — the primary format still needs to score below.
+    }
+    // Skins-primary round: skins contribute to skinsTotals only, no stableford.
     if (fmtR === "skins") {
       const res = computeSkinsForRound(course.id);
       teams.forEach(t => {
@@ -6339,17 +7241,55 @@ function computeAllTeamStandings() {
       });
       return;
     }
+    // ALL non-skins formats (Better Ball, Combined, Alliance) accumulate
+    // team stableford points — using each format's own team-hole aggregation
+    // (best of pair for betterBall, sum for combined, top-2 / top-3 for alliance).
+    // Better Ball / Combined rounds ALSO award match points below.
+    const perTeam = {};
     teams.forEach(t => {
       const pis = indicesOfTeam(t);
-      if (!pis.length) return;
+      if (!pis.length) { perTeam[t] = 0; return; }
       let rTotal = 0;
       for (let h = 0; h < HOLES; h++) {
         if (!isHoleActive(course.id, h)) continue;
         rTotal += teamHolePoints(pis, course.id, h, fmtR);
       }
+      perTeam[t] = rTotal;
       totals[t] += rTotal;
       stablefordTotals[t] += rTotal;
     });
+    // Alliance rounds ALSO award match-play points ranked by team total on
+    // that round. 1st = N pts, 2nd = N-1, …, last = 0. Ties share the average
+    // of the positions they occupy (so two teams tied for 1st in a 4-team
+    // round each get (4+3)/2 = 3.5 pts).
+    if (fmtR === "alliance2" || fmtR === "alliance3") {
+      // Only count rounds where at least one team has scored anything.
+      const anyPlayed = teams.some(t => (perTeam[t] || 0) > 0);
+      if (anyPlayed) {
+        const N = teams.length;
+        // Sort teams by descending round total.
+        const sorted = teams.slice().sort((a, b) => (perTeam[b] || 0) - (perTeam[a] || 0));
+        // Points per position: pos 1 → N-1, pos 2 → N-2, ..., last → 0.
+        // Consistent 1-point gap between every position.
+        const pointsForRank = rank1based => (N - rank1based);
+        // Rank = 1..N. Ties: teams with equal totals share averaged points.
+        let i = 0;
+        while (i < sorted.length) {
+          let j = i;
+          while (j + 1 < sorted.length && (perTeam[sorted[j+1]] || 0) === (perTeam[sorted[i]] || 0)) j++;
+          // Positions occupied: i+1 .. j+1 (1-based). Averaged points across those positions.
+          let ptsSum = 0, count = 0;
+          for (let p = i + 1; p <= j + 1; p++) { ptsSum += pointsForRank(p); count++; }
+          const share = count > 0 ? (ptsSum / count) : 0;
+          for (let k = i; k <= j; k++) {
+            const t = sorted[k];
+            totals[t] += share;
+            matchTotals[t] += share;
+          }
+          i = j + 1;
+        }
+      }
+    }
   });
 
   // Determine the current leader (or leaders on a tie)
@@ -6394,7 +7334,7 @@ function renderHeaderScoreboard() {
   // so the layout doesn't collapse to a single blank number.
   const hasBetterBall = COURSES.some(c => currentScoringFormat(c.id) === "betterBall");
   const hasStableford = COURSES.some(c => { const f = currentScoringFormat(c.id); return f === "combined" || f === "alliance2" || f === "alliance3"; });
-  const hasSkins      = COURSES.some(c => currentScoringFormat(c.id) === "skins");
+  const hasSkins      = COURSES.some(c => isSkinsActiveForRound(c.id));
   const showSb = anySb || hasStableford;
   const showMp = anyMp || hasBetterBall;
   const showSk = anySk || hasSkins;
@@ -6441,7 +7381,7 @@ function renderHeaderScoreboard() {
       const isLead = maxSk > 0 && sk === maxSk;
       metrics.innerHTML +=
         '<span class="ts-metric' + (isLead ? " ts-metric-lead" : "") + '">' +
-          '<span class="ts-metric-val">' + sk + '</span>' +
+          '<span class="ts-metric-val">' + round1(sk) + '</span>' +
           '<span class="ts-metric-unit">SKINS</span>' +
         '</span>';
     }
@@ -6848,24 +7788,280 @@ function flashScoreCell(courseId, pi, hole) {
 }
 
 // ---------- Auto-advance to next player on same hole ----------
-function autoAdvanceFrom(courseId, pi, hole) {
-  const roster = _visibleMatchRoster(courseId);
-  if (!roster.length) return;
-  const idx = roster.indexOf(pi);
-  if (idx < 0 || idx === roster.length - 1) return;
-  const nextPi = roster[idx + 1];
-  const nextInp = document.getElementById("stroke-" + courseId + "-" + nextPi + "-" + hole);
-  if (nextInp && !nextInp.disabled) {
-    setTimeout(() => { try { nextInp.focus(); } catch (e) {} }, 30);
+// ---------- Scoring-format info tooltip (Setup tab) ----------
+const _SCORING_INFO = {
+  betterBall: {
+    title: "Better Ball Stableford",
+    body:
+      '<p>Two players per side. On each hole, take the <b>higher Stableford points</b> of the two teammates as the team’s hole score. Sum across 18 holes for the team’s round total.</p>' +
+      '<p><b>Stableford points (net vs hole par):</b></p>' +
+      '<table><tr><th>Net</th><th>Points</th></tr>' +
+      '<tr><td>Double bogey or worse</td><td>0</td></tr>' +
+      '<tr><td>Bogey (+1)</td><td>1</td></tr>' +
+      '<tr><td>Par</td><td>2</td></tr>' +
+      '<tr><td>Birdie (−1)</td><td>3</td></tr>' +
+      '<tr><td>Eagle (−2)</td><td>4</td></tr>' +
+      '<tr><td>Albatross (−3)</td><td>5</td></tr></table>' +
+      '<p>Strokes are received on the toughest holes by SI, based on each player’s course handicap.</p>'
+  },
+  combined: {
+    title: "Combined Stableford",
+    body:
+      '<p>Two players per side. <b>Add both teammates’ Stableford points</b> on every hole — no discards. Sum across 18 holes for the team’s round total.</p>' +
+      '<p>Higher-variance version of Better Ball: both players must contribute.</p>'
+  },
+  alliance2: {
+    title: "Alliance — 2 best scores",
+    body:
+      '<p>Team of 3–4 players. On each hole, sum the <b>best 2 Stableford points</b> from the team. That’s the hole score; sum across 18 for the team total.</p>' +
+      '<p>Team-vs-team ranked points are awarded per round: <b>N−1, N−2, …, 0</b> where N is the number of teams. Ties get the average of their positions.</p>'
+  },
+  alliance3: {
+    title: "Alliance — 3 best scores",
+    body:
+      '<p>Team of 4 players. On each hole, sum the <b>best 3 Stableford points</b> from the team (drop the worst). That’s the hole score; sum across 18 for the team total.</p>' +
+      '<p>Team-vs-team ranked points are awarded per round: <b>N−1, N−2, …, 0</b> where N is the number of teams. Ties get the average of their positions.</p>'
+  },
+  skins: {
+    title: "Skins",
+    body:
+      '<p>One skin per hole. Winner is the player with the <b>lowest net stroke</b> (after handicap strokes).</p>' +
+      '<p>Ties split the skin evenly among tied players — no carryover. An N-hole round always awards N skins total.</p>' +
+      '<p>If a <b>Rand-per-skin</b> value is set, every player contributes equally to the pot; each player’s net = (skins won × R) − contribution.</p>'
+  },
+  wolfie: {
+    title: "Wolfie (3-player Wolf)",
+    body:
+      '<p>3-player match. The <b>Wolf</b> rotates every hole (order set by the Starting Wolf picker). Wolf declares one of three modes per hole:</p>' +
+      '<table><tr><th>Mode</th><th>Wolf side wins</th><th>Wolf side loses</th></tr>' +
+      '<tr><td>Lone (default)</td><td>Wolf +2</td><td>Each opp +1</td></tr>' +
+      '<tr><td>Partner</td><td>Wolf +1, Partner +1</td><td>Lone opp +2</td></tr>' +
+      '<tr><td>Blind Lone</td><td>Wolf +3</td><td>Each opp +1</td></tr>' +
+      '<tr><td>Any tie</td><td colspan="2">No points</td></tr></table>' +
+      '<p>Winner determined by lowest <b>net stroke</b>. In Partner mode, use best-ball net of the Wolf side vs the lone opponent’s net.</p>' +
+      '<p>If a <b>Rand-per-Wolfie-point</b> value is set, every player contributes equally to the pot; net = (points × R) − contribution.</p>'
   }
+};
+let _scoringInfoTipEl = null;
+function _closeScoringInfoTip() {
+  if (_scoringInfoTipEl && _scoringInfoTipEl.parentElement) _scoringInfoTipEl.remove();
+  _scoringInfoTipEl = null;
+  document.removeEventListener("click", _closeScoringInfoTipOnOutside, true);
+  document.removeEventListener("keydown", _closeScoringInfoTipOnEsc, true);
 }
-function _visibleMatchRoster(courseId) {
-  const rc = COURSES.findIndex(c => c.id === courseId);
-  const day = (state.matchSchedule || []).find(d => d.roundIdx === rc);
-  if (!day) return state.players.map((_, i) => i);
-  const pis = [];
-  day.matches.forEach(m => { (m.teamA||[]).concat(m.teamB||[]).forEach(pi => pis.push(pi)); });
-  return pis;
+function _closeScoringInfoTipOnOutside(e) {
+  if (!_scoringInfoTipEl) return;
+  if (e.target === _scoringInfoTipEl || _scoringInfoTipEl.contains(e.target)) return;
+  if (e.target.classList && e.target.classList.contains("scoring-info-btn")) return;
+  _closeScoringInfoTip();
+}
+function _closeScoringInfoTipOnEsc(e) { if (e.key === "Escape") _closeScoringInfoTip(); }
+function _showScoringInfoTip(anchor, fmt) {
+  _closeScoringInfoTip();
+  const info = _SCORING_INFO[fmt] || { title: "Scoring", body: "<p>No details available.</p>" };
+  const tip = document.createElement("div");
+  tip.className = "scoring-info-tip";
+  tip.innerHTML =
+    '<button type="button" class="tip-close" aria-label="Close">&times;</button>' +
+    '<h5>' + info.title + '</h5>' + info.body;
+  document.body.appendChild(tip);
+  // Position: below the anchor, right-aligned to viewport if it would overflow
+  const rect = anchor.getBoundingClientRect();
+  const tipW = tip.offsetWidth;
+  const tipH = tip.offsetHeight;
+  const scrollY = window.scrollY || document.documentElement.scrollTop;
+  const scrollX = window.scrollX || document.documentElement.scrollLeft;
+  let top = rect.bottom + scrollY + 6;
+  let left = rect.left + scrollX;
+  if (left + tipW > window.innerWidth + scrollX - 8) left = Math.max(8, window.innerWidth + scrollX - tipW - 8);
+  if (top + tipH > window.innerHeight + scrollY - 8) {
+    top = rect.top + scrollY - tipH - 6;
+  }
+  tip.style.top = top + "px";
+  tip.style.left = left + "px";
+  tip.querySelector(".tip-close").addEventListener("click", _closeScoringInfoTip);
+  _scoringInfoTipEl = tip;
+  setTimeout(() => {
+    document.addEventListener("click", _closeScoringInfoTipOnOutside, true);
+    document.addEventListener("keydown", _closeScoringInfoTipOnEsc, true);
+  }, 0);
+}
+
+// ---------- "How scores are Calculated" modal (Standings tab) ----------
+function _showHowScoredModal() {
+  // Close any open scoring-info tooltip first
+  if (typeof _closeScoringInfoTip === "function") _closeScoringInfoTip();
+  const courses = getActiveCourses();
+  const formatLabel = {
+    betterBall: "Better Ball Stableford",
+    combined:   "Combined Stableford",
+    alliance2:  "Alliance — 2 best scores",
+    alliance3:  "Alliance — 3 best scores",
+    skins:      "Skins",
+    wolfie:     "Wolfie (3-player Wolf)"
+  };
+  const roundLabel = {
+    full:   "18 holes",
+    front9: "Front 9 (holes 1–9)",
+    back9:  "Back 9 (holes 10–18)"
+  };
+  // Build the per-round summary
+  let summary = '<div class="rounds-summary"><strong>Rounds in this tournament:</strong><br>';
+  const formatsInUse = new Set();
+  const skinsSideRounds = [];
+  const wolfieRands = [];
+  const skinsRands = [];
+  courses.forEach((c, i) => {
+    const fmt = currentScoringFormat(c.id);
+    formatsInUse.add(fmt);
+    const rf = (state.roundFormat && state.roundFormat[c.id]) || "full";
+    const cName = (state.courseInfo[c.id] && state.courseInfo[c.id].name) || c.name;
+    const bits = [formatLabel[fmt] || fmt, roundLabel[rf] || rf];
+    if (fmt !== "skins" && isSkinsActiveForRound(c.id)) {
+      bits.push("+ Skins side-game");
+      skinsSideRounds.push(cName);
+      formatsInUse.add("skins");
+    }
+    const wV = (state.wolfieValueByRound && state.wolfieValueByRound[c.id]) || 0;
+    if (fmt === "wolfie" && wV > 0) wolfieRands.push(cName + " (R" + wV + "/pt)");
+    const sV = (state.skinValueByRound && state.skinValueByRound[c.id]) || 0;
+    if (isSkinsActiveForRound(c.id) && sV > 0) skinsRands.push(cName + " (R" + sV + "/skin)");
+    summary += '<b>Round ' + (i + 1) + ':</b> ' + cName + ' — ' + bits.join(", ") + '<br>';
+  });
+  summary += '</div>';
+
+  // Base Stableford always relevant (except pure Skins / Wolfie rounds don't
+  // contribute to team Stableford totals — we mention that below).
+  let body = '';
+
+  body += '<h3>Stableford scoring (net vs par)</h3>' +
+    '<p>Points on a hole are based on the player\'s <b>net</b> score (gross strokes minus handicap strokes received on that hole per Stroke Index).</p>' +
+    '<table><tr><th>Net vs par</th><th>Points</th></tr>' +
+    '<tr><td>Double bogey or worse (+2)</td><td>0</td></tr>' +
+    '<tr><td>Bogey (+1)</td><td>1</td></tr>' +
+    '<tr><td>Par</td><td>2</td></tr>' +
+    '<tr><td>Birdie (−1)</td><td>3</td></tr>' +
+    '<tr><td>Eagle (−2)</td><td>4</td></tr>' +
+    '<tr><td>Albatross (−3)</td><td>5</td></tr></table>' +
+    '<p>The <b>Individual competition</b> total is the sum of every player\'s Stableford points across all rounds.</p>';
+
+  if (formatsInUse.has("betterBall")) {
+    body += '<h3>Better Ball Stableford</h3>' +
+      '<p>Two players per side. On each hole the team takes the <b>higher</b> of the two teammates\' Stableford points. Sum across 18 for the team\'s round total.</p>';
+  }
+  if (formatsInUse.has("combined")) {
+    body += '<h3>Combined Stableford</h3>' +
+      '<p>Two players per side. On each hole the team <b>adds both</b> teammates\' Stableford points — no discards. Sum across 18 for the team\'s round total.</p>';
+  }
+  if (formatsInUse.has("alliance2")) {
+    body += '<h3>Alliance — 2 best scores</h3>' +
+      '<p>Team of 3–4 players. On each hole, take the <b>best 2 Stableford points</b> from the team and sum. That\'s the hole score; sum across 18 for the team\'s round total.</p>';
+  }
+  if (formatsInUse.has("alliance3")) {
+    body += '<h3>Alliance — 3 best scores</h3>' +
+      '<p>Team of 4 players. On each hole, take the <b>best 3 Stableford points</b> (drop the worst) and sum. That\'s the hole score; sum across 18 for the team\'s round total.</p>';
+  }
+  if (formatsInUse.has("alliance2") || formatsInUse.has("alliance3")) {
+    body += '<p><b>Team ranked points per round:</b> teams are ranked by round total and awarded ' +
+      '<b>N−1, N−2, …, 0</b> points (N = number of teams). Ties get the average of their tied positions. ' +
+      'These ranked points accumulate across rounds in the Team competition table.</p>';
+  }
+
+  if (formatsInUse.has("skins")) {
+    let msg = '<h3>Skins</h3>' +
+      '<p>One skin is awarded per hole to the player with the <b>lowest net stroke</b>. Ties split the skin evenly — no carryover. An N-hole round awards N skins total.</p>';
+    if (skinsSideRounds.length) {
+      msg += '<p>Skins is running as a <b>side game</b> on: ' + skinsSideRounds.join(", ") + '.</p>';
+    }
+    if (skinsRands.length) {
+      msg += '<p><b>Skins pot:</b> every real (non-ghost) player contributes equally. ' +
+        'A player\'s <b>net winnings</b> = (skins won × R-per-skin) − their share of the total pot. ' +
+        'Configured: ' + skinsRands.join(", ") + '.</p>';
+    }
+    msg += '<p>Skins do <b>not</b> affect Stableford totals — they show as a separate column in the individual leaderboard.</p>';
+    body += msg;
+  }
+
+  if (formatsInUse.has("wolfie")) {
+    let msg = '<h3>Wolfie (3-player Wolf)</h3>' +
+      '<p>3-player match. The <b>Wolf</b> rotates every hole (order set by the Starting Wolf picker on the scorecard). Winners are determined by lowest <b>net stroke</b>. In Partner mode, best-ball net of the Wolf side vs the lone opponent\'s net.</p>' +
+      '<table><tr><th>Mode</th><th>Wolf side wins</th><th>Wolf side loses</th></tr>' +
+      '<tr><td>Lone (default)</td><td>Wolf +2</td><td>Each opp +1</td></tr>' +
+      '<tr><td>Partner</td><td>Wolf +1, Partner +1</td><td>Lone opp +2</td></tr>' +
+      '<tr><td>Blind Lone</td><td>Wolf +3</td><td>Each opp +1</td></tr>' +
+      '<tr><td>Any tie</td><td colspan="2">No points</td></tr></table>';
+    if (wolfieRands.length) {
+      msg += '<p><b>Wolfie pot:</b> every real (non-ghost) player contributes equally to the pot. ' +
+        'A player\'s <b>net winnings</b> = (Wolfie points × R-per-point) − their share of the total pot. ' +
+        'Configured: ' + wolfieRands.join(", ") + '.</p>';
+    }
+    msg += '<p>Wolfie points do <b>not</b> add to Stableford totals — they show in a separate Wolfie column on the individual leaderboard and on each player\'s scorecard total.</p>';
+    body += msg;
+  }
+
+  body += '<h3>Handicap strokes received</h3>' +
+    '<p>On each hole, a player receives a stroke if their <b>course handicap ≥ that hole\'s Stroke Index (SI)</b>. ' +
+    'Handicaps above 18 give a second stroke on the toughest holes (SI 1 → SI 2 …). ' +
+    'Net stroke = gross strokes − strokes received.</p>';
+
+  body += '<h3>Individual leaderboard tiebreakers</h3>' +
+    '<p>Ranked by <b>Stableford total</b> first, then by <b>Skins won</b>, then by <b>Wolfie points</b>.</p>';
+
+  // Build and show the modal
+  const overlay = document.createElement("div");
+  overlay.className = "how-scored-modal-overlay";
+  overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+  const modal = document.createElement("div");
+  modal.className = "how-scored-modal";
+  modal.innerHTML =
+    '<button class="modal-close" aria-label="Close" onclick="this.closest(\'.how-scored-modal-overlay\').remove()">&times;</button>' +
+    '<h2>How scores are calculated</h2>' +
+    summary + body;
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+  // Esc to close
+  const _onEsc = (e) => { if (e.key === "Escape") { overlay.remove(); document.removeEventListener("keydown", _onEsc); } };
+  document.addEventListener("keydown", _onEsc);
+}
+
+// Auto-advance stays WITHIN the current match. When the current player is the
+// last real player of that match on this hole, jump to the FIRST real player of
+// the same match on the NEXT active hole. If this is the last active hole of
+// the round for that match, do nothing (don't spill into the next match).
+function autoAdvanceFrom(courseId, pi, hole) {
+  const day = (state.matchSchedule || []).find(d => d.roundIdx === COURSES.findIndex(c => c.id === courseId));
+  if (!day) return;
+  // Find the match containing pi
+  const match = day.matches.find(m => (m.teamA || []).concat(m.teamB || []).indexOf(pi) >= 0);
+  if (!match) return;
+  const roster = (match.teamA || []).concat(match.teamB || []);
+  // Skip ghosts (their score inputs are disabled)
+  const realRoster = roster.filter(px => !isGhostName(state.players[px]));
+  if (!realRoster.length) return;
+  const idx = realRoster.indexOf(pi);
+  if (idx < 0) return;
+
+  const _focus = (nextPi, nextHole) => {
+    const inp = document.getElementById("stroke-" + courseId + "-" + nextPi + "-" + nextHole);
+    if (inp && !inp.disabled) {
+      setTimeout(() => { try { inp.focus(); } catch (e) {} }, 30);
+      return true;
+    }
+    return false;
+  };
+
+  // Case 1: more players in this match on this hole → next player, same hole
+  if (idx < realRoster.length - 1) {
+    _focus(realRoster[idx + 1], hole);
+    return;
+  }
+  // Case 2: last player of this match completed → advance to the next active
+  // hole for the FIRST player of the same match.
+  for (let nextHole = hole + 1; nextHole < HOLES; nextHole++) {
+    if (!isHoleActive(courseId, nextHole)) continue;
+    if (_focus(realRoster[0], nextHole)) return;
+  }
+  // Case 3: no next active hole → stop.
 }
 
 // ---------- Team totals count-up bump ----------
@@ -7021,30 +8217,290 @@ function playerNetStroke(pi, courseId, hole) {
   const strokesRec = strokesReceivedOnHole(hcp, si);
   return s - strokesRec;
 }
+// ---------- Wolfie (3-player Wolf, rotating Lone Wolf default) ----------
+// For each 3-player match, the Wolf rotates through the roster every hole.
+// Per-hole scoring math:
+//   Lone (default)  → Wolf side wins: Wolf +2                  ; loses: each opp +1
+//   Partner         → Wolf side wins: Wolf +1, Partner +1      ; loses: lone opp +2
+//   Blind Lone      → Wolf side wins: Wolf +3                  ; loses: each opp +1
+//   Any tie         → no points
+function computeWolfieForRound(courseId) {
+  const result = { perPlayer: {}, perHole: [] };
+  const day = (state.matchSchedule || []).find(d => d.roundIdx === COURSES.findIndex(c => c.id === courseId));
+  if (!day) return result;
+  const decisionsForRound = (state.wolfieDecisionsByRound && state.wolfieDecisionsByRound[courseId]) || {};
+  day.matches.forEach((m, mi) => {
+    const rawRoster = (m.teamA || []).concat(m.teamB || []).filter(pi => !isGhostName(state.players[pi]));
+    if (rawRoster.length !== 3) return;
+    const roster = _wolfieRotatedRoster(courseId, mi, rawRoster);
+    const matchDecisions = decisionsForRound["m" + mi] || {};
+    for (let h = 0; h < HOLES; h++) {
+      if (!isHoleActive(courseId, h)) { result.perHole.push({ hole: h, wolf: null, points: {} }); continue; }
+      const wolfPi = roster[h % 3];
+      const opp1Pi = roster[(h + 1) % 3];
+      const opp2Pi = roster[(h + 2) % 3];
+      const wolfNet = playerNetStroke(wolfPi, courseId, h);
+      const opp1Net = playerNetStroke(opp1Pi, courseId, h);
+      const opp2Net = playerNetStroke(opp2Pi, courseId, h);
+      if (wolfNet == null || opp1Net == null || opp2Net == null) {
+        result.perHole.push({ hole: h, wolf: wolfPi, points: {} });
+        continue;
+      }
+      const decision = matchDecisions[h] || { mode: "lone", partnerPi: null };
+      const pts = {};
+      if (decision.mode === "partner" && decision.partnerPi != null &&
+          [opp1Pi, opp2Pi].indexOf(decision.partnerPi) >= 0) {
+        // Partner: Wolf + partner best-ball vs lone opponent's net
+        const partnerPi = decision.partnerPi;
+        const lonePi = (partnerPi === opp1Pi) ? opp2Pi : opp1Pi;
+        const partnerNet = (partnerPi === opp1Pi) ? opp1Net : opp2Net;
+        const loneNet = (lonePi === opp1Pi) ? opp1Net : opp2Net;
+        const wolfSideBest = Math.min(wolfNet, partnerNet);
+        if (wolfSideBest < loneNet) {
+          pts[wolfPi] = 1; pts[partnerPi] = 1;
+        } else if (wolfSideBest > loneNet) {
+          pts[lonePi] = 2;
+        }
+      } else if (decision.mode === "blindLone") {
+        // Blind Lone: Wolf wins +3, loses → each opp +1
+        const oppBest = Math.min(opp1Net, opp2Net);
+        if (wolfNet < oppBest)      { pts[wolfPi] = 3; }
+        else if (wolfNet > oppBest) { pts[opp1Pi] = 1; pts[opp2Pi] = 1; }
+      } else {
+        // Lone (default): Wolf wins +2, loses → each opp +1
+        const oppBest = Math.min(opp1Net, opp2Net);
+        if (wolfNet < oppBest)      { pts[wolfPi] = 2; }
+        else if (wolfNet > oppBest) { pts[opp1Pi] = 1; pts[opp2Pi] = 1; }
+      }
+      Object.keys(pts).forEach(pi => {
+        result.perPlayer[pi] = (result.perPlayer[pi] || 0) + pts[pi];
+      });
+      result.perHole.push({ hole: h, wolf: wolfPi, points: pts, mode: decision.mode });
+    }
+  });
+  return result;
+}
+// ---- Legacy off-scorecard Wolfie panel (retained for reference; the live
+// UI is now inline on each scorecard's header rows). Kept hidden. ----
+function renderWolfieDecisions() {
+  COURSES.forEach(course => {
+    const container = document.getElementById("wolfie-decisions-" + course.id);
+    if (container) { container.classList.add("hidden"); container.innerHTML = ""; }
+  });
+  return;
+  // (unused legacy path below, retained if you want to re-enable it)
+  /* eslint-disable
+  COURSES.forEach(course => {
+    const container = document.getElementById("wolfie-decisions-" + course.id);
+    if (!container) return;
+    const isWolfie = currentScoringFormat(course.id) === "wolfie";
+    container.classList.toggle("hidden", !isWolfie);
+    if (!isWolfie) return;
+    // Build once per render (simple + accurate).
+    const day = (state.matchSchedule || []).find(d => d.roundIdx === COURSES.findIndex(c => c.id === course.id));
+    if (!day || !day.matches.length) { container.innerHTML = "<em>No Wolfie matches configured for this round.</em>"; return; }
+    const decisions = (state.wolfieDecisionsByRound && state.wolfieDecisionsByRound[course.id]) || {};
+    let html = '<h4 class="wolfie-panel-title">Wolf decisions <span class="wolfie-panel-help">— Wolf rotates every hole. Pick a partner or go Lone/Blind Lone per hole.</span></h4>';
+    day.matches.forEach((m, mi) => {
+      const roster = (m.teamA || []).concat(m.teamB || []).filter(pi => !isGhostName(state.players[pi]));
+      if (roster.length !== 3) {
+        html += '<div class="wolfie-match-msg">Match ' + (mi + 1) + ' needs exactly 3 real players (currently ' + roster.length + ').</div>';
+        return;
+      }
+      html += '<div class="wolfie-match-block"><div class="wolfie-match-hdr">Match ' + (mi + 1) + ': ' +
+        roster.map(pi => displayName(pi)).join(" · ") + '</div>';
+      html += '<div class="wolfie-hole-grid">';
+      for (let h = 0; h < HOLES; h++) {
+        if (!isHoleActive(course.id, h)) continue;
+        const wolfPi = roster[h % 3];
+        const oppPis = [roster[(h + 1) % 3], roster[(h + 2) % 3]];
+        const dec = decisions[h] || { mode: "lone", partnerPi: null };
+        const partnerSel = '<select class="wolfie-partner-sel" data-hole="' + h + '"' +
+          (dec.mode === "partner" ? "" : " disabled") + ' onchange="setWolfieDecision(\'' + course.id + '\', ' + h + ', \'partner\', parseInt(this.value))">' +
+          oppPis.map(opi => '<option value="' + opi + '"' + (dec.partnerPi === opi ? " selected" : "") + '>' + displayName(opi) + '</option>').join("") +
+          '</select>';
+        html += '<div class="wolfie-hole-row">' +
+          '<span class="wolfie-hole-num">' + (h + 1) + '</span>' +
+          '<span class="wolfie-hole-wolf">🐺 ' + displayName(wolfPi) + '</span>' +
+          '<span class="wolfie-hole-mode">' +
+            '<label><input type="radio" name="wolfie-' + course.id + '-m' + mi + '-h' + h + '" value="lone"' + (dec.mode === "lone" ? " checked" : "") + ' onchange="setWolfieDecision(\'' + course.id + '\', ' + h + ', \'lone\', null)"> Lone</label>' +
+            '<label><input type="radio" name="wolfie-' + course.id + '-m' + mi + '-h' + h + '" value="partner"' + (dec.mode === "partner" ? " checked" : "") + ' onchange="setWolfieDecision(\'' + course.id + '\', ' + h + ', \'partner\', ' + (dec.partnerPi != null ? dec.partnerPi : oppPis[0]) + ')"> Partner</label>' +
+            '<label><input type="radio" name="wolfie-' + course.id + '-m' + mi + '-h' + h + '" value="blindLone"' + (dec.mode === "blindLone" ? " checked" : "") + ' onchange="setWolfieDecision(\'' + course.id + '\', ' + h + ', \'blindLone\', null)"> Blind</label>' +
+          '</span>' +
+          '<span class="wolfie-hole-partner">' + partnerSel + '</span>' +
+        '</div>';
+      }
+      html += '</div></div>';
+    });
+    container.innerHTML = html;
+  });
+  */
+}
+
+// Inline scorecard dropdown handler — parses the "partner:PI" or plain-mode value.
+function _wolfieInlineChange(courseId, matchIdx, holeIdx, selEl) {
+  const raw = selEl.value;
+  if (raw.indexOf("partner:") === 0) {
+    setWolfieDecision(courseId, matchIdx, holeIdx, "partner", parseInt(raw.slice(8)));
+  } else {
+    setWolfieDecision(courseId, matchIdx, holeIdx, raw, null);
+  }
+}
+
+// Per-round, per-match starting Wolf. Rotation begins from this player.
+// state.wolfieStartByRound[courseId][matchIdx] = playerIndex
+function _getWolfieStart(courseId, matchIdx, roster) {
+  const m = state.wolfieStartByRound && state.wolfieStartByRound[courseId];
+  const startPi = m && (m[matchIdx] != null) ? m[matchIdx] : roster[0];
+  const idx = roster.indexOf(startPi);
+  return idx >= 0 ? idx : 0;
+}
+function setWolfieStart(courseId, matchIdx, startPi) {
+  if (!state.wolfieStartByRound) state.wolfieStartByRound = {};
+  if (!state.wolfieStartByRound[courseId]) state.wolfieStartByRound[courseId] = {};
+  state.wolfieStartByRound[courseId][matchIdx] = parseInt(startPi);
+  saveState();
+  if (typeof renderScorecards === "function") renderScorecards();
+  if (typeof refreshLeaderboards === "function") refreshLeaderboards();
+}
+// Rotated roster so the chosen starting Wolf is index 0 (hole 1 = index 0).
+function _wolfieRotatedRoster(courseId, matchIdx, roster) {
+  const off = _getWolfieStart(courseId, matchIdx, roster);
+  return [roster[off], roster[(off + 1) % 3], roster[(off + 2) % 3]];
+}
+// Returns the Wolf for a given hole using this round/match's starting-Wolf setting.
+function wolfForHole(courseId, matchIdx, roster, holeIdx) {
+  const r = _wolfieRotatedRoster(courseId, matchIdx, roster);
+  return r[holeIdx % 3];
+}
+
+// Injects a "Starting Wolf" picker row + 🐺 Wolf-per-hole row + Decision-per-hole row
+// into the tbody, immediately before this match's player rows.
+function _appendWolfieMatchStrip(tbody, courseId, matchIdx, roster) {
+  const decisions = (state.wolfieDecisionsByRound && state.wolfieDecisionsByRound[courseId]) || {};
+  const matchKey = "m" + matchIdx;
+  const decisionsForMatch = decisions[matchKey] || {};
+  const rotated = _wolfieRotatedRoster(courseId, matchIdx, roster);
+  const startPi = rotated[0];
+
+  // Row 1: Starting Wolf picker (spans the hole columns)
+  const startRow = document.createElement("tr");
+  startRow.className = "hdr-wolfie-start match-start";
+  const startLbl = document.createElement("td");
+  startLbl.className = "name-cell";
+  startLbl.innerHTML = "🐺 Start";
+  startRow.appendChild(startLbl);
+  const startTd = document.createElement("td");
+  // Columns: 18 holes + 2 subtotal (OUT, IN) + 1 total = 21
+  startTd.colSpan = HOLES + 3;
+  startTd.className = "wolfie-start-cell";
+  const opts = roster.map(pi =>
+    '<option value="' + pi + '"' + (pi === startPi ? " selected" : "") + '>' + displayName(pi) + '</option>'
+  ).join("");
+  startTd.innerHTML = 'Starting Wolf (hole 1): <select class="wolfie-start-sel" ' +
+    'onchange="setWolfieStart(\'' + courseId + '\', ' + matchIdx + ', this.value)">' +
+    opts + '</select> <span class="wolfie-start-hint">— rotation: ' +
+    rotated.map(pi => displayName(pi)).join(" → ") + ' → …</span>';
+  startRow.appendChild(startTd);
+  tbody.appendChild(startRow);
+
+  // Decision dropdown per hole — the WOLF row was removed (purple border on the
+  // Wolf's own score cell already conveys the rotation).
+  const decRow = document.createElement("tr");
+  decRow.className = "hdr-wolfie-decision";
+  const decLbl = document.createElement("td");
+  decLbl.className = "name-cell";
+  decLbl.textContent = "Decision";
+  decRow.appendChild(decLbl);
+
+  for (let h = 0; h < HOLES; h++) {
+    const oppPis = [rotated[(h + 1) % 3], rotated[(h + 2) % 3]];
+    // Decision cell
+    const dTd = document.createElement("td");
+    dTd.classList.add(h < 9 ? "hole-front" : "hole-back", "wolfie-decision-cell");
+    if (!isHoleActive(courseId, h)) dTd.classList.add("hole-inactive");
+    if (isHoleActive(courseId, h)) {
+      const dec = decisionsForMatch[h] || { mode: "lone", partnerPi: null };
+      const dropdown = '<select class="wolfie-inline-sel" data-hole="' + h + '" ' +
+        'onchange="_wolfieInlineChange(\'' + courseId + '\', ' + matchIdx + ', ' + h + ', this)">' +
+          '<option value="lone"' + (dec.mode === "lone" ? " selected" : "") + '>Lone</option>' +
+          '<option value="partner:' + oppPis[0] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[0] ? " selected" : "") + '>' + displayName(oppPis[0]) + '</option>' +
+          '<option value="partner:' + oppPis[1] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[1] ? " selected" : "") + '>' + displayName(oppPis[1]) + '</option>' +
+          '<option value="blindLone"' + (dec.mode === "blindLone" ? " selected" : "") + '>Blind</option>' +
+        '</select>';
+      dTd.innerHTML = dropdown;
+    }
+    decRow.appendChild(dTd);
+    // OUT/IN spacer
+    if (h === 8 || h === 17) {
+      const sp = document.createElement("td");
+      sp.className = "subtotal-cell " + (h === 8 ? "hole-nine-out" : "hole-nine-in");
+      decRow.appendChild(sp);
+    }
+  }
+  // Trailing total cell
+  const dTotal = document.createElement("td");
+  dTotal.className = "total-cell";
+  decRow.appendChild(dTotal);
+
+  tbody.appendChild(decRow);
+}
+// Save a Wolf's per-hole decision (per match).
+function setWolfieDecision(courseId, matchIdx, holeIdx, mode, partnerPi) {
+  if (!state.wolfieDecisionsByRound) state.wolfieDecisionsByRound = {};
+  if (!state.wolfieDecisionsByRound[courseId]) state.wolfieDecisionsByRound[courseId] = {};
+  const matchKey = "m" + matchIdx;
+  if (!state.wolfieDecisionsByRound[courseId][matchKey]) state.wolfieDecisionsByRound[courseId][matchKey] = {};
+  state.wolfieDecisionsByRound[courseId][matchKey][holeIdx] = { mode: mode, partnerPi: (partnerPi != null ? partnerPi : null) };
+  saveState();
+  if (typeof renderScorecards === "function") renderScorecards();     // rebuild inline dropdowns + wolf-cell highlight
+  if (typeof refreshLeaderboards === "function") refreshLeaderboards();
+}
+
 function computeSkinsForRound(courseId) {
-  // For each active hole, find the team with the lowest single-player net stroke.
-  // Ties (multiple teams with same low) carry the skin over to the next hole.
-  const result = { perTeam: {}, perHole: [] };
+  // For each active hole, award exactly 1 skin. If multiple players are tied
+  // for the lowest net stroke (including across teams), split that skin evenly
+  // among all tied players — no carryover / lost skins. This guarantees that
+  // an N-hole round awards N skins total, distributed by best-net-per-hole.
+  const result = { perTeam: {}, perPlayer: {}, perHole: [] };
   const teams = teamsInPlay();
   teams.forEach(t => { result.perTeam[t] = 0; });
-  let carry = 0;
   for (let h = 0; h < HOLES; h++) {
-    if (!isHoleActive(courseId, h)) { result.perHole.push({ winner: null, carry: carry, skin: 0 }); continue; }
-    let bestNet = null, bestTeam = null, tied = false;
+    if (!isHoleActive(courseId, h)) { result.perHole.push({ winner: null, skin: 0 }); continue; }
+    // Find the best net across all players.
+    let bestNet = null;
     teams.forEach(t => {
       indicesOfTeam(t).forEach(pi => {
         const net = playerNetStroke(pi, courseId, h);
         if (net == null) return;
-        if (bestNet == null || net < bestNet) { bestNet = net; bestTeam = t; tied = false; }
-        else if (net === bestNet && t !== bestTeam) { tied = true; }
+        if (bestNet == null || net < bestNet) bestNet = net;
       });
     });
-    if (bestNet == null) { result.perHole.push({ winner: null, carry: carry, skin: 0 }); continue; }
-    if (tied) { result.perHole.push({ winner: "carry", carry: carry, skin: 0 }); carry++; continue; }
-    const skin = 1 + carry;
-    result.perTeam[bestTeam] = (result.perTeam[bestTeam] || 0) + skin;
-    result.perHole.push({ winner: bestTeam, carry: carry, skin: skin });
-    carry = 0;
+    if (bestNet == null) { result.perHole.push({ winner: null, skin: 0 }); continue; }
+    // Gather every player at the best net (winning players).
+    const winnerPis = [];
+    const winnerTeams = new Set();
+    teams.forEach(t => {
+      indicesOfTeam(t).forEach(pi => {
+        const net = playerNetStroke(pi, courseId, h);
+        if (net === bestNet) {
+          winnerPis.push(pi);
+          winnerTeams.add(t);
+        }
+      });
+    });
+    if (!winnerPis.length) { result.perHole.push({ winner: null, skin: 0 }); continue; }
+    // Award 1 skin total, split evenly among tied winners.
+    const share = 1 / winnerPis.length;
+    winnerPis.forEach(pi => {
+      result.perPlayer[pi] = (result.perPlayer[pi] || 0) + share;
+      const t = teamOfPlayer(pi);
+      result.perTeam[t] = (result.perTeam[t] || 0) + share;
+    });
+    result.perHole.push({
+      winner: winnerTeams.size === 1 ? Array.from(winnerTeams)[0] : "shared",
+      skin: 1, players: winnerPis.slice(), share: share
+    });
   }
   return result;
 }
