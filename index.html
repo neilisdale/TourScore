@@ -2736,7 +2736,7 @@
       <span class="hint">2&ndash;16 players. Assign each player to a team (A&ndash;F) using the team dropdown next to their name. Match dropdowns and standings update automatically as you edit.</span>
     </div>
     <div class="players-grid" id="players-list"></div>
-    <div class="help-text">Each player has a name and a team letter. Handicaps are set per course in Step 3 (Course setup).</div>
+    <div class="help-text">Each player has a name and a team letter. Handicaps are entered per player on the Play tab (next to each name on the scorecard).</div>
     <div class="team-names-editor" id="team-names-editor" aria-label="Rename teams"><!-- populated by renderTeamNamesEditor() --></div>
   </section>
 
@@ -4877,9 +4877,25 @@ function updateMatchResultRows() {
     const fmt = currentScoringFormat(course.id);
     const matchPlay = fmt === "betterBall";
     scheduleDay.matches.forEach((m, mi) => {
-      // Actual team letters for this match's two sides (may be C, D, etc.)
-      const teamAletter = (m.teamA && m.teamA.length) ? teamOfPlayer(m.teamA[0]) : "A";
-      const teamBletter = (m.teamB && m.teamB.length) ? teamOfPlayer(m.teamB[0]) : "B";
+      // Regroup by real team letter so Better Ball / Combined / Alliance
+      // scoring compares TEAM-A vs TEAM-B even if the playing order in the
+      // match slots is mixed. Fall back to raw match slots for single-team or
+      // 3+-team matches.
+      const _grp = matchSidesByTeamLetter(m);
+      let sideAPis, sideBPis, teamAletter, teamBletter;
+      if (_grp.letters.length === 2) {
+        const _first = teamOfPlayer((m.teamA || [])[0]);
+        const _second = _grp.letters.find(l => l !== _first) || _grp.letters[1];
+        teamAletter = _first;
+        teamBletter = _second;
+        sideAPis = _grp.byLetter[teamAletter] || [];
+        sideBPis = _grp.byLetter[teamBletter] || [];
+      } else {
+        sideAPis = m.teamA || [];
+        sideBPis = m.teamB || [];
+        teamAletter = (sideAPis.length) ? teamOfPlayer(sideAPis[0]) : "A";
+        teamBletter = (sideBPis.length) ? teamOfPlayer(sideBPis[0]) : "B";
+      }
       // If everyone in this match roster is on the same team, an A-vs-B
       // "match result" is meaningless (there is no opponent). Show the row
       // as a team total instead: cumulative team-hole points, per hole,
@@ -4938,8 +4954,8 @@ function updateMatchResultRows() {
           if (cell) { cell.textContent = ""; cell.className = "match-result-cell hole-inactive " + nineClass; }
           continue;
         }
-        const anyA = m.teamA.some(pi => state.scores[course.id][pi][h] !== "" && state.scores[course.id][pi][h] != null);
-        const anyB = m.teamB.some(pi => state.scores[course.id][pi][h] !== "" && state.scores[course.id][pi][h] != null);
+        const anyA = sideAPis.some(pi => state.scores[course.id][pi][h] !== "" && state.scores[course.id][pi][h] != null);
+        const anyB = sideBPis.some(pi => state.scores[course.id][pi][h] !== "" && state.scores[course.id][pi][h] != null);
         let text = "", cls = "match-result-cell " + nineClass;
         if (singleTeam) {
           // No opponent — show cumulative team-hole points for the whole match roster.
@@ -4955,8 +4971,8 @@ function updateMatchResultRows() {
             cls += " mrc-team-total";
           }
         } else if (anyA || anyB) {
-          const aPts = teamHolePoints(m.teamA, course.id, h, fmt);
-          const bPts = teamHolePoints(m.teamB, course.id, h, fmt);
+          const aPts = teamHolePoints(sideAPis, course.id, h, fmt);
+          const bPts = teamHolePoints(sideBPis, course.id, h, fmt);
           aRunTot += aPts; bRunTot += bPts;
           aTot9[nine] += aPts; bTot9[nine] += bPts;
           if (aPts > bPts) { aWins++; aWins9[nine]++; }
@@ -6271,15 +6287,49 @@ function bestBallStableford(playerIndices, courseId, hole) {
   return teamHolePoints(playerIndices, courseId, hole);
 }
 
+// Regroup a match's players by their actual team letter. This matters because
+// the match schedule's `teamA` / `teamB` slots are just "sides" produced by the
+// pairing algorithm and may mix real team letters (e.g. a 4-ball drawn from a
+// mixed roster). For match play / points comparison we want TEAM-A vs TEAM-B,
+// not slot-A vs slot-B. Returns { sides: [{letter, pis}, ...] } sorted so the
+// larger team is first; caller falls back to the raw match slots if the count
+// of distinct letters isn't exactly 2.
+function matchSidesByTeamLetter(match) {
+  const allPis = (match.teamA || []).concat(match.teamB || []);
+  const byLetter = {};
+  allPis.forEach(pi => {
+    const t = teamOfPlayer(pi) || "?";
+    if (!byLetter[t]) byLetter[t] = [];
+    byLetter[t].push(pi);
+  });
+  const letters = Object.keys(byLetter);
+  return { byLetter: byLetter, letters: letters };
+}
 function computeMatchStatus(match, roundIdx) {
   const course = COURSES[roundIdx];
   if (!course) return null;
   const courseId = course.id;
   const fmt = currentScoringFormat(courseId);
   const matchPlay = (fmt === "betterBall");
-  // Team letters — derived from the actual player assignments, not fixed A/B.
-  const teamAletter = (match.teamA && match.teamA.length) ? teamOfPlayer(match.teamA[0]) : "A";
-  const teamBletter = (match.teamB && match.teamB.length) ? teamOfPlayer(match.teamB[0]) : "B";
+  // Regroup by real team letter so match play works with mixed playing orders.
+  const grouped = matchSidesByTeamLetter(match);
+  let sideAPis, sideBPis, teamAletter, teamBletter;
+  if (grouped.letters.length === 2) {
+    // Preserve the visual order: whichever letter appears first in the match's
+    // teamA slot becomes "sideA".
+    const firstLetter = teamOfPlayer((match.teamA || [])[0]);
+    const secondLetter = grouped.letters.find(l => l !== firstLetter) || grouped.letters[1];
+    teamAletter = firstLetter;
+    teamBletter = secondLetter;
+    sideAPis = grouped.byLetter[teamAletter] || [];
+    sideBPis = grouped.byLetter[teamBletter] || [];
+  } else {
+    // Fallback (single team, or 3+ teams in one match) — use raw slots.
+    sideAPis = match.teamA || [];
+    sideBPis = match.teamB || [];
+    teamAletter = (sideAPis.length) ? teamOfPlayer(sideAPis[0]) : "A";
+    teamBletter = (sideBPis.length) ? teamOfPlayer(sideBPis[0]) : "B";
+  }
   const AL = teamAletter, BL = teamBletter;
 
   // Compute how many ACTIVE holes total & how many played
@@ -6290,12 +6340,12 @@ function computeMatchStatus(match, roundIdx) {
   let aTotal = 0, bTotal = 0;                // cumulative team points (all formats)
   for (let h = 0; h < HOLES; h++) {
     if (!isHoleActive(courseId, h)) continue;
-    const anyA = match.teamA.some(pi => (state.scores[courseId][pi][h] !== "" && state.scores[courseId][pi][h] != null));
-    const anyB = match.teamB.some(pi => (state.scores[courseId][pi][h] !== "" && state.scores[courseId][pi][h] != null));
+    const anyA = sideAPis.some(pi => (state.scores[courseId][pi][h] !== "" && state.scores[courseId][pi][h] != null));
+    const anyB = sideBPis.some(pi => (state.scores[courseId][pi][h] !== "" && state.scores[courseId][pi][h] != null));
     if (!anyA && !anyB) continue;
     holesPlayed++;
-    const aPts = teamHolePoints(match.teamA, courseId, h, fmt);
-    const bPts = teamHolePoints(match.teamB, courseId, h, fmt);
+    const aPts = teamHolePoints(sideAPis, courseId, h, fmt);
+    const bPts = teamHolePoints(sideBPis, courseId, h, fmt);
     aTotal += aPts; bTotal += bPts;
     if (aPts > bPts) aWins++;
     else if (bPts > aPts) bWins++;
