@@ -3012,6 +3012,21 @@
 </div>
 
 <script>
+// Escapes free-text values (course/team/player/tournament names, all
+// user-editable) before they're interpolated into an innerHTML string.
+// Every call site below builds markup by string concatenation rather than
+// DOM APIs, so this is the one choke point that keeps a name like
+// `<img src=x onerror=...>` from being parsed as HTML instead of text —
+// including on every other device watching via live sync.
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // Default roster is a generic Player 1..8 — users rename each slot in the
 // Setup → Players & Teams section on the way to running a real event.
 const DEFAULT_PLAYERS = [
@@ -4340,7 +4355,7 @@ function refreshCourseTitles() {
     const scoreT = document.getElementById("scorecard-title-" + c.id);
     if (scoreT) {
       const fmtLbl = SCORING_FORMAT_LABELS[currentScoringFormat(c.id)] || "";
-      scoreT.innerHTML = name +
+      scoreT.innerHTML = escapeHtml(name) +
         ' <span class="scorecard-title-fmt">— ' + fmtLbl + '</span>' +
         ' <span class="round-weather" data-round="' + c.id + '"></span>';
     }
@@ -4846,8 +4861,8 @@ function populateMatchStateStrip(course, strip) {
     item.id = "mss-" + course.id + "-" + mi;
     item.setAttribute("data-match-index", String(mi));
     item.setAttribute("title", "Click to collapse or expand this match in the scorecard");
-    const teamAName = m.teamA.map(pi => displayName(pi)).join(" & ");
-    const teamBName = m.teamB.map(pi => displayName(pi)).join(" & ");
+    const teamAName = m.teamA.map(pi => escapeHtml(displayName(pi))).join(" & ");
+    const teamBName = m.teamB.map(pi => escapeHtml(displayName(pi))).join(" & ");
     item.innerHTML =
       '<span class="mss-label">M' + (mi + 1) + '</span>' +
       '<span class="mss-teams">' +
@@ -4912,7 +4927,7 @@ function updateMatchResultRows() {
         // there's no A-vs-B opponent (all match players on the same team).
         const labelCell = row.querySelector(".match-result-label");
         if (labelCell) {
-          const labelText = singleTeam ? (" " + teamDisplayName(singleTeam) + " ") : " Result ";
+          const labelText = singleTeam ? (" " + escapeHtml(teamDisplayName(singleTeam)) + " ") : " Result ";
           labelCell.innerHTML = '<span class="mr-tag">M' + (mi + 1) + '</span>' + labelText + '<span class="mrr-chevron" aria-hidden="true">&#9662;</span>';
         }
       });
@@ -5694,8 +5709,8 @@ function renderOddsEvens() { return; /* n/a */
       const evenP = team.players[oe[course.id].even];
       block.innerHTML =
         '<div class="course-block-title">' + course.name + '</div>' +
-        '<div class="player-row"><span>Odd holes</span><span class="assignment">' + playerLabel(oddP) + '</span></div>' +
-        '<div class="player-row"><span>Even holes</span><span class="assignment">' + playerLabel(evenP) + '</span></div>';
+        '<div class="player-row"><span>Odd holes</span><span class="assignment">' + escapeHtml(playerLabel(oddP)) + '</span></div>' +
+        '<div class="player-row"><span>Even holes</span><span class="assignment">' + escapeHtml(playerLabel(evenP)) + '</span></div>';
       card.appendChild(block);
     });
     c.appendChild(card);
@@ -5750,15 +5765,15 @@ function revealWinners() { return;
     const isWinner = r.total === winningTotal;
     const row = document.createElement("div");
     row.className = "result-row" + (isWinner ? " winner" : "");
-    const names = r.team.players.map(p => playerLabel(p)).join(" + ");
+    const names = r.team.players.map(p => escapeHtml(playerLabel(p))).join(" + ");
     const detailLines = getActiveCourses().map(course => {
       const cb = r.byCourse[course.id];
       if (!cb) return "";
       const odd = cb.perPlayer.odd;
       const even = cb.perPlayer.even;
       return course.name + ": " +
-        playerLabel(odd.player) + " (odd) " + fmt(odd.total) + " + " +
-        playerLabel(even.player) + " (even) " + fmt(even.total) +
+        escapeHtml(playerLabel(odd.player)) + " (odd) " + fmt(odd.total) + " + " +
+        escapeHtml(playerLabel(even.player)) + " (even) " + fmt(even.total) +
         " = " + fmt(cb.courseTotal);
     });
     row.innerHTML =
@@ -6552,7 +6567,7 @@ function buildDayHeader(day, course, fmt) {
   return '<div class="day-header" onclick="toggleDayCollapse(' + day.roundIdx + ')" role="button" tabindex="0">' +
       '<div class="dh-main">' +
         '<span class="dh-round">Round ' + (day.roundIdx + 1) + '</span>' +
-        '<span class="dh-course">' + courseName +
+        '<span class="dh-course">' + escapeHtml(courseName) +
           ' <span class="round-weather round-weather-inv" data-round="' + course.id + '"></span>' +
         '</span>' +
         (fmtLabel ? '<span class="dh-fmt">' + fmtLabel + '</span>' : '') +
@@ -6770,7 +6785,7 @@ function renderTeamTotalsDay(container, day, course, fmt, teams, ptsByRound, ove
   });
   teams.forEach(t => {
     const pis = indicesOfTeam(t);
-    const names = pis.map(pi => (state.players[pi] || "Player " + (pi + 1))).join(", ") || "—";
+    const names = pis.map(pi => escapeHtml(state.players[pi] || "Player " + (pi + 1))).join(", ") || "—";
     const roundPts = (ptsByRound[course.id] && ptsByRound[course.id][t]) || 0;
     const overallPts = overall[t] || 0;
     const tr = document.createElement("tr");
@@ -6908,7 +6923,7 @@ function renderIndividualLeaderboard() {
     if (s.total === bestScore && s.total > 0) row.className = "lb-leader";
     row.innerHTML =
       '<td>' + (i + 1) + '</td>' +
-      '<td class="lb-name">' + displayName(s.pi) + '</td>' +
+      '<td class="lb-name">' + escapeHtml(displayName(s.pi)) + '</td>' +
       '<td><span class="team-tag team-tag-' + s.team.toLowerCase() + '">' + s.team + '</span></td>' +
       getActiveCourses().map(course => '<td>' + Math.round(s.perRound[course.id]) + '</td>').join("") +
       '<td class="lb-total">' + Math.round(s.total) + '</td>' +
@@ -6981,7 +6996,7 @@ function renderTeamLeaderboard() {
     const skLead = maxSk > 0 && sk === maxSk;
     html +=
       '<tr class="team-' + t.toLowerCase() + '-row">' +
-        '<td class="tl-team"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span> ' + teamDisplayName(t) + '</td>' +
+        '<td class="tl-team"><span class="team-badge team-badge-' + t.toLowerCase() + '">' + t + '</span> ' + escapeHtml(teamDisplayName(t)) + '</td>' +
         '<td class="tl-num' + (sbLead ? ' tl-lead' : '') + '">' + round1(sb) + '</td>' +
         '<td class="tl-num' + (mpLead ? ' tl-lead' : '') + '">' + round1(mp) + '</td>' +
         (showSkins ? '<td class="tl-num' + (skLead ? ' tl-lead' : '') + '">' + (sk > 0 ? round1(sk) : "—") + '</td>' : '') +
@@ -7208,7 +7223,7 @@ function renderRoundChips() {
     chip.setAttribute("data-round-target", course.id);
     chip.innerHTML =
       '<span class="round-chip-label">Round ' + (i + 1) + '</span>' +
-      '<span class="round-chip-course">' + ((info && info.name) || course.name) + '</span>';
+      '<span class="round-chip-course">' + escapeHtml((info && info.name) || course.name) + '</span>';
     chip.addEventListener("click", () => switchRound(course.id));
     c.appendChild(chip);
   });
@@ -7976,7 +7991,7 @@ function _showHowScoredModal() {
     if (fmt === "wolfie" && wV > 0) wolfieRands.push(cName + " (R" + wV + "/pt)");
     const sV = (state.skinValueByRound && state.skinValueByRound[c.id]) || 0;
     if (isSkinsActiveForRound(c.id) && sV > 0) skinsRands.push(cName + " (R" + sV + "/skin)");
-    summary += '<b>Round ' + (i + 1) + ':</b> ' + cName + ' — ' + bits.join(", ") + '<br>';
+    summary += '<b>Round ' + (i + 1) + ':</b> ' + escapeHtml(cName) + ' — ' + bits.join(", ") + '<br>';
   });
   summary += '</div>';
 
@@ -8195,7 +8210,7 @@ function showTournamentPicker() {
     list.sort((a,b) => b.savedAt - a.savedAt).forEach(t => {
       const when = new Date(t.savedAt).toLocaleString();
       html += '<div class="tournament-list-item">' +
-        '<div><strong>' + (t.label || "Untitled") + '</strong><br><span class="tli-meta">Saved ' + when + '</span></div>' +
+        '<div><strong>' + escapeHtml(t.label || "Untitled") + '</strong><br><span class="tli-meta">Saved ' + when + '</span></div>' +
         '<div>' +
           '<button onclick="loadTournament(\'' + t.id + '\')">Load</button>' +
           '<button class="danger" onclick="deleteTournament(\'' + t.id + '\')">Delete</button>' +
@@ -8445,12 +8460,12 @@ function _appendWolfieMatchStrip(tbody, courseId, matchIdx, roster) {
   startTd.colSpan = HOLES + 3;
   startTd.className = "wolfie-start-cell";
   const opts = roster.map(pi =>
-    '<option value="' + pi + '"' + (pi === startPi ? " selected" : "") + '>' + displayName(pi) + '</option>'
+    '<option value="' + pi + '"' + (pi === startPi ? " selected" : "") + '>' + escapeHtml(displayName(pi)) + '</option>'
   ).join("");
   startTd.innerHTML = 'Starting Wolf (hole 1): <select class="wolfie-start-sel" ' +
     'onchange="setWolfieStart(\'' + courseId + '\', ' + matchIdx + ', this.value)">' +
     opts + '</select> <span class="wolfie-start-hint">— rotation: ' +
-    rotated.map(pi => displayName(pi)).join(" → ") + ' → …</span>';
+    rotated.map(pi => escapeHtml(displayName(pi))).join(" → ") + ' → …</span>';
   startRow.appendChild(startTd);
   tbody.appendChild(startRow);
 
@@ -8474,8 +8489,8 @@ function _appendWolfieMatchStrip(tbody, courseId, matchIdx, roster) {
       const dropdown = '<select class="wolfie-inline-sel" data-hole="' + h + '" ' +
         'onchange="_wolfieInlineChange(\'' + courseId + '\', ' + matchIdx + ', ' + h + ', this)">' +
           '<option value="lone"' + (dec.mode === "lone" ? " selected" : "") + '>Lone</option>' +
-          '<option value="partner:' + oppPis[0] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[0] ? " selected" : "") + '>' + displayName(oppPis[0]) + '</option>' +
-          '<option value="partner:' + oppPis[1] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[1] ? " selected" : "") + '>' + displayName(oppPis[1]) + '</option>' +
+          '<option value="partner:' + oppPis[0] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[0] ? " selected" : "") + '>' + escapeHtml(displayName(oppPis[0])) + '</option>' +
+          '<option value="partner:' + oppPis[1] + '"' + (dec.mode === "partner" && dec.partnerPi === oppPis[1] ? " selected" : "") + '>' + escapeHtml(displayName(oppPis[1])) + '</option>' +
           '<option value="blindLone"' + (dec.mode === "blindLone" ? " selected" : "") + '>Blind</option>' +
         '</select>';
       dTd.innerHTML = dropdown;
